@@ -18,9 +18,26 @@
             <strong>Lokasi:</strong> {{ $permintaan->lokasi_proyek }}
         </div>
 
-        <form action="{{ route('tukang.rab.store') }}" method="POST" id="rabForm">
+        <form action="{{ route('tukang.rab.store') }}" method="POST" id="rabForm" enctype="multipart/form-data">
             @csrf
             <input type="hidden" name="permintaan_id" value="{{ $permintaan->id }}">
+            
+            @if($permintaan->sumber_denah === 'dibuatkan_tukang')
+            <div class="alert alert-info mt-3">
+                <h5 class="alert-heading"><i class="fa fa-info-circle"></i> Permintaan Denah dari Konsumen</h5>
+                <p>Konsumen meminta Anda merancang denah untuk proyek ini. Silakan unggah sketsa/rancangan denah Anda di sini agar bisa dilihat dan disetujui konsumen bersamaan dengan RAB ini.</p>
+                <div class="form-group mt-2">
+                    <label class="font-weight-bold">Upload Sketsa/Rancangan Denah Anda <span class="text-danger">*</span></label>
+                    <input type="file" class="form-control" name="dokumen_denah" accept=".jpg,.jpeg,.png,.pdf" {{ empty($permintaan->dokumen_path) ? 'required' : '' }}>
+                    @if($permintaan->dokumen_path)
+                        <small class="text-muted d-block mt-1">Anda sudah mengunggah denah sebelumnya. Unggah file baru HANYA jika Anda ingin mengganti denah yang lama.</small>
+                    @endif
+                    @error('dokumen_denah')
+                        <div class="text-danger mt-1">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+            @endif
             
             <h4 class="text-primary mt-4 mb-3 border-bottom pb-2">Rincian Anggaran Biaya (Pekerjaan & Material)</h4>
             <div class="table-responsive">

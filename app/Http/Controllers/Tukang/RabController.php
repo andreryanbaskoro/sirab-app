@@ -52,17 +52,34 @@ class RabController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'permintaan_id' => 'required|exists:permintaans,id',
+        $permintaan = Permintaan::findOrFail($request->permintaan_id);
+        if ($permintaan->tukang_id !== Auth::id()) abort(403);
+
+        $rules = [
+            'pekerjaans' => 'nullable|array',
+            'materials' => 'nullable|array',
             'biaya_jasa_tukang' => 'nullable|numeric|min:0',
             'biaya_tambahan' => 'nullable|numeric|min:0',
             'profit_persen' => 'nullable|numeric|min:0|max:100',
             'use_ppn' => 'nullable|boolean',
-            'catatan_tukang' => 'nullable|string',
+            'catatan_tukang' => 'nullable|string'
+        ];
+
+        if ($permintaan->sumber_denah === 'dibuatkan_tukang') {
+            $rules['dokumen_denah'] = 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120';
+            if (empty($permintaan->dokumen_path)) {
+                $rules['dokumen_denah'] = 'required|file|mimes:pdf,jpg,jpeg,png|max:5120';
+            }
+        }
+
+        $request->validate($rules, [
+            'dokumen_denah.required' => 'Anda wajib mengunggah file sketsa denah.'
         ]);
 
-        $permintaan = Permintaan::findOrFail($request->permintaan_id);
-        if ($permintaan->tukang_id !== Auth::id()) abort(403);
+        if ($request->hasFile('dokumen_denah')) {
+            $path = $request->file('dokumen_denah')->store('dokumen-permintaan', 'public');
+            $permintaan->update(['dokumen_path' => $path]);
+        }
 
         // Delete existing RAB if editing
         if ($permintaan->rab) {
@@ -155,15 +172,9 @@ class RabController extends Controller
             return back()->with('error', 'RAB sudah disubmit sebelumnya.');
         }
 
+        // Validate if Tukang hasn't uploaded the required sketch
         if ($rab->permintaan->sumber_denah === 'dibuatkan_tukang' && empty($rab->permintaan->dokumen_path)) {
-            $request->validate([
-                'dokumen_denah' => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120',
-            ], [
-                'dokumen_denah.required' => 'Anda wajib mengunggah file sketsa denah rancangan Anda.'
-            ]);
-
-            $path = $request->file('dokumen_denah')->store('dokumen-permintaan', 'public');
-            $rab->permintaan->update(['dokumen_path' => $path]);
+            return back()->with('error', 'Anda belum mengunggah sketsa denah. Silakan edit ulang draft RAB dan unggah sketsanya.');
         }
 
         $this->rabService->submitForApproval($rab);
