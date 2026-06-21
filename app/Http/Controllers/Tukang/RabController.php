@@ -56,6 +56,8 @@ class RabController extends Controller
             'permintaan_id' => 'required|exists:permintaans,id',
             'biaya_jasa_tukang' => 'nullable|numeric|min:0',
             'biaya_tambahan' => 'nullable|numeric|min:0',
+            'profit_persen' => 'nullable|numeric|min:0|max:100',
+            'use_ppn' => 'nullable|boolean',
             'catatan_tukang' => 'nullable|string',
         ]);
 
@@ -71,12 +73,13 @@ class RabController extends Controller
         $data = $request->all();
         $data['tukang_id'] = Auth::id();
 
-        $materials = [];
+        // Process orphan materials
+        $orphanMaterials = [];
         if ($request->has('materials')) {
             foreach ($request->materials as $m) {
                 if (!empty($m['material_id'])) {
                     $material = Material::find($m['material_id']);
-                    $materials[] = [
+                    $orphanMaterials[] = [
                         'material_id' => $m['material_id'],
                         'nama_item' => $material ? $material->nama_material : 'Material',
                         'qty' => (float)($m['qty'] ?? 1),
@@ -87,23 +90,42 @@ class RabController extends Controller
             }
         }
 
+        // Process pekerjaans and their nested materials
         $pekerjaans = [];
         if ($request->has('pekerjaans')) {
             foreach ($request->pekerjaans as $p) {
                 if (!empty($p['pekerjaan_id'])) {
                     $pekerjaan = Pekerjaan::find($p['pekerjaan_id']);
+                    
+                    $childMaterials = [];
+                    if (isset($p['materials']) && is_array($p['materials'])) {
+                        foreach ($p['materials'] as $cm) {
+                            if (!empty($cm['material_id'])) {
+                                $childMat = Material::find($cm['material_id']);
+                                $childMaterials[] = [
+                                    'material_id' => $cm['material_id'],
+                                    'nama_item' => $childMat ? $childMat->nama_material : 'Material',
+                                    'qty' => (float)($cm['qty'] ?? 1),
+                                    'satuan' => $cm['satuan'] ?? 'unit',
+                                    'harga_satuan' => (float)($cm['harga_satuan'] ?? 0),
+                                ];
+                            }
+                        }
+                    }
+
                     $pekerjaans[] = [
                         'pekerjaan_id' => $p['pekerjaan_id'],
                         'nama_item' => $pekerjaan ? $pekerjaan->nama_pekerjaan : 'Pekerjaan',
                         'qty' => (float)($p['qty'] ?? 1),
                         'satuan' => $p['satuan'] ?? 'm2',
                         'harga_satuan' => (float)($p['harga_satuan'] ?? 0),
+                        'child_materials' => $childMaterials,
                     ];
                 }
             }
         }
 
-        $data['materials'] = $materials;
+        $data['orphan_materials'] = $orphanMaterials;
         $data['pekerjaans'] = $pekerjaans;
 
         $rab = $this->rabService->createRab($data);

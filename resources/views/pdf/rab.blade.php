@@ -57,6 +57,119 @@
         </tr>
     </table>
 
+    @php 
+        $rab->load(['details.pekerjaan.kategori', 'details.children']);
+        $pekerjaans = $rab->details->where('jenis_item', 'pekerjaan');
+        $orphanMaterials = $rab->details->where('jenis_item', 'material')->where('parent_id', null);
+        $jasas = $rab->details->where('jenis_item', 'jasa_tukang');
+        $tambahans = $rab->details->where('jenis_item', 'tambahan');
+
+        $groupedPekerjaan = $pekerjaans->groupBy(function($item) {
+            return $item->pekerjaan && $item->pekerjaan->kategori 
+                ? $item->pekerjaan->kategori->nama_kategori 
+                : 'Pekerjaan Umum / Lain-lain';
+        });
+
+        $romanNumerals = ['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII'];
+        $mainIndex = 1;
+    @endphp
+
+    <h3 style="margin-bottom: 5px;">A. REKAPITULASI RENCANA ANGGARAN BIAYA</h3>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th width="10%">NO</th>
+                <th>URAIAN KATEGORI</th>
+                <th width="25%">TOTAL BIAYA (Rp)</th>
+                <th width="15%">BOBOT (%)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @php 
+                $rekapNo = 1; 
+                $grandTotal = $rab->total_final > 0 ? $rab->total_final : 1; 
+            @endphp
+            @foreach($groupedPekerjaan as $kategori => $items)
+                @php 
+                    $subTotalGroup = $items->sum('subtotal') + $items->sum(function($item) { return $item->children->sum('subtotal'); }); 
+                    $bobot = ($subTotalGroup / $grandTotal) * 100;
+                @endphp
+                <tr>
+                    <td class="text-center">{{ $romanNumerals[$rekapNo++] }}</td>
+                    <td class="font-weight-bold">Pekerjaan {{ $kategori }}</td>
+                    <td class="text-right">{{ number_format($subTotalGroup, 0, ',', '.') }}</td>
+                    <td class="text-center">{{ number_format($bobot, 2) }}%</td>
+                </tr>
+            @endforeach
+            
+            @if($orphanMaterials->count() > 0)
+                @php 
+                    $subTotalGroup = $orphanMaterials->sum('subtotal');
+                    $bobot = ($subTotalGroup / $grandTotal) * 100;
+                @endphp
+                <tr>
+                    <td class="text-center">{{ $romanNumerals[$rekapNo++] }}</td>
+                    <td class="font-weight-bold">Kebutuhan Material Tambahan / Umum</td>
+                    <td class="text-right">{{ number_format($subTotalGroup, 0, ',', '.') }}</td>
+                    <td class="text-center">{{ number_format($bobot, 2) }}%</td>
+                </tr>
+            @endif
+
+            @if($jasas->count() > 0)
+                @php 
+                    $subTotalGroup = $jasas->sum('subtotal');
+                    $bobot = ($subTotalGroup / $grandTotal) * 100;
+                @endphp
+                <tr>
+                    <td class="text-center">{{ $romanNumerals[$rekapNo++] }}</td>
+                    <td class="font-weight-bold">Jasa Kepala Tukang</td>
+                    <td class="text-right">{{ number_format($subTotalGroup, 0, ',', '.') }}</td>
+                    <td class="text-center">{{ number_format($bobot, 2) }}%</td>
+                </tr>
+            @endif
+
+            @if($tambahans->count() > 0)
+                @php 
+                    $subTotalGroup = $tambahans->sum('subtotal');
+                    $bobot = ($subTotalGroup / $grandTotal) * 100;
+                @endphp
+                <tr>
+                    <td class="text-center">{{ $romanNumerals[$rekapNo++] }}</td>
+                    <td class="font-weight-bold">Biaya Lain-lain / Tak Terduga</td>
+                    <td class="text-right">{{ number_format($subTotalGroup, 0, ',', '.') }}</td>
+                    <td class="text-center">{{ number_format($bobot, 2) }}%</td>
+                </tr>
+            @endif
+        </tbody>
+        <tfoot class="bg-light font-weight-bold">
+            <tr>
+                <td colspan="2" class="text-right">TOTAL SEBELUM PAJAK & PROFIT</td>
+                <td class="text-right">Rp {{ number_format($rab->total_sebelum_pajak ?? ($rab->total_upah + $rab->total_material + $rab->biaya_jasa_tukang + $rab->biaya_tambahan), 0, ',', '.') }}</td>
+                <td class="text-center">-</td>
+            </tr>
+            @if(($rab->profit_nominal ?? 0) > 0)
+            <tr>
+                <td colspan="2" class="text-right">PROFIT / MARGIN ({{ (float)$rab->profit_persen }}%)</td>
+                <td class="text-right">Rp {{ number_format($rab->profit_nominal, 0, ',', '.') }}</td>
+                <td class="text-center">-</td>
+            </tr>
+            @endif
+            @if(($rab->ppn_nominal ?? 0) > 0)
+            <tr>
+                <td colspan="2" class="text-right">PPN ({{ (float)$rab->ppn_persen }}%)</td>
+                <td class="text-right">Rp {{ number_format($rab->ppn_nominal, 0, ',', '.') }}</td>
+                <td class="text-center">-</td>
+            </tr>
+            @endif
+            <tr>
+                <td colspan="2" class="text-right" style="font-size:14px;">GRAND TOTAL</td>
+                <td class="text-right" style="font-size:14px;">Rp {{ number_format($rab->total_final, 0, ',', '.') }}</td>
+                <td class="text-center">100%</td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <h3 style="margin-top: 30px; margin-bottom: 5px;">B. RINCIAN ANGGARAN BIAYA (RAB)</h3>
     <table class="data-table">
         <thead>
             <tr>
@@ -69,58 +182,48 @@
             </tr>
         </thead>
         <tbody>
-            @php 
-                $rab->load('details.pekerjaan.kategori');
-                $pekerjaans = $rab->details->where('jenis_item', 'pekerjaan');
-                $materials = $rab->details->where('jenis_item', 'material');
-                $jasas = $rab->details->where('jenis_item', 'jasa_tukang');
-                $tambahans = $rab->details->where('jenis_item', 'tambahan');
-
-                $groupedPekerjaan = $pekerjaans->groupBy(function($item) {
-                    return $item->pekerjaan && $item->pekerjaan->kategori 
-                        ? $item->pekerjaan->kategori->nama_kategori 
-                        : 'Pekerjaan Umum / Lain-lain';
-                });
-
-                $romanNumerals = ['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
-                $mainIndex = 1;
-            @endphp
+            @php $mainIndex = 1; @endphp
             
             @if($pekerjaans->count() > 0)
-                <tr class="table-section text-primary">
-                    <td class="text-center font-weight-bold" style="font-size: 11pt;">{{ $romanNumerals[$mainIndex++] }}</td>
-                    <td colspan="5" class="font-weight-bold">UPAH TENAGA KERJA</td>
-                </tr>
-                @php $katIndex = 'A'; @endphp
                 @foreach($groupedPekerjaan as $kategori => $items)
-                    <tr class="table-subsection">
-                        <td class="text-center font-weight-bold">{{ $katIndex++ }}</td>
-                        <td colspan="5" style="padding-left: 20px;">Pekerjaan {{ $kategori }}</td>
+                    <tr class="bg-light text-primary">
+                        <td class="text-center font-weight-bold">{{ $romanNumerals[$mainIndex++] }}</td>
+                        <td colspan="5" class="font-weight-bold">PEKERJAAN {{ strtoupper($kategori) }}</td>
                     </tr>
                     @php $no = 1; @endphp
-                    @foreach($items as $detail)
+                    @foreach($items as $pek)
                         <tr>
                             <td class="text-center">{{ $no++ }}</td>
-                            <td style="padding-left: 40px;">{{ $detail->nama_item }}</td>
-                            <td class="text-center">{{ (float)$detail->qty }}</td>
-                            <td class="text-center">{{ $detail->satuan }}</td>
-                            <td class="text-right">{{ number_format($detail->harga_satuan, 0, ',', '.') }}</td>
-                            <td class="text-right">{{ number_format($detail->subtotal, 0, ',', '.') }}</td>
+                            <td class="font-weight-bold" style="padding-left: 10px;">{{ $pek->nama_item }}</td>
+                            <td class="text-center font-weight-bold">{{ (float)$pek->qty }}</td>
+                            <td class="text-center font-weight-bold">{{ $pek->satuan }}</td>
+                            <td class="text-right font-weight-bold">{{ number_format($pek->harga_satuan, 0, ',', '.') }}</td>
+                            <td class="text-right font-weight-bold">{{ number_format($pek->subtotal, 0, ',', '.') }}</td>
                         </tr>
+                        @foreach($pek->children as $mat)
+                        <tr>
+                            <td></td>
+                            <td style="padding-left: 30px;">- {{ $mat->nama_item }}</td>
+                            <td class="text-center">{{ (float)$mat->qty }}</td>
+                            <td class="text-center">{{ $mat->satuan }}</td>
+                            <td class="text-right">{{ number_format($mat->harga_satuan, 0, ',', '.') }}</td>
+                            <td class="text-right">{{ number_format($mat->subtotal, 0, ',', '.') }}</td>
+                        </tr>
+                        @endforeach
                     @endforeach
                 @endforeach
             @endif
 
-            @if($materials->count() > 0)
-                <tr class="table-section text-success">
-                    <td class="text-center font-weight-bold" style="font-size: 11pt;">{{ $romanNumerals[$mainIndex++] }}</td>
-                    <td colspan="5" class="font-weight-bold">KEBUTUHAN MATERIAL</td>
+            @if($orphanMaterials->count() > 0)
+                <tr class="bg-light text-success">
+                    <td class="text-center font-weight-bold">{{ $romanNumerals[$mainIndex++] }}</td>
+                    <td colspan="5" class="font-weight-bold">MATERIAL UMUM / TAMBAHAN</td>
                 </tr>
                 @php $no = 1; @endphp
-                @foreach($materials as $detail)
+                @foreach($orphanMaterials as $detail)
                     <tr>
                         <td class="text-center">{{ $no++ }}</td>
-                        <td style="padding-left: 20px;">{{ $detail->nama_item }}</td>
+                        <td style="padding-left: 10px;">{{ $detail->nama_item }}</td>
                         <td class="text-center">{{ (float)$detail->qty }}</td>
                         <td class="text-center">{{ $detail->satuan }}</td>
                         <td class="text-right">{{ number_format($detail->harga_satuan, 0, ',', '.') }}</td>
@@ -130,15 +233,15 @@
             @endif
 
             @if($jasas->count() > 0)
-                <tr class="table-section text-warning">
-                    <td class="text-center font-weight-bold" style="font-size: 11pt;">{{ $romanNumerals[$mainIndex++] }}</td>
+                <tr class="bg-light text-warning">
+                    <td class="text-center font-weight-bold">{{ $romanNumerals[$mainIndex++] }}</td>
                     <td colspan="5" class="font-weight-bold">JASA KEPALA TUKANG</td>
                 </tr>
                 @php $no = 1; @endphp
                 @foreach($jasas as $detail)
                     <tr>
                         <td class="text-center">{{ $no++ }}</td>
-                        <td style="padding-left: 20px;">{{ $detail->nama_item }}</td>
+                        <td style="padding-left: 10px;">{{ $detail->nama_item }}</td>
                         <td class="text-center">{{ (float)$detail->qty }}</td>
                         <td class="text-center">{{ $detail->satuan }}</td>
                         <td class="text-right">{{ number_format($detail->harga_satuan, 0, ',', '.') }}</td>
@@ -148,15 +251,15 @@
             @endif
 
             @if($tambahans->count() > 0)
-                <tr class="table-section text-danger">
-                    <td class="text-center font-weight-bold" style="font-size: 11pt;">{{ $romanNumerals[$mainIndex++] }}</td>
+                <tr class="bg-light text-danger">
+                    <td class="text-center font-weight-bold">{{ $romanNumerals[$mainIndex++] }}</td>
                     <td colspan="5" class="font-weight-bold">BIAYA LAIN-LAIN / TAMBAHAN</td>
                 </tr>
                 @php $no = 1; @endphp
                 @foreach($tambahans as $detail)
                     <tr>
                         <td class="text-center">{{ $no++ }}</td>
-                        <td style="padding-left: 20px;">{{ $detail->nama_item }}</td>
+                        <td style="padding-left: 10px;">{{ $detail->nama_item }}</td>
                         <td class="text-center">{{ (float)$detail->qty }}</td>
                         <td class="text-center">{{ $detail->satuan }}</td>
                         <td class="text-right">{{ number_format($detail->harga_satuan, 0, ',', '.') }}</td>
@@ -165,28 +268,6 @@
                 @endforeach
             @endif
         </tbody>
-        <tfoot>
-            <tr>
-                <td colspan="5" class="text-right font-weight-bold">SUBTOTAL MATERIAL</td>
-                <td class="text-right font-weight-bold">{{ number_format($rab->total_material, 0, ',', '.') }}</td>
-            </tr>
-            <tr>
-                <td colspan="5" class="text-right font-weight-bold">SUBTOTAL UPAH PEKERJAAN</td>
-                <td class="text-right font-weight-bold">{{ number_format($rab->total_upah, 0, ',', '.') }}</td>
-            </tr>
-            <tr>
-                <td colspan="5" class="text-right font-weight-bold">BIAYA JASA KEPALA TUKANG</td>
-                <td class="text-right font-weight-bold">{{ number_format($rab->biaya_jasa_tukang, 0, ',', '.') }}</td>
-            </tr>
-            <tr>
-                <td colspan="5" class="text-right font-weight-bold">BIAYA TAK TERDUGA / TAMBAHAN</td>
-                <td class="text-right font-weight-bold">{{ number_format($rab->biaya_tambahan, 0, ',', '.') }}</td>
-            </tr>
-            <tr style="background-color: #eee;">
-                <td colspan="5" class="text-right font-weight-bold" style="font-size: 14px;">GRAND TOTAL BIAYA (RAB)</td>
-                <td class="text-right font-weight-bold" style="font-size: 14px;">Rp {{ number_format($rab->total_final, 0, ',', '.') }}</td>
-            </tr>
-        </tfoot>
     </table>
 
     @if($rab->catatan_tukang)

@@ -66,7 +66,7 @@
                             </td>
                             <td>{{ $p->tanggal_permohonan->format('d M Y') }}</td>
                             <td>
-                                <a href="#" class="btn btn-default btn-xs" data-toggle="tooltip" data-original-title="Detail"><i class="fa fa-eye"></i></a>
+                                <a href="{{ route('tukang.permintaan.show', $p->id) }}" class="btn btn-default btn-xs" data-toggle="tooltip" data-original-title="Detail"><i class="fa fa-eye"></i></a>
                             </td>
                         </tr>
                         @empty

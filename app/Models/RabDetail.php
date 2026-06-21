@@ -12,6 +12,7 @@ class RabDetail extends Model
 
     protected $fillable = [
         'rab_id',
+        'parent_id',
         'jenis_item',
         'referensi_id',
         'nama_item',
@@ -45,5 +46,15 @@ class RabDetail extends Model
     public function material(): BelongsTo
     {
         return $this->belongsTo(Material::class, 'referensi_id');
+    }
+
+    public function parent(): BelongsTo
+    {
+        return $this->belongsTo(RabDetail::class, 'parent_id');
+    }
+
+    public function children()
+    {
+        return $this->hasMany(RabDetail::class, 'parent_id');
     }
 }

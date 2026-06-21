@@ -30,7 +30,7 @@
                             </tr>
                             <tr>
                                 <th class="bg-light">Kepala Tukang</th>
-                                <td>{{ $permintaan->tukang->name }} <br><small class="text-muted">{{ $permintaan->tukang->profile->no_hp ?? '' }}</small></td>
+                                <td>{{ $permintaan->tukang?->name ?? 'Belum Pilih Tukang' }} <br><small class="text-muted">{{ $permintaan->tukang?->profile?->no_hp ?? '' }}</small></td>
                             </tr>
                         </table>
                     </div>

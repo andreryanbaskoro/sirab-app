@@ -22,18 +22,24 @@ class RabCalculatorService
                 'jasa_tukang_id' => $data['jasa_tukang_id'] ?? null,
                 'biaya_jasa_tukang' => $data['biaya_jasa_tukang'] ?? 0,
                 'biaya_tambahan' => $data['biaya_tambahan'] ?? 0,
+                'profit_persen' => $data['profit_persen'] ?? 0,
+                'ppn_persen' => !empty($data['use_ppn']) ? 11 : 0,
                 'total_material' => 0,
                 'total_upah' => 0,
+                'total_sebelum_pajak' => 0,
+                'profit_nominal' => 0,
+                'ppn_nominal' => 0,
                 'total_final' => 0,
                 'status' => RabStatus::DRAFT->value,
             ]);
 
-            // Add material items
-            if (!empty($data['materials'])) {
-                foreach ($data['materials'] as $item) {
+            // Add orphan material items
+            if (!empty($data['orphan_materials'])) {
+                foreach ($data['orphan_materials'] as $item) {
                     $subtotal = $item['qty'] * $item['harga_satuan'];
                     RabDetail::create([
                         'rab_id' => $rab->id,
+                        'parent_id' => null,
                         'jenis_item' => 'material',
                         'referensi_id' => $item['material_id'] ?? null,
                         'nama_item' => $item['nama_item'],
@@ -45,12 +51,13 @@ class RabCalculatorService
                 }
             }
 
-            // Add pekerjaan items
+            // Add pekerjaan items and their nested materials
             if (!empty($data['pekerjaans'])) {
                 foreach ($data['pekerjaans'] as $item) {
                     $subtotal = $item['qty'] * $item['harga_satuan'];
-                    RabDetail::create([
+                    $pekerjaanDetail = RabDetail::create([
                         'rab_id' => $rab->id,
+                        'parent_id' => null,
                         'jenis_item' => 'pekerjaan',
                         'referensi_id' => $item['pekerjaan_id'] ?? null,
                         'nama_item' => $item['nama_item'],
@@ -59,6 +66,23 @@ class RabCalculatorService
                         'harga_satuan' => $item['harga_satuan'],
                         'subtotal' => $subtotal,
                     ]);
+
+                    if (!empty($item['child_materials'])) {
+                        foreach ($item['child_materials'] as $cMat) {
+                            $cSubtotal = $cMat['qty'] * $cMat['harga_satuan'];
+                            RabDetail::create([
+                                'rab_id' => $rab->id,
+                                'parent_id' => $pekerjaanDetail->id,
+                                'jenis_item' => 'material',
+                                'referensi_id' => $cMat['material_id'] ?? null,
+                                'nama_item' => $cMat['nama_item'],
+                                'qty' => $cMat['qty'],
+                                'satuan' => $cMat['satuan'],
+                                'harga_satuan' => $cMat['harga_satuan'],
+                                'subtotal' => $cSubtotal,
+                            ]);
+                        }
+                    }
                 }
             }
 
@@ -66,6 +90,7 @@ class RabCalculatorService
             if (!empty($data['biaya_jasa_tukang']) && $data['biaya_jasa_tukang'] > 0) {
                 RabDetail::create([
                     'rab_id' => $rab->id,
+                    'parent_id' => null,
                     'jenis_item' => 'jasa_tukang',
                     'referensi_id' => $data['jasa_tukang_id'] ?? null,
                     'nama_item' => 'Jasa Kepala Tukang',
@@ -80,6 +105,7 @@ class RabCalculatorService
             if (!empty($data['biaya_tambahan']) && $data['biaya_tambahan'] > 0) {
                 RabDetail::create([
                     'rab_id' => $rab->id,
+                    'parent_id' => null,
                     'jenis_item' => 'tambahan',
                     'referensi_id' => null,
                     'nama_item' => $data['keterangan_tambahan'] ?? 'Biaya Tambahan',
@@ -103,13 +129,26 @@ class RabCalculatorService
         $biayaJasa = $rab->details()->where('jenis_item', 'jasa_tukang')->sum('subtotal');
         $biayaTambahan = $rab->details()->where('jenis_item', 'tambahan')->sum('subtotal');
 
-        $totalFinal = $totalMaterial + $totalUpah + $biayaJasa + $biayaTambahan;
+        $subtotal = $totalMaterial + $totalUpah + $biayaJasa + $biayaTambahan;
+        
+        $profitPersen = $rab->profit_persen ?? 0;
+        $profitNominal = $subtotal * ($profitPersen / 100);
+        
+        $totalSebelumPajak = $subtotal + $profitNominal;
+        
+        $ppnPersen = $rab->ppn_persen ?? 0;
+        $ppnNominal = $totalSebelumPajak * ($ppnPersen / 100);
+        
+        $totalFinal = $totalSebelumPajak + $ppnNominal;
 
         $rab->update([
             'total_material' => $totalMaterial,
             'total_upah' => $totalUpah,
             'biaya_jasa_tukang' => $biayaJasa,
             'biaya_tambahan' => $biayaTambahan,
+            'total_sebelum_pajak' => $totalSebelumPajak,
+            'profit_nominal' => $profitNominal,
+            'ppn_nominal' => $ppnNominal,
             'total_final' => $totalFinal,
         ]);
 

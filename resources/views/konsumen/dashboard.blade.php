@@ -67,12 +67,12 @@
                             <tr>
                                 <td>{{ $item->nomor_permintaan }}</td>
                                 <td>
-                                    @if($item->tukang->profile && $item->tukang->profile->foto)
+                                    @if($item->tukang?->profile?->foto)
                                         <img class="img-circle mr-2" src="{{ asset('storage/' . $item->tukang->profile->foto) }}" width="30">
                                     @else
                                         <img class="img-circle mr-2" src="{{ asset('themes/assets/img/admin-avatar.png') }}" width="30">
                                     @endif
-                                    {{ $item->tukang->name }}
+                                    {{ $item->tukang?->name ?? 'Belum Pilih Tukang' }}
                                 </td>
                                 <td>{{ $item->tipeRumah->nama_tipe }}</td>
                                 <td>{{ $item->tanggal_permohonan->format('d M Y') }}</td>
