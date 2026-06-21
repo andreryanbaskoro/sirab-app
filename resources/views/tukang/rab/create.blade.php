@@ -23,7 +23,7 @@
                 <h5 class="alert-heading"><i class="fa fa-exclamation-triangle"></i> RAB Sebelumnya Ditolak</h5>
                 <p class="mb-0"><strong>Alasan dari Konsumen:</strong> {{ $existingRab->alasan_tolak }}</p>
                 <hr>
-                <small>Silakan revisi rincian anggaran atau sketsa denah Anda sesuai dengan catatan dari konsumen di atas.</small>
+                <small>Silakan periksa kembali dan sesuaikan rincian anggaran, atau ganti gambar denah Anda (hanya jika diminta), sesuai dengan catatan dari konsumen di atas.</small>
             </div>
         @endif
 
@@ -55,7 +55,7 @@
                     <label class="font-weight-bold">Upload Sketsa/Rancangan Denah Anda <span class="text-danger">*</span></label>
                     <input type="file" class="form-control" name="dokumen_denah" accept=".jpg,.jpeg,.png,.pdf" {{ empty($permintaan->dokumen_path) ? 'required' : '' }}>
                     @if($permintaan->dokumen_path)
-                        <small class="text-muted d-block mt-1">Anda sudah mengunggah denah sebelumnya. <strong>Kosongkan bagian ini</strong> jika Anda tidak ingin mengubah denah, dan cukup revisi bagian anggarannya saja.</small>
+                        <small class="text-muted d-block mt-1">Anda sudah mengunggah denah sebelumnya. <strong>Biarkan kosong</strong> jika penolakan bukan karena gambar denah.</small>
                     @endif
                     @error('dokumen_denah')
                         <div class="text-danger mt-1">{{ $message }}</div>

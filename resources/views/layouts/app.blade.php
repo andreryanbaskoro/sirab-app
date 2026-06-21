@@ -20,6 +20,18 @@
     <link href="{{ asset('themes/assets/css/main.min.css') }}" rel="stylesheet" />
 
     <style>
+        /* Fix for buttons and badges contrast */
+        .btn-warning, .badge-warning, .bg-warning {
+            color: #212529 !important;
+        }
+        .btn-info, .badge-info, .bg-info {
+            color: #ffffff !important;
+            text-shadow: 0px 1px 1px rgba(0,0,0,0.3); /* Tambahkan bayangan hitam sedikit agar teks putih terbaca di biru muda */
+        }
+        .btn-primary, .badge-primary, .bg-primary {
+            color: #ffffff !important;
+        }
+        
         .sidebar-item-icon {
             margin-right: 10px;
             width: 20px;
