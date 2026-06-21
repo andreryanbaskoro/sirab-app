@@ -39,6 +39,28 @@
                             </span>
                         </li>
                         <li class="list-group-item flexbox">
+                            <span>Tipe Rumah</span>
+                            <span>{{ $proyek->permintaan->tipeRumah->nama_tipe }}</span>
+                        </li>
+                        <li class="list-group-item flexbox">
+                            <span>Sumber Denah</span>
+                            <span>
+                                @if($proyek->permintaan->sumber_denah === 'upload_sendiri')
+                                    Dari Konsumen
+                                @elseif($proyek->permintaan->sumber_denah === 'dibuatkan_tukang')
+                                    Minta Dibuatkan Tukang
+                                @else
+                                    -
+                                @endif
+                            </span>
+                        </li>
+                        @if($proyek->permintaan->dokumen_path)
+                        <li class="list-group-item flexbox">
+                            <span>File Denah</span>
+                            <a href="{{ asset('storage/' . $proyek->permintaan->dokumen_path) }}" target="_blank" class="btn btn-outline-info btn-sm"><i class="fa fa-download"></i> Lihat</a>
+                        </li>
+                        @endif
+                        <li class="list-group-item flexbox">
                             <span>Nilai Proyek</span>
                             <span class="text-success font-weight-bold">Rp {{ number_format($proyek->nilai_kontrak, 0, ',', '.') }}</span>
                         </li>

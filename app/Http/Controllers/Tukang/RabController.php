@@ -147,12 +147,23 @@ class RabController extends Controller
         return view('tukang.rab.show', compact('rab'));
     }
 
-    public function submit(Rab $rab)
+    public function submit(Request $request, Rab $rab)
     {
         if ($rab->tukang_id !== Auth::id()) abort(403);
 
         if ($rab->status !== RabStatus::DRAFT) {
             return back()->with('error', 'RAB sudah disubmit sebelumnya.');
+        }
+
+        if ($rab->permintaan->sumber_denah === 'dibuatkan_tukang' && empty($rab->permintaan->dokumen_path)) {
+            $request->validate([
+                'dokumen_denah' => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120',
+            ], [
+                'dokumen_denah.required' => 'Anda wajib mengunggah file sketsa denah rancangan Anda.'
+            ]);
+
+            $path = $request->file('dokumen_denah')->store('dokumen-permintaan', 'public');
+            $rab->permintaan->update(['dokumen_path' => $path]);
         }
 
         $this->rabService->submitForApproval($rab);

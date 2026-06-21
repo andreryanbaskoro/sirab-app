@@ -18,8 +18,18 @@
                 @if($rab->status === \App\Enums\RabStatus::DRAFT)
                 <div class="alert alert-info">
                     <p>RAB ini masih berupa draft. Pastikan semua hitungan sudah benar sebelum mengajukan ke konsumen.</p>
-                    <form action="{{ route('tukang.rab.submit', $rab->id) }}" method="POST" class="mt-3">
+                    <form action="{{ route('tukang.rab.submit', $rab->id) }}" method="POST" class="mt-3" enctype="multipart/form-data">
                         @csrf
+                        @if($rab->permintaan->sumber_denah === 'dibuatkan_tukang' && empty($rab->permintaan->dokumen_path))
+                            <div class="form-group text-left border p-3 bg-white">
+                                <label class="font-weight-bold">Upload Sketsa/Rancangan Denah Anda <span class="text-danger">*</span></label>
+                                <input type="file" class="form-control" name="dokumen_denah" required accept=".jpg,.jpeg,.png,.pdf">
+                                <small class="text-muted"><i class="fa fa-info-circle"></i> Konsumen meminta Anda merancang denah. Upload file sketsa/rancangan Anda di sini agar konsumen bisa melihatnya saat menyetujui RAB.</small>
+                                @error('dokumen_denah')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        @endif
                         <button type="submit" class="btn btn-success btn-block btn-submit"><i class="fa fa-paper-plane"></i> Ajukan ke Konsumen</button>
                     </form>
                     <a href="{{ route('tukang.rab.create', $rab->permintaan_id) }}" class="btn btn-outline-primary btn-block mt-2"><i class="fa fa-pencil"></i> Edit Ulang Draft</a>
@@ -102,6 +112,10 @@
             button.addEventListener('click', function(e) {
                 e.preventDefault();
                 const form = this.closest('form');
+                
+                if (!form.reportValidity()) {
+                    return;
+                }
                 
                 Swal.fire({
                     title: 'Ajukan RAB?',

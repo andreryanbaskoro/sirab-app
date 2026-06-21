@@ -19,6 +19,28 @@
                         <td><x-status-badge :status="$kontrak->status" /></td>
                     </tr>
                     <tr>
+                        <th class="bg-light">Tipe Rumah</th>
+                        <td>{{ $kontrak->permintaan->tipeRumah->nama_tipe }}</td>
+                    </tr>
+                    <tr>
+                        <th class="bg-light">Sumber Denah</th>
+                        <td>
+                            @if($kontrak->permintaan->sumber_denah === 'upload_sendiri')
+                                Dari Konsumen
+                            @elseif($kontrak->permintaan->sumber_denah === 'dibuatkan_tukang')
+                                Dibuatkan Tukang
+                            @else
+                                -
+                            @endif
+                        </td>
+                    </tr>
+                    @if($kontrak->permintaan->dokumen_path)
+                    <tr>
+                        <th class="bg-light">File Denah</th>
+                        <td><a href="{{ asset('storage/' . $kontrak->permintaan->dokumen_path) }}" target="_blank" class="btn btn-outline-info btn-sm"><i class="fa fa-download"></i> Lihat Denah</a></td>
+                    </tr>
+                    @endif
+                    <tr>
                         <th class="bg-light">PIHAK PERTAMA (Pemilik)</th>
                         <td>{{ $kontrak->konsumen->name }}</td>
                     </tr>
