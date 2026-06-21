@@ -193,7 +193,12 @@
                         </a>
                     </li>
                     <li>
-                        <a class="{{ request()->routeIs('admin.pekerjaan.*') ? 'active' : '' }}" href="{{ url('/admin/pekerjaan') }}">
+                        <a class="{{ request()->routeIs('admin.kategori-pekerjaan.*') ? 'active' : '' }}" href="{{ route('admin.kategori-pekerjaan.index') }}">
+                            <i class="sidebar-item-icon fa-solid fa-layer-group"></i><span class="nav-label">Kategori Pekerjaan</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="{{ request()->routeIs('admin.pekerjaan.*') ? 'active' : '' }}" href="{{ route('admin.pekerjaan.index') }}">
                             <i class="sidebar-item-icon fa-solid fa-helmet-safety"></i><span class="nav-label">Pekerjaan</span>
                         </a>
                     </li>

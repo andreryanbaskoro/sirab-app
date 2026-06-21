@@ -110,6 +110,7 @@
                                 <thead>
                                     <tr>
                                         <th width="5%">No</th>
+                                        <th>Kategori</th>
                                         <th>Nama Pekerjaan</th>
                                         <th>Satuan</th>
                                         <th>Harga (Rp)</th>
@@ -123,6 +124,7 @@
                                     @php $hargaTerbaru = $item->hargaPekerjaans->sortByDesc('tanggal_berlaku')->first(); @endphp
                                     <tr>
                                         <td>{{ $key + 1 }}</td>
+                                        <td>{{ $item->kategori ? $item->kategori->nama_kategori : '-' }}</td>
                                         <td>{{ $item->nama_pekerjaan }}</td>
                                         <td>{{ $item->satuan }}</td>
                                         <td class="text-right">{{ $hargaTerbaru ? number_format($hargaTerbaru->harga, 0, ',', '.') : '-' }}</td>
@@ -142,6 +144,7 @@
                                             <button type="button"
                                                     class="btn btn-warning btn-xs btn-edit-pekerjaan"
                                                     data-id="{{ $item->id }}"
+                                                    data-kategori="{{ $item->kategori_pekerjaan_id }}"
                                                     data-nama="{{ $item->nama_pekerjaan }}"
                                                     data-satuan="{{ $item->satuan }}"
                                                     data-deskripsi="{{ $item->deskripsi }}"
@@ -265,6 +268,15 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
+                                <label>Kategori Pekerjaan <span class="text-danger">*</span></label>
+                                <select class="form-control" name="kategori_pekerjaan_id" required>
+                                    <option value="">-- Pilih Kategori --</option>
+                                    @foreach($kategoris as $kat)
+                                    <option value="{{ $kat->id }}">{{ $kat->nama_kategori }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
                                 <label>Nama Pekerjaan <span class="text-danger">*</span></label>
                                 <input type="text" name="nama_pekerjaan" class="form-control" placeholder="cth: Pasang Keramik" required>
                             </div>
@@ -328,6 +340,15 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Kategori Pekerjaan <span class="text-danger">*</span></label>
+                                <select class="form-control" name="kategori_pekerjaan_id" id="edit_pekerjaan_kategori" required>
+                                    <option value="">-- Pilih Kategori --</option>
+                                    @foreach($kategoris as $kat)
+                                    <option value="{{ $kat->id }}">{{ $kat->nama_kategori }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                             <div class="form-group">
                                 <label>Nama Pekerjaan <span class="text-danger">*</span></label>
                                 <input type="text" name="nama_pekerjaan" id="edit_pekerjaan_nama" class="form-control" required>
@@ -522,6 +543,7 @@ $(document).ready(function () {
         var form = $('#formEditPekerjaan');
 
         form.attr('action', '/tukang/anggaran/pekerjaan/' + id);
+        $('#edit_pekerjaan_kategori').val(btn.data('kategori'));
         $('#edit_pekerjaan_nama').val(btn.data('nama'));
         $('#edit_pekerjaan_satuan').val(btn.data('satuan'));
         $('#edit_pekerjaan_deskripsi').val(btn.data('deskripsi'));

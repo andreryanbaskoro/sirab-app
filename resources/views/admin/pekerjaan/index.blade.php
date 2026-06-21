@@ -16,6 +16,7 @@
                 <thead>
                     <tr>
                         <th>No</th>
+                        <th>Kategori</th>
                         <th>Nama Pekerjaan</th>
                         <th>Satuan</th>
                         <th>Keterangan</th>
@@ -28,6 +29,7 @@
                     @forelse($data as $index => $item)
                     <tr>
                         <td>{{ $data->firstItem() + $index }}</td>
+                        <td>{{ $item->kategori ? $item->kategori->nama_kategori : '-' }}</td>
                         <td>{{ $item->nama_pekerjaan }}</td>
                         <td>{{ $item->satuan }}</td>
                         <td>{{ $item->deskripsi ?? '-' }}</td>
@@ -50,8 +52,17 @@
                                 <div class="modal-content">
                                     <div class="modal-header"><h5 class="modal-title">Edit Pekerjaan</h5><button type="button" class="close" data-dismiss="modal">&times;</button></div>
                                     <div class="modal-body">
-                                        <div class="form-group"><label>Nama Pekerjaan</label><input type="text" name="nama_pekerjaan" class="form-control" value="{{ $item->nama_pekerjaan }}" required></div>
-                                        <div class="form-group"><label>Satuan</label><input type="text" name="satuan" class="form-control" value="{{ $item->satuan }}" required></div>
+                                        <div class="form-group">
+                                            <label>Kategori Pekerjaan <span class="text-danger">*</span></label>
+                                            <select class="form-control" name="kategori_pekerjaan_id" required>
+                                                <option value="">-- Pilih Kategori --</option>
+                                                @foreach($kategoris as $kat)
+                                                <option value="{{ $kat->id }}" {{ $item->kategori_pekerjaan_id == $kat->id ? 'selected' : '' }}>{{ $kat->nama_kategori }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="form-group"><label>Nama Pekerjaan <span class="text-danger">*</span></label><input type="text" name="nama_pekerjaan" class="form-control" value="{{ $item->nama_pekerjaan }}" required></div>
+                                        <div class="form-group"><label>Satuan <span class="text-danger">*</span></label><input type="text" name="satuan" class="form-control" value="{{ $item->satuan }}" required></div>
                                         <div class="form-group"><label>Keterangan</label><textarea name="deskripsi" class="form-control">{{ $item->deskripsi }}</textarea></div>
                                         @php $hargaTerbaru = $item->hargaPekerjaans->sortByDesc('tanggal_berlaku')->first(); @endphp
                                         <div class="form-group"><label>Harga (Rp) <span class="text-danger">*</span></label><input type="number" name="harga" class="form-control" value="{{ $hargaTerbaru ? (int)$hargaTerbaru->harga : '' }}" required></div>
@@ -79,6 +90,15 @@
             <div class="modal-content">
                 <div class="modal-header"><h5 class="modal-title">Tambah Pekerjaan</h5><button type="button" class="close" data-dismiss="modal">&times;</button></div>
                 <div class="modal-body">
+                    <div class="form-group">
+                        <label>Kategori Pekerjaan <span class="text-danger">*</span></label>
+                        <select class="form-control" name="kategori_pekerjaan_id" required>
+                            <option value="">-- Pilih Kategori --</option>
+                            @foreach($kategoris as $kat)
+                            <option value="{{ $kat->id }}">{{ $kat->nama_kategori }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                     <div class="form-group"><label>Nama Pekerjaan <span class="text-danger">*</span></label><input type="text" name="nama_pekerjaan" class="form-control" placeholder="Pemasangan Keramik 40x40" required></div>
                     <div class="form-group"><label>Satuan <span class="text-danger">*</span></label><input type="text" name="satuan" class="form-control" placeholder="m2" required></div>
                     <div class="form-group"><label>Keterangan</label><textarea name="deskripsi" class="form-control"></textarea></div>

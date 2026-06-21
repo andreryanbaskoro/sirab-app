@@ -10,20 +10,23 @@ class PekerjaanController extends Controller
 {
     public function index()
     {
-        $data = Pekerjaan::with(['hargaPekerjaans', 'materials.material'])->latest()->paginate(10);
+        $data = Pekerjaan::with(['hargaPekerjaans', 'materials.material', 'kategori'])->latest()->paginate(10);
+        $kategoris = \App\Models\KategoriPekerjaan::orderBy('nama_kategori')->get();
         $materials = \App\Models\Material::orderBy('nama_material')->get();
-        return view('admin.pekerjaan.index', compact('data', 'materials'));
+        return view('admin.pekerjaan.index', compact('data', 'materials', 'kategoris'));
     }
 
     public function create()
     {
+        $kategoris = \App\Models\KategoriPekerjaan::orderBy('nama_kategori')->get();
         $materials = \App\Models\Material::orderBy('nama_material')->get();
-        return view('admin.pekerjaan.create', compact('materials'));
+        return view('admin.pekerjaan.create', compact('materials', 'kategoris'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
+            'kategori_pekerjaan_id' => 'required|exists:kategori_pekerjaans,id',
             'nama_pekerjaan' => 'required|string|max:100',
             'satuan' => 'required|string|max:50',
             'deskripsi' => 'nullable|string',
@@ -32,7 +35,7 @@ class PekerjaanController extends Controller
             'materials' => 'nullable|array',
         ]);
 
-        $pekerjaan = Pekerjaan::create($request->only('nama_pekerjaan', 'satuan', 'deskripsi'));
+        $pekerjaan = Pekerjaan::create($request->only('kategori_pekerjaan_id', 'nama_pekerjaan', 'satuan', 'deskripsi'));
         
         $pekerjaan->hargaPekerjaans()->create([
             'harga' => $request->harga,
@@ -55,14 +58,16 @@ class PekerjaanController extends Controller
 
     public function edit(Pekerjaan $pekerjaan)
     {
+        $kategoris = \App\Models\KategoriPekerjaan::orderBy('nama_kategori')->get();
         $hargaTerbaru = $pekerjaan->hargaTerbaru();
         $materials = \App\Models\Material::orderBy('nama_material')->get();
-        return view('admin.pekerjaan.edit', compact('pekerjaan', 'hargaTerbaru', 'materials'));
+        return view('admin.pekerjaan.edit', compact('pekerjaan', 'hargaTerbaru', 'materials', 'kategoris'));
     }
 
     public function update(Request $request, Pekerjaan $pekerjaan)
     {
         $request->validate([
+            'kategori_pekerjaan_id' => 'required|exists:kategori_pekerjaans,id',
             'nama_pekerjaan' => 'required|string|max:100',
             'satuan' => 'required|string|max:50',
             'deskripsi' => 'nullable|string',
@@ -71,7 +76,7 @@ class PekerjaanController extends Controller
             'materials' => 'nullable|array',
         ]);
 
-        $pekerjaan->update($request->only('nama_pekerjaan', 'satuan', 'deskripsi'));
+        $pekerjaan->update($request->only('kategori_pekerjaan_id', 'nama_pekerjaan', 'satuan', 'deskripsi'));
 
         $hargaTerbaru = $pekerjaan->hargaTerbaru();
 

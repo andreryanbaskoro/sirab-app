@@ -23,11 +23,12 @@ class AnggaranController extends Controller
         $hargaJasa      = HargaJasaTukang::where('user_id', Auth::id())->latest()->get();
 
         $materials  = Material::orderBy('nama_material')->get();
-        $pekerjaans = Pekerjaan::with(['hargaPekerjaans', 'materials.material'])->latest()->get();
+        $kategoris  = \App\Models\KategoriPekerjaan::orderBy('nama_kategori')->get();
+        $pekerjaans = Pekerjaan::with(['hargaPekerjaans', 'materials.material', 'kategori'])->latest()->get();
 
         return view('tukang.anggaran.index', compact(
             'hargaMaterial', 'hargaJasa',
-            'materials', 'pekerjaans', 'tab'
+            'materials', 'pekerjaans', 'tab', 'kategoris'
         ));
     }
 
@@ -39,6 +40,7 @@ class AnggaranController extends Controller
     public function storePekerjaan(Request $request)
     {
         $request->validate([
+            'kategori_pekerjaan_id' => 'required|exists:kategori_pekerjaans,id',
             'nama_pekerjaan' => 'required|string|max:100',
             'satuan' => 'required|string|max:50',
             'deskripsi' => 'nullable|string',
@@ -47,7 +49,7 @@ class AnggaranController extends Controller
             'materials' => 'nullable|array',
         ]);
 
-        $pekerjaan = Pekerjaan::create($request->only('nama_pekerjaan', 'satuan', 'deskripsi'));
+        $pekerjaan = Pekerjaan::create($request->only('kategori_pekerjaan_id', 'nama_pekerjaan', 'satuan', 'deskripsi'));
         
         $pekerjaan->hargaPekerjaans()->create([
             'harga' => $request->harga,
@@ -72,6 +74,7 @@ class AnggaranController extends Controller
     public function updatePekerjaan(Request $request, Pekerjaan $pekerjaan)
     {
         $request->validate([
+            'kategori_pekerjaan_id' => 'required|exists:kategori_pekerjaans,id',
             'nama_pekerjaan' => 'required|string|max:100',
             'satuan' => 'required|string|max:50',
             'deskripsi' => 'nullable|string',
@@ -80,7 +83,7 @@ class AnggaranController extends Controller
             'materials' => 'nullable|array',
         ]);
 
-        $pekerjaan->update($request->only('nama_pekerjaan', 'satuan', 'deskripsi'));
+        $pekerjaan->update($request->only('kategori_pekerjaan_id', 'nama_pekerjaan', 'satuan', 'deskripsi'));
 
         $hargaTerbaru = $pekerjaan->hargaTerbaru();
 

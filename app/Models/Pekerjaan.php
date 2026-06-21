@@ -11,12 +11,18 @@ class Pekerjaan extends Model
     use HasFactory;
 
     protected $fillable = [
+        'kategori_pekerjaan_id',
         'nama_pekerjaan',
         'satuan',
         'deskripsi',
     ];
 
     // ─── Relationships ───────────────────────────────────────────
+
+    public function kategori()
+    {
+        return $this->belongsTo(KategoriPekerjaan::class, 'kategori_pekerjaan_id');
+    }
 
     public function hargaPekerjaans(): HasMany
     {

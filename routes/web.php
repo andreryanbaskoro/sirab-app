@@ -48,6 +48,7 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('tukang', Admin\TukangController::class);
         Route::resource('tipe-rumah', Admin\TipeRumahController::class);
         Route::resource('material', Admin\MaterialController::class);
+        Route::resource('kategori-pekerjaan', Admin\KategoriPekerjaanController::class)->except(['create', 'show', 'edit']);
         Route::resource('pekerjaan', Admin\PekerjaanController::class);
         Route::resource('harga-jasa-tukang', Admin\HargaJasaTukangController::class)->only(['index']);
         
