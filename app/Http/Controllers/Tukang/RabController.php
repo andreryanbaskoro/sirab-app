@@ -38,8 +38,8 @@ class RabController extends Controller
     public function create(Permintaan $permintaan)
     {
         if ($permintaan->tukang_id !== Auth::id()) abort(403);
-        if (!in_array($permintaan->status, [PermintaanStatus::DITERIMA_TUKANG, PermintaanStatus::DISUSUN_RAB])) {
-            return back()->with('error', 'Permintaan belum diterima atau tidak valid untuk membuat RAB.');
+        if (!in_array($permintaan->status, [PermintaanStatus::DITERIMA_TUKANG, PermintaanStatus::DISUSUN_RAB, PermintaanStatus::DITOLAK_KONSUMEN])) {
+            return back()->with('error', 'Permintaan belum diterima atau tidak valid untuk membuat/merevisi RAB.');
         }
 
         $materials = Material::orderBy('nama_material')->get();

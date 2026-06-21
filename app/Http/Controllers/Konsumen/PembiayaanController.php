@@ -76,7 +76,7 @@ class PembiayaanController extends Controller
             return back()->with('error', 'Tidak dapat menolak RAB saat ini.');
         }
 
-        $rab->update(['status' => RabStatus::DITOLAK, 'catatan' => $request->alasan_tolak]);
+        $rab->update(['status' => RabStatus::DITOLAK, 'alasan_tolak' => $request->alasan_tolak]);
         $permintaan->update(['status' => PermintaanStatus::DITOLAK_KONSUMEN]);
 
         try {
