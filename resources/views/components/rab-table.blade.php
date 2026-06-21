@@ -4,7 +4,7 @@
     $rab->load(['details.pekerjaan.kategori', 'details.children']);
     
     $pekerjaans = $rab->details->where('jenis_item', 'pekerjaan');
-    $orphanMaterials = $rab->details->where('jenis_item', 'material')->where('parent_id', null);
+    $orphanMaterials = $rab->details->where('jenis_item', 'material')->whereNull('parent_id');
     $jasas = $rab->details->where('jenis_item', 'jasa_tukang');
     $tambahans = $rab->details->where('jenis_item', 'tambahan');
 
