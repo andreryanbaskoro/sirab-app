@@ -14,7 +14,8 @@
             </div>
             <div class="ibox-body">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-lg-6 mb-4">
+                        <div class="table-responsive">
                         <table class="table table-bordered">
                             <tr>
                                 <th class="bg-light" width="30%">Status</th>
@@ -33,8 +34,10 @@
                                 <td>{{ $permintaan->tukang?->name ?? 'Belum Pilih Tukang' }} <br><small class="text-muted">{{ $permintaan->tukang?->profile?->no_hp ?? '' }}</small></td>
                             </tr>
                         </table>
+                        </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-lg-6 mb-4">
+                        <div class="table-responsive">
                         <table class="table table-bordered">
                             <tr>
                                 <th class="bg-light" width="30%">Tipe Rumah</th>
@@ -87,6 +90,7 @@
                                 </td>
                             </tr>
                         </table>
+                        </div>
                     </div>
                 </div>
                 

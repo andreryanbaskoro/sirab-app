@@ -12,7 +12,7 @@
     </div>
     <div class="ibox-body">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-lg-6 mb-4">
                 <table class="table table-bordered">
                     <tr>
                         <th class="bg-light" width="40%">Status SPK</th>
@@ -60,7 +60,7 @@
                     </tr>
                 </table>
             </div>
-            <div class="col-md-6">
+            <div class="col-lg-6 mb-4">
                 <table class="table table-bordered">
                     <tr>
                         <th class="bg-light" width="40%">Nilai Kontrak</th>
