@@ -174,4 +174,17 @@ class RabController extends Controller
 
         return $pdf->download('RAB-' . $rab->nomor_rab . '.pdf');
     }
+
+    public function downloadKontrak(Rab $rab)
+    {
+        if ($rab->permintaan->tukang_id !== Auth::id()) abort(403);
+
+        $kontrak = $rab->kontrak;
+        if (!$kontrak) return back()->with('error', 'Kontrak belum tersedia.');
+
+        $kontrak->load(['permintaan.tipeRumah', 'konsumen.profile', 'tukang.profile', 'rab']);
+
+        $pdf = Pdf::loadView('pdf.kontrak', compact('kontrak'))->setPaper('a4', 'portrait');
+        return $pdf->download('Kontrak-' . $kontrak->nomor_kontrak . '.pdf');
+    }
 }

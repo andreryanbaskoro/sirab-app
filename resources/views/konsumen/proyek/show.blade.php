@@ -33,7 +33,10 @@
                     <ul class="list-group list-group-divider list-group-full">
                         <li class="list-group-item flexbox">
                             <span>No Kontrak</span>
-                            <span class="font-weight-bold">{{ $proyek->nomor_kontrak }}</span>
+                            <span class="font-weight-bold text-right">
+                                {{ $proyek->nomor_kontrak }}<br>
+                                <a href="{{ route('konsumen.pembiayaan.download-kontrak', $proyek->rab_id) }}" class="btn btn-outline-primary btn-sm mt-1" target="_blank"><i class="fa fa-download"></i> Unduh Kontrak</a>
+                            </span>
                         </li>
                         <li class="list-group-item flexbox">
                             <span>Nilai Proyek</span>

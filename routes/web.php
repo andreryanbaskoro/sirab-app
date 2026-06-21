@@ -86,6 +86,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/rab/{rab}', [Tukang\RabController::class, 'show'])->name('rab.show');
         Route::post('/rab/{rab}/submit', [Tukang\RabController::class, 'submit'])->name('rab.submit');
         Route::get('/rab/{rab}/pdf', [Tukang\RabController::class, 'cetakPdf'])->name('rab.pdf');
+        Route::get('/rab/{rab}/download-kontrak', [Tukang\RabController::class, 'downloadKontrak'])->name('rab.download-kontrak');
 
         // Data Anggaran
         Route::get('/anggaran', [Tukang\AnggaranController::class, 'index'])->name('anggaran.index');
