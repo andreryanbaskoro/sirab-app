@@ -20,28 +20,32 @@ class UserSeeder extends Seeder
         ]);
         $admin->assignRole('admin_pu');
 
-        // 2 Kepala Tukang
-        $tukang1 = User::create([
+        // 1 Kepala Tukang
+        $tukang = User::create([
             'name' => 'Tukang',
             'email' => 'tukang@tukang.com',
             'password' => Hash::make('password'),
             'role' => 'kepala_tukang',
             'status_aktif' => true,
         ]);
-        $tukang1->assignRole('kepala_tukang');
-        $tukang1->profile()->create(['alamat' => 'Jl. Merdeka No 1', 'no_hp' => '081234567890']);
+        $tukang->assignRole('kepala_tukang');
+        $tukang->profile()->create([
+            'alamat' => 'Jl. Merdeka No 1',
+            'no_hp' => '081234567890'
+        ]);
 
-        // 3 Konsumen
-        for ($i = 1; $i <= 3; $i++) {
-            $konsumen = User::create([
-                'name' => 'Konsumen',
-                'email' => 'konsumen@konsumen.com',
-                'password' => Hash::make('password'),
-                'role' => 'konsumen',
-                'status_aktif' => true,
-            ]);
-            $konsumen->assignRole('konsumen');
-            $konsumen->profile()->create(['alamat' => 'Jl. Merdeka No 1', 'no_hp' => '081234567890']);
-        }
+        // 1 Konsumen
+        $konsumen = User::create([
+            'name' => 'Konsumen',
+            'email' => 'konsumen@konsumen.com',
+            'password' => Hash::make('password'),
+            'role' => 'konsumen',
+            'status_aktif' => true,
+        ]);
+        $konsumen->assignRole('konsumen');
+        $konsumen->profile()->create([
+            'alamat' => 'Jl. Merdeka No 1',
+            'no_hp' => '081234567890'
+        ]);
     }
 }
