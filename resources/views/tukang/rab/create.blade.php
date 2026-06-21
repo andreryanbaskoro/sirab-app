@@ -18,6 +18,15 @@
             <strong>Lokasi:</strong> {{ $permintaan->lokasi_proyek }}
         </div>
 
+        @if($permintaan->status === \App\Enums\PermintaanStatus::DITOLAK_KONSUMEN && $existingRab && $existingRab->alasan_tolak)
+            <div class="alert alert-danger mb-4">
+                <h5 class="alert-heading"><i class="fa fa-exclamation-triangle"></i> RAB Sebelumnya Ditolak</h5>
+                <p class="mb-0"><strong>Alasan dari Konsumen:</strong> {{ $existingRab->alasan_tolak }}</p>
+                <hr>
+                <small>Silakan revisi rincian anggaran atau sketsa denah Anda sesuai dengan catatan dari konsumen di atas.</small>
+            </div>
+        @endif
+
         <form action="{{ route('tukang.rab.store') }}" method="POST" id="rabForm" enctype="multipart/form-data">
             @csrf
             <input type="hidden" name="permintaan_id" value="{{ $permintaan->id }}">
@@ -26,11 +35,27 @@
             <div class="alert alert-info mt-3">
                 <h5 class="alert-heading"><i class="fa fa-info-circle"></i> Permintaan Denah dari Konsumen</h5>
                 <p>Konsumen meminta Anda merancang denah untuk proyek ini. Silakan unggah sketsa/rancangan denah Anda di sini agar bisa dilihat dan disetujui konsumen bersamaan dengan RAB ini.</p>
+                
+                @if($permintaan->dokumen_path)
+                    <div class="card mb-3 border-info">
+                        <div class="card-body bg-white p-3">
+                            <strong>Denah Saat Ini:</strong><br>
+                            @php
+                                $ext = pathinfo($permintaan->dokumen_path, PATHINFO_EXTENSION);
+                            @endphp
+                            @if(in_array(strtolower($ext), ['jpg', 'jpeg', 'png']))
+                                <img src="{{ asset('storage/' . $permintaan->dokumen_path) }}" class="img-fluid border mt-2 mb-2" style="max-height: 150px;" alt="Sketsa Denah Saat Ini"><br>
+                            @endif
+                            <a href="{{ asset('storage/' . $permintaan->dokumen_path) }}" target="_blank" class="btn btn-outline-info btn-sm"><i class="fa fa-eye"></i> Lihat Denah</a>
+                        </div>
+                    </div>
+                @endif
+
                 <div class="form-group mt-2">
                     <label class="font-weight-bold">Upload Sketsa/Rancangan Denah Anda <span class="text-danger">*</span></label>
                     <input type="file" class="form-control" name="dokumen_denah" accept=".jpg,.jpeg,.png,.pdf" {{ empty($permintaan->dokumen_path) ? 'required' : '' }}>
                     @if($permintaan->dokumen_path)
-                        <small class="text-muted d-block mt-1">Anda sudah mengunggah denah sebelumnya. Unggah file baru HANYA jika Anda ingin mengganti denah yang lama.</small>
+                        <small class="text-muted d-block mt-1">Anda sudah mengunggah denah sebelumnya. <strong>Kosongkan bagian ini</strong> jika Anda tidak ingin mengubah denah, dan cukup revisi bagian anggarannya saja.</small>
                     @endif
                     @error('dokumen_denah')
                         <div class="text-danger mt-1">{{ $message }}</div>
