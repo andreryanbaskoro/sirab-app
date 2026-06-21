@@ -36,6 +36,8 @@ class RegisterController extends Controller
 
         Profile::create(['user_id' => $user->id]);
 
+        $user->assignRole($validated['role']);
+
         Auth::login($user);
 
         return match($user->role) {

@@ -36,4 +36,14 @@ class RabDetail extends Model
     {
         return $this->belongsTo(Rab::class);
     }
+
+    public function pekerjaan(): BelongsTo
+    {
+        return $this->belongsTo(Pekerjaan::class, 'referensi_id');
+    }
+
+    public function material(): BelongsTo
+    {
+        return $this->belongsTo(Material::class, 'referensi_id');
+    }
 }

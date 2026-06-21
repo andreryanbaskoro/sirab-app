@@ -94,36 +94,91 @@
                         </thead>
                         <tbody>
                             @php 
-                                $currentCategory = ''; 
-                                $no = 1; 
-                                $subtotalCategory = 0;
+                                $rab->load('details.pekerjaan.kategori');
+                                $pekerjaans = $rab->details->where('jenis_item', 'pekerjaan');
+                                $materials = $rab->details->where('jenis_item', 'material');
+                                $jasas = $rab->details->where('jenis_item', 'jasa_tukang');
+                                $tambahans = $rab->details->where('jenis_item', 'tambahan');
+
+                                $groupedPekerjaan = $pekerjaans->groupBy(function($item) {
+                                    return $item->pekerjaan && $item->pekerjaan->kategori 
+                                        ? $item->pekerjaan->kategori->nama_kategori 
+                                        : 'Pekerjaan Umum / Lain-lain';
+                                });
                             @endphp
                             
-                            @foreach($rab->details as $index => $detail)
-                                @if($currentCategory != $detail->jenis_item)
-                                    @if($currentCategory != '')
-                                        <!-- Subtotal untuk kategori sebelumnya bisa diletakkan di sini jika diperlukan -->
-                                    @endif
-                                    
-                                    <tr class="bg-light">
-                                        <td colspan="6" class="font-weight-bold" style="font-size: 14px; padding-top: 15px;">
-                                            @if($detail->jenis_item == 'material') I. KEBUTUHAN MATERIAL
-                                            @elseif($detail->jenis_item == 'pekerjaan') II. UPAH TENAGA KERJA
-                                            @elseif($detail->jenis_item == 'jasa_tukang') III. JASA KEPALA TUKANG
-                                            @else IV. BIAYA LAIN-LAIN / TAMBAHAN @endif
-                                        </td>
-                                    </tr>
-                                    @php $currentCategory = $detail->jenis_item; $no = 1; @endphp
-                                @endif
-                                <tr style="border-bottom: 1px solid #eee;">
-                                    <td class="text-center text-muted">{{ $no++ }}</td>
-                                    <td>{{ $detail->nama_item }}</td>
-                                    <td class="text-center">{{ (float)$detail->qty }}</td>
-                                    <td class="text-center text-muted">{{ $detail->satuan }}</td>
-                                    <td class="text-right">{{ number_format($detail->harga_satuan, 0, ',', '.') }}</td>
-                                    <td class="text-right">{{ number_format($detail->subtotal, 0, ',', '.') }}</td>
+                            @if($pekerjaans->count() > 0)
+                                <tr class="bg-light">
+                                    <td colspan="6" class="font-weight-bold text-primary" style="font-size: 14px; padding-top: 15px;">I. UPAH TENAGA KERJA</td>
                                 </tr>
-                            @endforeach
+                                @foreach($groupedPekerjaan as $kategori => $items)
+                                    <tr>
+                                        <td colspan="6" class="font-weight-bold font-italic text-muted" style="background-color: #fcfcfc;">&nbsp;&nbsp;&nbsp;-- {{ $kategori }}</td>
+                                    </tr>
+                                    @php $no = 1; @endphp
+                                    @foreach($items as $detail)
+                                        <tr style="border-bottom: 1px solid #eee;">
+                                            <td class="text-center text-muted">{{ $no++ }}</td>
+                                            <td class="pl-4">{{ $detail->nama_item }}</td>
+                                            <td class="text-center">{{ (float)$detail->qty }}</td>
+                                            <td class="text-center text-muted">{{ $detail->satuan }}</td>
+                                            <td class="text-right">{{ number_format($detail->harga_satuan, 0, ',', '.') }}</td>
+                                            <td class="text-right">{{ number_format($detail->subtotal, 0, ',', '.') }}</td>
+                                        </tr>
+                                    @endforeach
+                                @endforeach
+                            @endif
+
+                            @if($materials->count() > 0)
+                                <tr class="bg-light">
+                                    <td colspan="6" class="font-weight-bold text-success" style="font-size: 14px; padding-top: 15px;">II. KEBUTUHAN MATERIAL</td>
+                                </tr>
+                                @php $no = 1; @endphp
+                                @foreach($materials as $detail)
+                                    <tr style="border-bottom: 1px solid #eee;">
+                                        <td class="text-center text-muted">{{ $no++ }}</td>
+                                        <td>{{ $detail->nama_item }}</td>
+                                        <td class="text-center">{{ (float)$detail->qty }}</td>
+                                        <td class="text-center text-muted">{{ $detail->satuan }}</td>
+                                        <td class="text-right">{{ number_format($detail->harga_satuan, 0, ',', '.') }}</td>
+                                        <td class="text-right">{{ number_format($detail->subtotal, 0, ',', '.') }}</td>
+                                    </tr>
+                                @endforeach
+                            @endif
+
+                            @if($jasas->count() > 0)
+                                <tr class="bg-light">
+                                    <td colspan="6" class="font-weight-bold text-warning" style="font-size: 14px; padding-top: 15px;">III. JASA KEPALA TUKANG</td>
+                                </tr>
+                                @php $no = 1; @endphp
+                                @foreach($jasas as $detail)
+                                    <tr style="border-bottom: 1px solid #eee;">
+                                        <td class="text-center text-muted">{{ $no++ }}</td>
+                                        <td>{{ $detail->nama_item }}</td>
+                                        <td class="text-center">{{ (float)$detail->qty }}</td>
+                                        <td class="text-center text-muted">{{ $detail->satuan }}</td>
+                                        <td class="text-right">{{ number_format($detail->harga_satuan, 0, ',', '.') }}</td>
+                                        <td class="text-right">{{ number_format($detail->subtotal, 0, ',', '.') }}</td>
+                                    </tr>
+                                @endforeach
+                            @endif
+
+                            @if($tambahans->count() > 0)
+                                <tr class="bg-light">
+                                    <td colspan="6" class="font-weight-bold text-danger" style="font-size: 14px; padding-top: 15px;">IV. BIAYA LAIN-LAIN / TAMBAHAN</td>
+                                </tr>
+                                @php $no = 1; @endphp
+                                @foreach($tambahans as $detail)
+                                    <tr style="border-bottom: 1px solid #eee;">
+                                        <td class="text-center text-muted">{{ $no++ }}</td>
+                                        <td>{{ $detail->nama_item }}</td>
+                                        <td class="text-center">{{ (float)$detail->qty }}</td>
+                                        <td class="text-center text-muted">{{ $detail->satuan }}</td>
+                                        <td class="text-right">{{ number_format($detail->harga_satuan, 0, ',', '.') }}</td>
+                                        <td class="text-right">{{ number_format($detail->subtotal, 0, ',', '.') }}</td>
+                                    </tr>
+                                @endforeach
+                            @endif
                         </tbody>
                         <tfoot style="border-top: 2px solid #333;">
                             <tr>

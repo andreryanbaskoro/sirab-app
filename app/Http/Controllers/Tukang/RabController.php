@@ -71,14 +71,14 @@ class RabController extends Controller
         $data = $request->all();
         $data['tukang_id'] = Auth::id();
 
-        // Parse materials and pekerjaans from request
         $materials = [];
         if ($request->has('materials')) {
             foreach ($request->materials as $m) {
-                if (!empty($m['nama_item'])) {
+                if (!empty($m['material_id'])) {
+                    $material = Material::find($m['material_id']);
                     $materials[] = [
-                        'material_id' => (isset($m['material_id']) && $m['material_id'] === 'custom') ? null : ($m['material_id'] ?? null),
-                        'nama_item' => $m['nama_item'],
+                        'material_id' => $m['material_id'],
+                        'nama_item' => $material ? $material->nama_material : 'Material',
                         'qty' => (float)($m['qty'] ?? 1),
                         'satuan' => $m['satuan'] ?? 'unit',
                         'harga_satuan' => (float)($m['harga_satuan'] ?? 0),
@@ -90,10 +90,11 @@ class RabController extends Controller
         $pekerjaans = [];
         if ($request->has('pekerjaans')) {
             foreach ($request->pekerjaans as $p) {
-                if (!empty($p['nama_item'])) {
+                if (!empty($p['pekerjaan_id'])) {
+                    $pekerjaan = Pekerjaan::find($p['pekerjaan_id']);
                     $pekerjaans[] = [
-                        'pekerjaan_id' => (isset($p['pekerjaan_id']) && $p['pekerjaan_id'] === 'custom') ? null : ($p['pekerjaan_id'] ?? null),
-                        'nama_item' => $p['nama_item'],
+                        'pekerjaan_id' => $p['pekerjaan_id'],
+                        'nama_item' => $pekerjaan ? $pekerjaan->nama_pekerjaan : 'Pekerjaan',
                         'qty' => (float)($p['qty'] ?? 1),
                         'satuan' => $p['satuan'] ?? 'm2',
                         'harga_satuan' => (float)($p['harga_satuan'] ?? 0),
