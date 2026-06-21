@@ -97,7 +97,7 @@ Membuat user default:
 
 * Admin PU
 * 1 Kepala Tukang
-* 3 Konsumen
+* 1 Konsumen
 
 ---
 
