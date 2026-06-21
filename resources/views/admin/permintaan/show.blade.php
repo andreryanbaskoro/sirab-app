@@ -67,8 +67,15 @@
                 </div>
                 
                 @if($permintaan->rab)
-                <h5 class="mt-4 mb-3 border-bottom pb-2">Keterkaitan Dokumen</h5>
-                <a href="{{ route('admin.rab.show', $permintaan->rab->id) }}" class="btn btn-outline-info mr-2"><i class="fa fa-file-text"></i> RAB: {{ $permintaan->rab->nomor_rab }}</a>
+                <h5 class="mt-4 mb-3 border-bottom pb-2">Rencana Anggaran Biaya (RAB: {{ $permintaan->rab->nomor_rab }})</h5>
+                <div class="mb-3">
+                    <a href="{{ route('admin.rab.show', $permintaan->rab->id) }}" class="btn btn-info btn-sm"><i class="fa fa-external-link"></i> Buka Halaman RAB</a>
+                </div>
+                <div class="card border-info mb-4">
+                    <div class="card-body bg-white">
+                        <x-rab-table :rab="$permintaan->rab" />
+                    </div>
+                </div>
                 @endif
                 
                 @if($permintaan->kontrak)

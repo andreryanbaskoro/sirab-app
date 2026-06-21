@@ -48,8 +48,16 @@
         
         <div class="mt-4">
             <h5>Dokumen Acuan:</h5>
-            <a href="{{ route('admin.rab.show', $kontrak->rab_id) }}" class="btn btn-outline-info"><i class="fa fa-file-text"></i> RAB: {{ $kontrak->rab->nomor_rab }}</a>
-            <a href="{{ route('admin.permintaan.show', $kontrak->permintaan_id) }}" class="btn btn-outline-primary"><i class="fa fa-file"></i> Permintaan: {{ $kontrak->permintaan->nomor_permintaan }}</a>
+            <a href="{{ route('admin.permintaan.show', $kontrak->permintaan_id) }}" class="btn btn-outline-primary mb-3"><i class="fa fa-file"></i> Permintaan: {{ $kontrak->permintaan->nomor_permintaan }}</a>
+            
+            <div class="card border-info">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">Rencana Anggaran Biaya (RAB: {{ $kontrak->rab->nomor_rab }})</h5>
+                </div>
+                <div class="card-body bg-white">
+                    <x-rab-table :rab="$kontrak->rab" />
+                </div>
+            </div>
         </div>
     </div>
 </div>

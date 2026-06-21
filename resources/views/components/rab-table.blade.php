@@ -93,20 +93,16 @@
                 <td class="text-right text-muted">Rp {{ number_format($rab->total_sebelum_pajak ?? ($rab->total_upah + $rab->total_material + $rab->biaya_jasa_tukang + $rab->biaya_tambahan), 0, ',', '.') }}</td>
                 <td class="text-center">-</td>
             </tr>
-            @if(($rab->profit_nominal ?? 0) > 0)
             <tr>
-                <td colspan="2" class="text-right text-success">PROFIT / MARGIN ({{ (float)$rab->profit_persen }}%)</td>
-                <td class="text-right text-success">Rp {{ number_format($rab->profit_nominal, 0, ',', '.') }}</td>
+                <td colspan="2" class="text-right text-success">PROFIT / MARGIN ({{ (float)($rab->profit_persen ?? 0) }}%)</td>
+                <td class="text-right text-success">Rp {{ number_format($rab->profit_nominal ?? 0, 0, ',', '.') }}</td>
                 <td class="text-center">-</td>
             </tr>
-            @endif
-            @if(($rab->ppn_nominal ?? 0) > 0)
             <tr>
-                <td colspan="2" class="text-right text-danger">PPN ({{ (float)$rab->ppn_persen }}%)</td>
-                <td class="text-right text-danger">Rp {{ number_format($rab->ppn_nominal, 0, ',', '.') }}</td>
+                <td colspan="2" class="text-right text-danger">PPN ({{ (float)($rab->ppn_persen ?? 0) }}%)</td>
+                <td class="text-right text-danger">Rp {{ number_format($rab->ppn_nominal ?? 0, 0, ',', '.') }}</td>
                 <td class="text-center">-</td>
             </tr>
-            @endif
             <tr class="bg-primary text-white" style="font-size:16px;">
                 <td colspan="2" class="text-right font-weight-bold">GRAND TOTAL</td>
                 <td class="text-right font-weight-bold">Rp {{ number_format($rab->total_final, 0, ',', '.') }}</td>

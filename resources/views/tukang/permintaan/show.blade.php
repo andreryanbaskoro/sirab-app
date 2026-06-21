@@ -106,12 +106,12 @@
             <div class="ibox-head">
                 <div class="ibox-title">Status RAB: {{ $permintaan->rab->nomor_rab }}</div>
                 <div class="ibox-tools">
-                    <a href="{{ route('tukang.rab.show', $permintaan->rab->id) }}" class="btn btn-info btn-sm"><i class="fa fa-eye"></i> Lihat RAB</a>
+                    <a href="{{ route('tukang.rab.show', $permintaan->rab->id) }}" class="btn btn-info btn-sm"><i class="fa fa-external-link"></i> Kelola RAB</a>
                 </div>
             </div>
-            <div class="ibox-body text-center p-4">
-                <h3 class="font-strong">Total Anggaran: Rp {{ number_format($permintaan->rab->total_final, 0, ',', '.') }}</h3>
-                <h5 class="mt-3"><x-status-badge :status="$permintaan->rab->status" /></h5>
+            <div class="ibox-body">
+                <h5 class="mb-4 text-center"><x-status-badge :status="$permintaan->rab->status" /></h5>
+                <x-rab-table :rab="$permintaan->rab" />
             </div>
         </div>
         @endif
