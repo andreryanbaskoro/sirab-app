@@ -24,15 +24,84 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($rab->details as $detail)
-                        <tr>
-                            <td>{{ $detail->nama_item }}</td>
-                            <td class="text-center">{{ (float)$detail->qty }}</td>
-                            <td class="text-center">{{ $detail->satuan }}</td>
-                            <td class="text-right">Rp {{ number_format($detail->harga_satuan, 0, ',', '.') }}</td>
-                            <td class="text-right">Rp {{ number_format($detail->subtotal, 0, ',', '.') }}</td>
-                        </tr>
-                        @endforeach
+                        @php 
+                            $rab->load('details.pekerjaan.kategori');
+                            $pekerjaans = $rab->details->where('jenis_item', 'pekerjaan');
+                            $materials = $rab->details->where('jenis_item', 'material');
+                            $jasas = $rab->details->where('jenis_item', 'jasa_tukang');
+                            $tambahans = $rab->details->where('jenis_item', 'tambahan');
+
+                            $groupedPekerjaan = $pekerjaans->groupBy(function($item) {
+                                return $item->pekerjaan && $item->pekerjaan->kategori 
+                                    ? $item->pekerjaan->kategori->nama_kategori 
+                                    : 'Pekerjaan Umum / Lain-lain';
+                            });
+                        @endphp
+                        
+                        @if($pekerjaans->count() > 0)
+                            <tr class="bg-light">
+                                <td colspan="5" class="font-weight-bold text-primary">I. UPAH TENAGA KERJA</td>
+                            </tr>
+                            @foreach($groupedPekerjaan as $kategori => $items)
+                                <tr>
+                                    <td colspan="5" class="font-weight-bold font-italic text-muted" style="background-color: #fcfcfc;">&nbsp;&nbsp;&nbsp;-- {{ $kategori }}</td>
+                                </tr>
+                                @foreach($items as $detail)
+                                    <tr style="border-bottom: 1px solid #eee;">
+                                        <td class="pl-4">{{ $detail->nama_item }}</td>
+                                        <td class="text-center">{{ (float)$detail->qty }}</td>
+                                        <td class="text-center">{{ $detail->satuan }}</td>
+                                        <td class="text-right">Rp {{ number_format($detail->harga_satuan, 0, ',', '.') }}</td>
+                                        <td class="text-right">Rp {{ number_format($detail->subtotal, 0, ',', '.') }}</td>
+                                    </tr>
+                                @endforeach
+                            @endforeach
+                        @endif
+
+                        @if($materials->count() > 0)
+                            <tr class="bg-light">
+                                <td colspan="5" class="font-weight-bold text-success">II. KEBUTUHAN MATERIAL</td>
+                            </tr>
+                            @foreach($materials as $detail)
+                                <tr style="border-bottom: 1px solid #eee;">
+                                    <td>{{ $detail->nama_item }}</td>
+                                    <td class="text-center">{{ (float)$detail->qty }}</td>
+                                    <td class="text-center">{{ $detail->satuan }}</td>
+                                    <td class="text-right">Rp {{ number_format($detail->harga_satuan, 0, ',', '.') }}</td>
+                                    <td class="text-right">Rp {{ number_format($detail->subtotal, 0, ',', '.') }}</td>
+                                </tr>
+                            @endforeach
+                        @endif
+
+                        @if($jasas->count() > 0)
+                            <tr class="bg-light">
+                                <td colspan="5" class="font-weight-bold text-warning">III. JASA KEPALA TUKANG</td>
+                            </tr>
+                            @foreach($jasas as $detail)
+                                <tr style="border-bottom: 1px solid #eee;">
+                                    <td>{{ $detail->nama_item }}</td>
+                                    <td class="text-center">{{ (float)$detail->qty }}</td>
+                                    <td class="text-center">{{ $detail->satuan }}</td>
+                                    <td class="text-right">Rp {{ number_format($detail->harga_satuan, 0, ',', '.') }}</td>
+                                    <td class="text-right">Rp {{ number_format($detail->subtotal, 0, ',', '.') }}</td>
+                                </tr>
+                            @endforeach
+                        @endif
+
+                        @if($tambahans->count() > 0)
+                            <tr class="bg-light">
+                                <td colspan="5" class="font-weight-bold text-danger">IV. BIAYA LAIN-LAIN / TAMBAHAN</td>
+                            </tr>
+                            @foreach($tambahans as $detail)
+                                <tr style="border-bottom: 1px solid #eee;">
+                                    <td>{{ $detail->nama_item }}</td>
+                                    <td class="text-center">{{ (float)$detail->qty }}</td>
+                                    <td class="text-center">{{ $detail->satuan }}</td>
+                                    <td class="text-right">Rp {{ number_format($detail->harga_satuan, 0, ',', '.') }}</td>
+                                    <td class="text-right">Rp {{ number_format($detail->subtotal, 0, ',', '.') }}</td>
+                                </tr>
+                            @endforeach
+                        @endif
                     </tbody>
                     <tfoot class="font-weight-bold">
                         <tr>

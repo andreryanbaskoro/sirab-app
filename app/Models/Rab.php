@@ -82,6 +82,11 @@ class Rab extends Model
         return $this->hasMany(RabDetail::class);
     }
 
+    public function kontrak(): HasOne
+    {
+        return $this->hasOne(Kontrak::class);
+    }
+
     // Keep for backward compatibility
     public function rabDetails(): HasMany
     {
