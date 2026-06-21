@@ -197,8 +197,3 @@ routes/
 GitHub: [https://github.com/andreryanbaskoro](https://github.com/andreryanbaskoro)
 
 ```
-
----
-
-Tinggal bilang aja 👍
-```
