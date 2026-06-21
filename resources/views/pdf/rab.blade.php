@@ -81,21 +81,27 @@
                         ? $item->pekerjaan->kategori->nama_kategori 
                         : 'Pekerjaan Umum / Lain-lain';
                 });
+
+                $romanNumerals = ['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
+                $mainIndex = 1;
             @endphp
             
             @if($pekerjaans->count() > 0)
-                <tr>
-                    <td colspan="6" class="font-weight-bold bg-light">I. UPAH TENAGA KERJA</td>
+                <tr class="table-section text-primary">
+                    <td class="text-center font-weight-bold" style="font-size: 11pt;">{{ $romanNumerals[$mainIndex++] }}</td>
+                    <td colspan="5" class="font-weight-bold">UPAH TENAGA KERJA</td>
                 </tr>
+                @php $katIndex = 'A'; @endphp
                 @foreach($groupedPekerjaan as $kategori => $items)
-                    <tr>
-                        <td colspan="6" class="font-weight-bold" style="background-color: #fdfdfd; font-style: italic;">&nbsp;&nbsp;&nbsp;-- {{ $kategori }}</td>
+                    <tr class="table-subsection">
+                        <td class="text-center font-weight-bold">{{ $katIndex++ }}</td>
+                        <td colspan="5" style="padding-left: 20px;">Pekerjaan {{ $kategori }}</td>
                     </tr>
                     @php $no = 1; @endphp
                     @foreach($items as $detail)
                         <tr>
                             <td class="text-center">{{ $no++ }}</td>
-                            <td style="padding-left: 20px;">{{ $detail->nama_item }}</td>
+                            <td style="padding-left: 40px;">{{ $detail->nama_item }}</td>
                             <td class="text-center">{{ (float)$detail->qty }}</td>
                             <td class="text-center">{{ $detail->satuan }}</td>
                             <td class="text-right">{{ number_format($detail->harga_satuan, 0, ',', '.') }}</td>
@@ -106,14 +112,15 @@
             @endif
 
             @if($materials->count() > 0)
-                <tr>
-                    <td colspan="6" class="font-weight-bold bg-light">II. KEBUTUHAN MATERIAL</td>
+                <tr class="table-section text-success">
+                    <td class="text-center font-weight-bold" style="font-size: 11pt;">{{ $romanNumerals[$mainIndex++] }}</td>
+                    <td colspan="5" class="font-weight-bold">KEBUTUHAN MATERIAL</td>
                 </tr>
                 @php $no = 1; @endphp
                 @foreach($materials as $detail)
                     <tr>
                         <td class="text-center">{{ $no++ }}</td>
-                        <td>{{ $detail->nama_item }}</td>
+                        <td style="padding-left: 20px;">{{ $detail->nama_item }}</td>
                         <td class="text-center">{{ (float)$detail->qty }}</td>
                         <td class="text-center">{{ $detail->satuan }}</td>
                         <td class="text-right">{{ number_format($detail->harga_satuan, 0, ',', '.') }}</td>
@@ -123,14 +130,15 @@
             @endif
 
             @if($jasas->count() > 0)
-                <tr>
-                    <td colspan="6" class="font-weight-bold bg-light">III. JASA KEPALA TUKANG</td>
+                <tr class="table-section text-warning">
+                    <td class="text-center font-weight-bold" style="font-size: 11pt;">{{ $romanNumerals[$mainIndex++] }}</td>
+                    <td colspan="5" class="font-weight-bold">JASA KEPALA TUKANG</td>
                 </tr>
                 @php $no = 1; @endphp
                 @foreach($jasas as $detail)
                     <tr>
                         <td class="text-center">{{ $no++ }}</td>
-                        <td>{{ $detail->nama_item }}</td>
+                        <td style="padding-left: 20px;">{{ $detail->nama_item }}</td>
                         <td class="text-center">{{ (float)$detail->qty }}</td>
                         <td class="text-center">{{ $detail->satuan }}</td>
                         <td class="text-right">{{ number_format($detail->harga_satuan, 0, ',', '.') }}</td>
@@ -140,14 +148,15 @@
             @endif
 
             @if($tambahans->count() > 0)
-                <tr>
-                    <td colspan="6" class="font-weight-bold bg-light">IV. BIAYA LAIN-LAIN / TAMBAHAN</td>
+                <tr class="table-section text-danger">
+                    <td class="text-center font-weight-bold" style="font-size: 11pt;">{{ $romanNumerals[$mainIndex++] }}</td>
+                    <td colspan="5" class="font-weight-bold">BIAYA LAIN-LAIN / TAMBAHAN</td>
                 </tr>
                 @php $no = 1; @endphp
                 @foreach($tambahans as $detail)
                     <tr>
                         <td class="text-center">{{ $no++ }}</td>
-                        <td>{{ $detail->nama_item }}</td>
+                        <td style="padding-left: 20px;">{{ $detail->nama_item }}</td>
                         <td class="text-center">{{ (float)$detail->qty }}</td>
                         <td class="text-center">{{ $detail->satuan }}</td>
                         <td class="text-right">{{ number_format($detail->harga_satuan, 0, ',', '.') }}</td>

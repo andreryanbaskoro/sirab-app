@@ -105,15 +105,21 @@
                                         ? $item->pekerjaan->kategori->nama_kategori 
                                         : 'Pekerjaan Umum / Lain-lain';
                                 });
+
+                                $romanNumerals = ['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
+                                $mainIndex = 1;
                             @endphp
                             
                             @if($pekerjaans->count() > 0)
                                 <tr class="bg-light">
-                                    <td colspan="6" class="font-weight-bold text-primary" style="font-size: 14px; padding-top: 15px;">I. UPAH TENAGA KERJA</td>
+                                    <td class="font-weight-bold text-center" style="font-size: 14px; padding-top: 15px;">{{ $romanNumerals[$mainIndex++] }}</td>
+                                    <td colspan="5" class="font-weight-bold text-primary" style="font-size: 14px; padding-top: 15px;">UPAH TENAGA KERJA</td>
                                 </tr>
+                                @php $katIndex = 'A'; @endphp
                                 @foreach($groupedPekerjaan as $kategori => $items)
                                     <tr>
-                                        <td colspan="6" class="font-weight-bold font-italic text-muted" style="background-color: #fcfcfc;">&nbsp;&nbsp;&nbsp;-- {{ $kategori }}</td>
+                                        <td class="font-weight-bold text-center" style="background-color: #fcfcfc;">{{ $katIndex++ }}</td>
+                                        <td colspan="5" class="font-weight-bold font-italic text-muted" style="background-color: #fcfcfc;">Pekerjaan {{ $kategori }}</td>
                                     </tr>
                                     @php $no = 1; @endphp
                                     @foreach($items as $detail)
@@ -131,13 +137,14 @@
 
                             @if($materials->count() > 0)
                                 <tr class="bg-light">
-                                    <td colspan="6" class="font-weight-bold text-success" style="font-size: 14px; padding-top: 15px;">II. KEBUTUHAN MATERIAL</td>
+                                    <td class="font-weight-bold text-center" style="font-size: 14px; padding-top: 15px;">{{ $romanNumerals[$mainIndex++] }}</td>
+                                    <td colspan="5" class="font-weight-bold text-success" style="font-size: 14px; padding-top: 15px;">KEBUTUHAN MATERIAL</td>
                                 </tr>
                                 @php $no = 1; @endphp
                                 @foreach($materials as $detail)
                                     <tr style="border-bottom: 1px solid #eee;">
                                         <td class="text-center text-muted">{{ $no++ }}</td>
-                                        <td>{{ $detail->nama_item }}</td>
+                                        <td class="pl-4">{{ $detail->nama_item }}</td>
                                         <td class="text-center">{{ (float)$detail->qty }}</td>
                                         <td class="text-center text-muted">{{ $detail->satuan }}</td>
                                         <td class="text-right">{{ number_format($detail->harga_satuan, 0, ',', '.') }}</td>
@@ -148,13 +155,14 @@
 
                             @if($jasas->count() > 0)
                                 <tr class="bg-light">
-                                    <td colspan="6" class="font-weight-bold text-warning" style="font-size: 14px; padding-top: 15px;">III. JASA KEPALA TUKANG</td>
+                                    <td class="font-weight-bold text-center" style="font-size: 14px; padding-top: 15px;">{{ $romanNumerals[$mainIndex++] }}</td>
+                                    <td colspan="5" class="font-weight-bold text-warning" style="font-size: 14px; padding-top: 15px;">JASA KEPALA TUKANG</td>
                                 </tr>
                                 @php $no = 1; @endphp
                                 @foreach($jasas as $detail)
                                     <tr style="border-bottom: 1px solid #eee;">
                                         <td class="text-center text-muted">{{ $no++ }}</td>
-                                        <td>{{ $detail->nama_item }}</td>
+                                        <td class="pl-4">{{ $detail->nama_item }}</td>
                                         <td class="text-center">{{ (float)$detail->qty }}</td>
                                         <td class="text-center text-muted">{{ $detail->satuan }}</td>
                                         <td class="text-right">{{ number_format($detail->harga_satuan, 0, ',', '.') }}</td>
@@ -165,13 +173,14 @@
 
                             @if($tambahans->count() > 0)
                                 <tr class="bg-light">
-                                    <td colspan="6" class="font-weight-bold text-danger" style="font-size: 14px; padding-top: 15px;">IV. BIAYA LAIN-LAIN / TAMBAHAN</td>
+                                    <td class="font-weight-bold text-center" style="font-size: 14px; padding-top: 15px;">{{ $romanNumerals[$mainIndex++] }}</td>
+                                    <td colspan="5" class="font-weight-bold text-danger" style="font-size: 14px; padding-top: 15px;">BIAYA LAIN-LAIN / TAMBAHAN</td>
                                 </tr>
                                 @php $no = 1; @endphp
                                 @foreach($tambahans as $detail)
                                     <tr style="border-bottom: 1px solid #eee;">
                                         <td class="text-center text-muted">{{ $no++ }}</td>
-                                        <td>{{ $detail->nama_item }}</td>
+                                        <td class="pl-4">{{ $detail->nama_item }}</td>
                                         <td class="text-center">{{ (float)$detail->qty }}</td>
                                         <td class="text-center text-muted">{{ $detail->satuan }}</td>
                                         <td class="text-right">{{ number_format($detail->harga_satuan, 0, ',', '.') }}</td>
