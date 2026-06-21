@@ -49,13 +49,15 @@
                     <div class="form-group row">
                         <label class="col-sm-3 col-form-label">Jenis Jasa <span class="text-danger">*</span></label>
                         <div class="col-sm-9">
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="jenis_jasa" id="harian" value="harian" required>
-                                <label class="form-check-label" for="harian">Harian</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="jenis_jasa" id="borongan" value="borongan" required>
-                                <label class="form-check-label" for="borongan">Borongan</label>
+                            <div class="check-list">
+                                <label class="ui-radio ui-radio-primary ui-radio-inline">
+                                    <input type="radio" name="jenis_jasa" value="harian" required>
+                                    <span class="input-span"></span>Harian
+                                </label>
+                                <label class="ui-radio ui-radio-primary ui-radio-inline">
+                                    <input type="radio" name="jenis_jasa" value="borongan" required>
+                                    <span class="input-span"></span>Borongan
+                                </label>
                             </div>
                         </div>
                     </div>
