@@ -79,8 +79,17 @@
                             <td>{{ number_format($permintaan->luas_bangunan, 2, ',', '.') }} m²</td>
                         </tr>
                         <tr>
-                            <td class="bg-light font-weight-bold">Lokasi Proyek</td>
-                            <td>{{ $permintaan->lokasi_proyek }}</td>
+                            <td class="bg-light font-weight-bold">Sumber Denah</td>
+                            <td>
+                                @if($permintaan->sumber_denah === 'upload_sendiri')
+                                    <span class="badge badge-info">Dari Konsumen</span>
+                                @elseif($permintaan->sumber_denah === 'dibuatkan_tukang')
+                                    <span class="badge badge-warning">Tukang Harus Merancang</span>
+                                    <div class="alert alert-warning mt-2 mb-0 p-2"><i class="fa fa-info-circle"></i> Konsumen meminta Anda untuk membuat rancangan sketsa/denah sebagai dasar RAB.</div>
+                                @else
+                                    <span class="badge badge-secondary">-</span>
+                                @endif
+                            </td>
                         </tr>
                         <tr>
                             <td class="bg-light font-weight-bold">Catatan Konsumen</td>

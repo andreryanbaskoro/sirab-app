@@ -45,11 +45,23 @@
                                 <td>{{ ucfirst($permintaan->jenis_jasa) }}</td>
                             </tr>
                             <tr>
-                                <th class="bg-light">Luas Bangunan</th>
-                                <td>{{ $permintaan->luas_bangunan }} m²</td>
+                                <td class="bg-light font-weight-bold">Luas Bangunan</td>
+                                <td>{{ number_format($permintaan->luas_bangunan, 2, ',', '.') }} m²</td>
                             </tr>
                             <tr>
-                                <th class="bg-light">Lokasi</th>
+                                <td class="bg-light font-weight-bold">Sumber Denah</td>
+                                <td>
+                                    @if($permintaan->sumber_denah === 'upload_sendiri')
+                                        <span class="badge badge-info">Dari Konsumen</span>
+                                    @elseif($permintaan->sumber_denah === 'dibuatkan_tukang')
+                                        <span class="badge badge-warning">Dibuatkan Tukang</span>
+                                    @else
+                                        <span class="badge badge-secondary">-</span>
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="bg-light font-weight-bold">Lokasi Proyek</td>
                                 <td>{{ $permintaan->lokasi_proyek }}</td>
                             </tr>
                             <tr>

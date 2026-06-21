@@ -77,10 +77,30 @@
                     </div>
 
                     <div class="form-group row">
-                        <label class="col-sm-3 col-form-label">Dokumen Referensi</label>
+                        <label class="col-sm-3 col-form-label">Sumber Denah <span class="text-danger">*</span></label>
+                        <div class="col-sm-9">
+                            <div class="check-list">
+                                <label class="ui-radio ui-radio-primary ui-radio-inline">
+                                    <input type="radio" name="sumber_denah" value="upload_sendiri" id="radioUploadSendiri" required {{ old('sumber_denah') == 'upload_sendiri' ? 'checked' : '' }}>
+                                    <span class="input-span"></span>Upload Denah Sendiri
+                                </label>
+                                <label class="ui-radio ui-radio-primary ui-radio-inline">
+                                    <input type="radio" name="sumber_denah" value="dibuatkan_tukang" id="radioDibuatkanTukang" required {{ old('sumber_denah') == 'dibuatkan_tukang' ? 'checked' : '' }}>
+                                    <span class="input-span"></span>Minta Tukang Buatkan Sketsa/Denah
+                                </label>
+                            </div>
+                            <small class="form-text text-muted" id="infoDibuatkanTukang" style="display:none;"><i class="fa fa-info-circle text-info"></i> Kepala Tukang akan merancang denah kasar berdasarkan catatan dan luas bangunan Anda.</small>
+                        </div>
+                    </div>
+
+                    <div class="form-group row" id="formUploadDenah">
+                        <label class="col-sm-3 col-form-label">Dokumen Referensi / Denah <span class="text-danger" id="reqUpload">*</span></label>
                         <div class="col-sm-9">
                             <input class="form-control" type="file" name="dokumen" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
-                            <small class="form-text text-muted">Opsional. Unggah gambar denah, foto lokasi, atau referensi desain (Max: 5MB).</small>
+                            <small class="form-text text-muted">Unggah gambar denah, foto lokasi, atau referensi desain (Max: 5MB).</small>
+                            @error('dokumen')
+                                <div class="text-danger mt-1">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
 
@@ -110,6 +130,28 @@
         $('.select2').select2({
             theme: 'classic'
         });
+
+        // Toggle Upload Denah based on Sumber Denah
+        function toggleDenahUpload() {
+            var val = $('input[name="sumber_denah"]:checked').val();
+            if (val === 'upload_sendiri') {
+                $('#formUploadDenah').show();
+                $('#infoDibuatkanTukang').hide();
+            } else if (val === 'dibuatkan_tukang') {
+                $('#formUploadDenah').hide();
+                $('#infoDibuatkanTukang').show();
+            } else {
+                $('#formUploadDenah').hide();
+                $('#infoDibuatkanTukang').hide();
+            }
+        }
+
+        $('input[name="sumber_denah"]').change(function() {
+            toggleDenahUpload();
+        });
+        
+        // initial run
+        toggleDenahUpload();
     });
 </script>
 @endpush

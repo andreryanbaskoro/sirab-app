@@ -22,6 +22,7 @@ class Permintaan extends Model
         'lokasi_proyek',
         'luas_bangunan',
         'catatan',
+        'sumber_denah',
         'dokumen_path',
         'alasan_tolak',
         'status',

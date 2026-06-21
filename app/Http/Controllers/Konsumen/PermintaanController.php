@@ -53,9 +53,14 @@ class PermintaanController extends Controller
             'lokasi_proyek' => 'required|string|max:255',
             'luas_bangunan' => 'required|numeric|min:1',
             'jenis_jasa' => 'required|in:harian,borongan',
+            'sumber_denah' => 'required|in:upload_sendiri,dibuatkan_tukang',
             'catatan' => 'nullable|string',
             'dokumen' => 'nullable|file|mimes:pdf,jpg,jpeg,png,doc,docx|max:5120',
         ]);
+
+        if ($request->sumber_denah === 'upload_sendiri' && !$request->hasFile('dokumen')) {
+            return back()->withInput()->withErrors(['dokumen' => 'Anda harus mengunggah denah jika memilih opsi Upload Sendiri.']);
+        }
 
         $dokumenPath = null;
         if ($request->hasFile('dokumen')) {
@@ -69,6 +74,7 @@ class PermintaanController extends Controller
             'lokasi_proyek' => $request->lokasi_proyek,
             'luas_bangunan' => $request->luas_bangunan,
             'jenis_jasa' => $request->jenis_jasa,
+            'sumber_denah' => $request->sumber_denah,
             'catatan' => $request->catatan,
             'dokumen_path' => $dokumenPath,
             'status' => PermintaanStatus::PENDING,
