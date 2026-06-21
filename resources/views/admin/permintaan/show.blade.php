@@ -65,12 +65,24 @@
                                 <td>{{ $permintaan->lokasi_proyek }}</td>
                             </tr>
                             <tr>
-                                <th class="bg-light">Lampiran</th>
+                                <td class="bg-light font-weight-bold">Dokumen Lampiran</td>
                                 <td>
                                     @if($permintaan->dokumen_path)
-                                        <a href="{{ asset('storage/' . $permintaan->dokumen_path) }}" target="_blank" class="text-info">Lihat Dokumen</a>
+                                        @php
+                                            $ext = pathinfo($permintaan->dokumen_path, PATHINFO_EXTENSION);
+                                        @endphp
+                                        @if(in_array(strtolower($ext), ['jpg', 'jpeg', 'png']))
+                                            <div class="mb-2">
+                                                <img src="{{ asset('storage/' . $permintaan->dokumen_path) }}" class="img-fluid border" style="max-height: 200px;" alt="Sketsa Denah">
+                                            </div>
+                                        @endif
+                                        <a href="{{ asset('storage/' . $permintaan->dokumen_path) }}" target="_blank" class="btn btn-outline-info btn-sm"><i class="fa fa-eye"></i> Lihat Dokumen Penuh</a>
                                     @else
-                                        -
+                                        @if($permintaan->sumber_denah === 'dibuatkan_tukang')
+                                            <span class="text-warning"><i class="fa fa-clock-o"></i> Menunggu Tukang Mengunggah Sketsa (RAB belum disubmit)</span>
+                                        @else
+                                            <span class="text-muted">Tidak ada dokumen</span>
+                                        @endif
                                     @endif
                                 </td>
                             </tr>

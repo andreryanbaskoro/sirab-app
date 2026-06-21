@@ -13,11 +13,25 @@
     <div class="ibox-body">
         <h4 class="mb-3">Status: <x-status-badge :status="$rab->status" /></h4>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <strong>Konsumen:</strong> {{ $rab->permintaan->konsumen->name }}<br>
                 <strong>Tukang:</strong> {{ $rab->tukang->name }}<br>
             </div>
-            <div class="col-md-6 text-right">
+            <div class="col-md-4 text-center">
+                <strong>Sketsa Denah:</strong><br>
+                @if($rab->permintaan->dokumen_path)
+                    @php
+                        $ext = pathinfo($rab->permintaan->dokumen_path, PATHINFO_EXTENSION);
+                    @endphp
+                    @if(in_array(strtolower($ext), ['jpg', 'jpeg', 'png']))
+                        <img src="{{ asset('storage/' . $rab->permintaan->dokumen_path) }}" class="img-fluid border mt-1" style="max-height: 100px;" alt="Sketsa Denah"><br>
+                    @endif
+                    <a href="{{ asset('storage/' . $rab->permintaan->dokumen_path) }}" target="_blank" class="btn btn-outline-info btn-sm mt-1"><i class="fa fa-eye"></i> Lihat Denah</a>
+                @else
+                    <span class="text-muted">Tidak ada dokumen</span>
+                @endif
+            </div>
+            <div class="col-md-4 text-right">
                 <h3 class="text-success">Total: Rp {{ number_format($rab->total_final, 0, ',', '.') }}</h3>
             </div>
         </div>

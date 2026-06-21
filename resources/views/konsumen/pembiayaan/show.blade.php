@@ -44,6 +44,22 @@
                         <small class="text-muted">Nomor Permintaan</small><br>
                         <a href="{{ route('konsumen.permintaan.show', $rab->permintaan_id) }}"><strong>{{ $rab->permintaan->nomor_permintaan }}</strong></a>
                     </li>
+                    <li class="list-group-item">
+                        <small class="text-muted">Denah / Rancangan</small><br>
+                        @if($rab->permintaan->dokumen_path)
+                            @php
+                                $ext = pathinfo($rab->permintaan->dokumen_path, PATHINFO_EXTENSION);
+                            @endphp
+                            @if(in_array(strtolower($ext), ['jpg', 'jpeg', 'png']))
+                                <div class="mt-2 text-center">
+                                    <img src="{{ asset('storage/' . $rab->permintaan->dokumen_path) }}" class="img-fluid border rounded" style="max-height: 200px;" alt="Sketsa Denah">
+                                </div>
+                            @endif
+                            <a href="{{ asset('storage/' . $rab->permintaan->dokumen_path) }}" target="_blank" class="btn btn-outline-info btn-sm btn-block mt-2"><i class="fa fa-eye"></i> Lihat / Unduh Denah</a>
+                        @else
+                            <span class="text-muted">Tidak ada denah terlampir.</span>
+                        @endif
+                    </li>
                     @if($rab->kontrak)
                     <li class="list-group-item">
                         <small class="text-muted">Nomor Kontrak</small><br>

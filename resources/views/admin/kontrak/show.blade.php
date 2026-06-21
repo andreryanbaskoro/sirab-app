@@ -37,7 +37,17 @@
                     @if($kontrak->permintaan->dokumen_path)
                     <tr>
                         <th class="bg-light">File Denah</th>
-                        <td><a href="{{ asset('storage/' . $kontrak->permintaan->dokumen_path) }}" target="_blank" class="btn btn-outline-info btn-sm"><i class="fa fa-download"></i> Lihat Denah</a></td>
+                        <td>
+                            @php
+                                $ext = pathinfo($kontrak->permintaan->dokumen_path, PATHINFO_EXTENSION);
+                            @endphp
+                            @if(in_array(strtolower($ext), ['jpg', 'jpeg', 'png']))
+                                <div class="mb-2">
+                                    <img src="{{ asset('storage/' . $kontrak->permintaan->dokumen_path) }}" class="img-fluid border" style="max-height: 150px;" alt="Sketsa Denah">
+                                </div>
+                            @endif
+                            <a href="{{ asset('storage/' . $kontrak->permintaan->dokumen_path) }}" target="_blank" class="btn btn-outline-info btn-sm"><i class="fa fa-eye"></i> Lihat Denah Penuh</a>
+                        </td>
                     </tr>
                     @endif
                     <tr>
