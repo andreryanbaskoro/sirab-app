@@ -192,7 +192,7 @@ routes/
 
 ## 👨‍💻 Developer
 
-**Andreryan Baskoro**
+**Andre Ryan Baskoro**
 
 GitHub: [https://github.com/andreryanbaskoro](https://github.com/andreryanbaskoro)
 
