@@ -15,6 +15,7 @@
                 <div class="text-left mt-3">
                     <p class="mb-1"><small><strong>No HP:</strong> {{ $tukang->profile->no_hp ?? '-' }}</small></p>
                     <p class="mb-1"><small><strong>Pengalaman:</strong> {{ $tukang->profile->pengalaman ?? '-' }}</small></p>
+                    <p class="mb-1"><small><strong>Deskripsi:</strong> {{ $tukang->profile->deskripsi ?? 'Belum ada deskripsi profil.' }}</small></p>
                 </div>
                 
             </div>

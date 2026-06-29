@@ -60,6 +60,7 @@
                                         <div class="form-group"><label>Email</label><input type="email" name="email" class="form-control" value="{{ $item->email }}" required></div>
                                         <div class="form-group"><label>No HP</label><input type="text" name="no_hp" class="form-control" value="{{ $item->profile->no_hp ?? '' }}"></div>
                                         <div class="form-group"><label>Pengalaman</label><input type="text" name="pengalaman" class="form-control" value="{{ $item->profile->pengalaman ?? '' }}"></div>
+                                        <div class="form-group"><label>Deskripsi/Portofolio Singkat</label><textarea name="deskripsi" class="form-control" rows="3">{{ $item->profile->deskripsi ?? '' }}</textarea></div>
                                         <div class="form-group">
                                             <label>Status</label>
                                             <select name="status_aktif" class="form-control">
@@ -97,6 +98,7 @@
                     <div class="form-group"><label>Password <span class="text-danger">*</span></label><input type="password" name="password" class="form-control" required></div>
                     <div class="form-group"><label>No HP</label><input type="text" name="no_hp" class="form-control"></div>
                     <div class="form-group"><label>Pengalaman</label><input type="text" name="pengalaman" class="form-control" placeholder="Contoh: 5 Tahun di konstruksi"></div>
+                    <div class="form-group"><label>Deskripsi/Portofolio Singkat</label><textarea name="deskripsi" class="form-control" rows="3" placeholder="Ceritakan pengalaman dan proyek sebelumnya..."></textarea></div>
                 </div>
                 <div class="modal-footer"><button type="submit" class="btn btn-primary">Simpan</button></div>
             </div>
