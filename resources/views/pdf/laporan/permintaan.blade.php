@@ -4,20 +4,22 @@
     <meta charset="UTF-8">
     <title>Laporan Permintaan</title>
     <style>
-        body { font-family: 'Helvetica', 'Arial', sans-serif; font-size: 10px; color: #333; line-height: 1.5; }
-        .header { text-align: center; border-bottom: 2px solid #333; padding-bottom: 10px; margin-bottom: 20px; }
-        .header h1 { margin: 0; font-size: 16px; text-transform: uppercase; }
-        .header p { margin: 5px 0 0; font-size: 10px; color: #666; }
+        body { font-family: 'Helvetica', 'Arial', sans-serif; font-size: 10px; color: #000; line-height: 1.5; }
+        .header { text-align: center; border-bottom: 3px solid #000; padding-bottom: 15px; margin-bottom: 20px; }
+        .header h1 { margin: 0; font-size: 18px; text-transform: uppercase; font-weight: bold; }
+        .header h2 { margin: 5px 0 0; font-size: 14px; text-transform: uppercase; font-weight: bold; }
+        .header p { margin: 8px 0 0; font-size: 10px; color: #333; }
         .data-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-        .data-table th, .data-table td { border: 1px solid #ddd; padding: 4px; }
-        .data-table th { background-color: #f5f5f5; text-align: center; font-weight: bold; }
+        .data-table th, .data-table td { border: 1px solid #000; padding: 6px; }
+        .data-table th { background-color: #e0e0e0; text-align: center; font-weight: bold; text-transform: uppercase; }
         .text-center { text-align: center; }
         .text-right { text-align: right; }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>LAPORAN PERMINTAAN RAB</h1>
+        <h1>SISTEM INFORMASI RAB (SIRAB)</h1>
+        <h2>LAPORAN PERMINTAAN RAB</h2>
         <p>Dicetak pada: {{ now()->format('d/m/Y H:i') }} | Filter: {{ request('tanggal_dari') ?? '-' }} s/d {{ request('tanggal_sampai') ?? '-' }}</p>
     </div>
 
@@ -57,3 +59,4 @@
     </table>
 </body>
 </html>
+

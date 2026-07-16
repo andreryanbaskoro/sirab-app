@@ -5,8 +5,12 @@ namespace App\Exports;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithStyles;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use PhpOffice\PhpSpreadsheet\Style\Border;
 
-class LaporanRabExport implements FromCollection, WithHeadings, WithMapping
+class LaporanRabExport implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize, WithStyles
 {
     protected $data;
 
@@ -25,14 +29,13 @@ class LaporanRabExport implements FromCollection, WithHeadings, WithMapping
         return [
             'No',
             'Nomor RAB',
-            'Nomor Permintaan',
+            'Permintaan',
+            'Konsumen',
             'Kepala Tukang',
-            'Total Material',
-            'Total Pekerjaan',
-            'Jasa Tukang',
-            'Biaya Tambahan',
-            'Grand Total',
-            'Status',
+            'Nilai RAB (Rp)',
+            'Status Persetujuan',
+            'Kontrak Kerja',
+            'Status Proyek',
             'Tanggal',
         ];
     }
@@ -45,14 +48,22 @@ class LaporanRabExport implements FromCollection, WithHeadings, WithMapping
             $no,
             $row->nomor_rab,
             $row->permintaan->nomor_permintaan ?? '-',
-            $row->tukang->profile->nama_lengkap ?? $row->tukang->name,
-            $row->total_material,
-            $row->total_pekerjaan,
-            $row->biaya_jasa_tukang,
-            $row->biaya_tambahan,
-            $row->grand_total,
+            $row->permintaan->konsumen->name ?? '-',
+            $row->tukang->name,
+            $row->total_final,
             $row->status->label(),
+            $row->kontrak->nomor_kontrak ?? '-',
+            $row->kontrak ? $row->kontrak->status->label() : '-',
             $row->created_at->format('d/m/Y'),
         ];
+    }
+
+    public function styles(Worksheet $sheet)
+    {
+        $lastRow = $sheet->getHighestRow();
+        $lastCol = $sheet->getHighestColumn();
+        
+        $sheet->getStyle('A1:' . $lastCol . '1')->getFont()->setBold(true);
+        $sheet->getStyle('A1:' . $lastCol . $lastRow)->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
     }
 }

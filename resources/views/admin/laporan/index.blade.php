@@ -10,19 +10,16 @@
     <div class="ibox-body">
         <ul class="nav nav-tabs mb-4">
             <li class="nav-item">
-                <a class="nav-link {{ $type === 'permintaan' ? 'active' : '' }}" href="{{ route('admin.laporan.index', ['type' => 'permintaan']) }}">Laporan Permintaan</a>
+                <a class="nav-link {{ $type === 'permintaan' ? 'active' : '' }}" href="{{ route('admin.laporan.index', ['type' => 'permintaan']) }}">Laporan Permintaan Konsumen</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ $type === 'rab' ? 'active' : '' }}" href="{{ route('admin.laporan.index', ['type' => 'rab']) }}">Laporan RAB</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{ $type === 'kontrak' ? 'active' : '' }}" href="{{ route('admin.laporan.index', ['type' => 'kontrak']) }}">Laporan Kontrak</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{ $type === 'konsumen' ? 'active' : '' }}" href="{{ route('admin.laporan.index', ['type' => 'konsumen']) }}">Laporan Konsumen</a>
+                <a class="nav-link {{ $type === 'rab' ? 'active' : '' }}" href="{{ route('admin.laporan.index', ['type' => 'rab']) }}">Laporan Hasil RAB</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link {{ $type === 'kepala_tukang' ? 'active' : '' }}" href="{{ route('admin.laporan.index', ['type' => 'kepala_tukang']) }}">Laporan Kepala Tukang</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ $type === 'konsumen' ? 'active' : '' }}" href="{{ route('admin.laporan.index', ['type' => 'konsumen']) }}">Laporan Konsumen</a>
             </li>
         </ul>
         <form action="{{ route('admin.laporan.index') }}" method="GET" class="row">
@@ -95,9 +92,12 @@
                         @elseif($type === 'rab')
                             <th>Nomor RAB</th>
                             <th>Permintaan</th>
+                            <th>Konsumen</th>
                             <th>Tukang</th>
-                            <th>Grand Total</th>
-                            <th>Status</th>
+                            <th>Nilai RAB (Rp)</th>
+                            <th>Status Persetujuan</th>
+                            <th>Kontrak Kerja</th>
+                            <th>Status Proyek</th>
                             <th>Tanggal</th>
                         @elseif($type === 'kontrak')
                             <th>Nomor Kontrak</th>
@@ -131,9 +131,18 @@
                         @elseif($type === 'rab')
                             <td>{{ $item->nomor_rab }}</td>
                             <td>{{ $item->permintaan->nomor_permintaan ?? '-' }}</td>
+                            <td>{{ $item->permintaan->konsumen->name ?? '-' }}</td>
                             <td>{{ $item->tukang->name }}</td>
-                            <td>Rp {{ number_format($item->total_final, 0, ',', '.') }}</td>
+                            <td>{{ number_format($item->total_final, 0, ',', '.') }}</td>
                             <td><x-status-badge :status="$item->status" /></td>
+                            <td>{{ $item->kontrak->nomor_kontrak ?? '-' }}</td>
+                            <td>
+                                @if($item->kontrak)
+                                    <x-status-badge :status="$item->kontrak->status" />
+                                @else
+                                    -
+                                @endif
+                            </td>
                             <td>{{ $item->created_at->format('d/m/Y') }}</td>
                         @elseif($type === 'kontrak')
                             <td>{{ $item->nomor_kontrak }}</td>

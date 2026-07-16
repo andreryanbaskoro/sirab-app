@@ -145,6 +145,11 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/proyek/{proyek}/bayar', [Konsumen\ProyekController::class, 'uploadPembayaran'])->name('proyek.bayar');
         Route::post('/proyek/{proyek}/selesai', [Konsumen\ProyekController::class, 'setujuiSelesai'])->name('proyek.selesai');
 
+        // Laporan Konsumen
+        Route::get('/laporan', [Konsumen\LaporanController::class, 'index'])->name('laporan.index');
+        Route::get('/laporan/export-excel', [Konsumen\LaporanController::class, 'exportExcel'])->name('laporan.export-excel');
+        Route::get('/laporan/export-pdf', [Konsumen\LaporanController::class, 'exportPdf'])->name('laporan.export-pdf');
+
         // Riwayat
         Route::get('/riwayat', [Konsumen\RiwayatController::class, 'index'])->name('riwayat.index');
     });

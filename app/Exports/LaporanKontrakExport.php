@@ -5,6 +5,10 @@ namespace App\Exports;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithStyles;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use PhpOffice\PhpSpreadsheet\Style\Border;
 
 class LaporanKontrakExport implements FromCollection, WithHeadings, WithMapping
 {
@@ -51,4 +55,14 @@ class LaporanKontrakExport implements FromCollection, WithHeadings, WithMapping
             $row->status->label(),
         ];
     }
+
+    public function styles(Worksheet $sheet)
+    {
+        $lastRow = $sheet->getHighestRow();
+        $lastCol = $sheet->getHighestColumn();
+        
+        $sheet->getStyle('A1:' . $lastCol . '1')->getFont()->setBold(true);
+        $sheet->getStyle('A1:' . $lastCol . $lastRow)->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+    }
 }
+

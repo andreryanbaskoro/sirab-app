@@ -60,7 +60,7 @@ class LaporanController extends Controller
                 $query->where('status', $status);
             }
         } elseif ($type === 'rab') {
-            $query = Rab::with(['permintaan.konsumen.profile', 'tukang.profile'])->latest();
+            $query = Rab::with(['permintaan.konsumen.profile', 'tukang.profile', 'kontrak'])->latest();
             if ($search) {
                 $query->where('nomor_rab', 'like', "%{$search}%");
             }
