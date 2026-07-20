@@ -323,7 +323,7 @@
                         </a>
                     </li>
                     <li>
-                        <a class="{{ request()->routeIs('konsumen.laporan.*') ? 'active' : '' }}" href="{{ route('laporan.index') }}">
+                        <a class="{{ request()->routeIs('konsumen.laporan.*') ? 'active' : '' }}" href="{{ route('konsumen.laporan.index') }}">
                             <i class="sidebar-item-icon fa-solid fa-chart-column"></i><span class="nav-label">Laporan</span>
                         </a>
                     </li>
