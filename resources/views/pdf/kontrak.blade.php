@@ -81,7 +81,7 @@
 
     <div class="section">
         <div class="section-title">PASAL 2 : NILAI KONTRAK</div>
-        <p>Nilai keseluruhan untuk pembangunan rumah sebagaimana dimaksud pada Pasal 1 adalah sebesar <strong>Rp {{ number_format($kontrak->nilai_kontrak, 0, ',', '.') }}</strong> (<em>Terbilang: {{ ucwords((new \NumberFormatter('id', \NumberFormatter::SPELLOUT))->format($kontrak->nilai_kontrak)) }} Rupiah</em>). Nilai ini mencakup seluruh biaya material, upah pekerja, jasa PIHAK KEDUA, dan biaya terkait lainnya sesuai yang disepakati di dalam RAB.</p>
+        <p>Nilai keseluruhan untuk pembangunan rumah sebagaimana dimaksud pada Pasal 1 adalah sebesar <strong>Rp {{ number_format($kontrak->nilai_kontrak, 0, ',', '.') }}</strong> @if(class_exists('NumberFormatter')) (<em>Terbilang: {{ ucwords((new \NumberFormatter('id', \NumberFormatter::SPELLOUT))->format($kontrak->nilai_kontrak)) }} Rupiah</em>) @endif. Nilai ini mencakup seluruh biaya material, upah pekerja, jasa PIHAK KEDUA, dan biaya terkait lainnya sesuai yang disepakati di dalam RAB.</p>
     </div>
 
     <div class="section">
