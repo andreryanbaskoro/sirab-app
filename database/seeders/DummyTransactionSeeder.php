@@ -13,14 +13,14 @@ class DummyTransactionSeeder extends Seeder
     public function run(): void
     {
         $konsumen = User::role('konsumen')->first();
-        $tukang = User::role('kepala_tukang')->first();
+        $konsultan = User::role('konsultan')->first();
         $tipe = TipeRumah::first();
 
-        if ($konsumen && $tukang && $tipe) {
+        if ($konsumen && $konsultan && $tipe) {
             // 1. Permintaan Baru (Pending)
             Permintaan::create([
                 'konsumen_id' => $konsumen->id,
-                'tukang_id' => $tukang->id,
+                'konsultan_id' => $konsultan->id,
                 'tipe_rumah_id' => $tipe->id,
                 'jenis_jasa' => 'bangun_baru',
                 'lokasi_proyek' => 'Jl. Pembangunan No. 10 (Pending)',
@@ -33,7 +33,7 @@ class DummyTransactionSeeder extends Seeder
             // 2. Permintaan Menunggu Persetujuan Konsumen (Sudah ada RAB)
             $p2 = Permintaan::create([
                 'konsumen_id' => $konsumen->id,
-                'tukang_id' => $tukang->id,
+                'konsultan_id' => $konsultan->id,
                 'tipe_rumah_id' => $tipe->id,
                 'jenis_jasa' => 'renovasi',
                 'lokasi_proyek' => 'Jl. Merdeka No. 45 (Menunggu Persetujuan)',
@@ -44,11 +44,11 @@ class DummyTransactionSeeder extends Seeder
 
             $rab = \App\Models\Rab::create([
                 'permintaan_id' => $p2->id,
-                'tukang_id' => $tukang->id,
+                'konsultan_id' => $konsultan->id,
                 'nomor_rab' => 'RAB-' . date('Ymd') . '-0001',
                 'total_material' => 15000000,
                 'total_upah' => 5000000,
-                'biaya_jasa_tukang' => 2000000,
+                'biaya_jasa_konsultan' => 2000000,
                 'biaya_tambahan' => 0,
                 'total_final' => 22000000,
                 'status' => \App\Enums\RabStatus::MENUNGGU_PERSETUJUAN,
@@ -57,7 +57,7 @@ class DummyTransactionSeeder extends Seeder
             // 3. Kontrak Aktif (Proyek Berjalan)
             $p3 = Permintaan::create([
                 'konsumen_id' => $konsumen->id,
-                'tukang_id' => $tukang->id,
+                'konsultan_id' => $konsultan->id,
                 'tipe_rumah_id' => $tipe->id,
                 'jenis_jasa' => 'bangun_baru',
                 'lokasi_proyek' => 'Komp. Harmoni Blok C/12 (Proyek Berjalan)',
@@ -68,11 +68,11 @@ class DummyTransactionSeeder extends Seeder
 
             $rab3 = \App\Models\Rab::create([
                 'permintaan_id' => $p3->id,
-                'tukang_id' => $tukang->id,
+                'konsultan_id' => $konsultan->id,
                 'nomor_rab' => 'RAB-' . date('Ymd') . '-0002',
                 'total_material' => 50000000,
                 'total_upah' => 20000000,
-                'biaya_jasa_tukang' => 5000000,
+                'biaya_jasa_konsultan' => 5000000,
                 'biaya_tambahan' => 1000000,
                 'total_final' => 76000000,
                 'status' => \App\Enums\RabStatus::DISETUJUI,
@@ -83,7 +83,7 @@ class DummyTransactionSeeder extends Seeder
                 'permintaan_id' => $p3->id,
                 'rab_id' => $rab3->id,
                 'konsumen_id' => $konsumen->id,
-                'tukang_id' => $tukang->id,
+                'konsultan_id' => $konsultan->id,
                 'nilai_kontrak' => 76000000,
                 'tanggal_mulai' => now()->subDays(2),
                 'tanggal_selesai' => now()->addDays(30),

@@ -39,7 +39,7 @@
                         <th>No</th>
                         <th>No. Permintaan</th>
                         <th>Konsumen</th>
-                        <th>Kepala Tukang</th>
+                        <th>Konsultan</th>
                         <th>Tipe Rumah</th>
                         <th>Jenis Jasa</th>
                         <th>Tanggal</th>
@@ -53,7 +53,7 @@
                         <td>{{ $data->firstItem() + $index }}</td>
                         <td>{{ $item->nomor_permintaan }}</td>
                         <td>{{ $item->konsumen->name }}</td>
-                        <td>{{ $item->tukang->name }}</td>
+                        <td>{{ $item->konsultan->name }}</td>
                         <td>{{ $item->tipeRumah->nama_tipe }}</td>
                         <td>{{ ucfirst($item->jenis_jasa) }}</td>
                         <td>{{ $item->tanggal_permohonan->format('d/m/Y') }}</td>

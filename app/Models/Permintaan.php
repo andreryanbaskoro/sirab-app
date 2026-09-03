@@ -17,7 +17,7 @@ class Permintaan extends Model
     protected $fillable = [
         'nomor_permintaan',
         'konsumen_id',
-        'tukang_id',
+        'konsultan_id',
         'tipe_rumah_id',
         'lokasi_proyek',
         'luas_bangunan',
@@ -65,9 +65,9 @@ class Permintaan extends Model
         return $this->belongsTo(User::class, 'konsumen_id');
     }
 
-    public function tukang(): BelongsTo
+    public function konsultan(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'tukang_id');
+        return $this->belongsTo(User::class, 'konsultan_id');
     }
 
     public function tipeRumah(): BelongsTo
@@ -97,9 +97,9 @@ class Permintaan extends Model
         return $query->where('konsumen_id', $userId);
     }
 
-    public function scopeForTukang($query, $userId)
+    public function scopeForKonsultan($query, $userId)
     {
-        return $query->where('tukang_id', $userId);
+        return $query->where('konsultan_id', $userId);
     }
 
     // ─── Accessors ──────────────────────────────────────────────

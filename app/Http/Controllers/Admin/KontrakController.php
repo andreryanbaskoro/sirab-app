@@ -11,7 +11,7 @@ class KontrakController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Kontrak::with(['permintaan', 'konsumen', 'tukang'])->latest();
+        $query = Kontrak::with(['permintaan', 'konsumen', 'konsultan'])->latest();
 
         if ($request->status) {
             $query->where('status', $request->status);
@@ -29,7 +29,7 @@ class KontrakController extends Controller
 
     public function show(Kontrak $kontrak)
     {
-        $kontrak->load(['permintaan.tipeRumah', 'konsumen.profile', 'tukang.profile', 'rab.details']);
+        $kontrak->load(['permintaan.tipeRumah', 'konsumen.profile', 'konsultan.profile', 'rab.details']);
         return view('admin.kontrak.show', compact('kontrak'));
     }
 }

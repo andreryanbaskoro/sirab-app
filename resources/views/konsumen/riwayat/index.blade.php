@@ -16,7 +16,7 @@
                             <tr>
                                 <th>No</th>
                                 <th>Nomor Permintaan</th>
-                                <th>Kepala Tukang</th>
+                                <th>Konsultan</th>
                                 <th>Tipe Rumah</th>
                                 <th>Lokasi Proyek</th>
                                 <th>Status Akhir</th>
@@ -29,7 +29,7 @@
                             <tr>
                                 <td>{{ $data->firstItem() + $key }}</td>
                                 <td>{{ $item->nomor_permintaan }}</td>
-                                <td>{{ $item->tukang->name }}</td>
+                                <td>{{ $item->konsultan->name }}</td>
                                 <td>{{ $item->tipeRumah->nama_tipe }}</td>
                                 <td>{{ $item->lokasi_proyek }}</td>
                                 <td><x-status-badge :status="$item->status" /></td>

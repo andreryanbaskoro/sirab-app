@@ -27,8 +27,8 @@
                         <td>
                             @if($kontrak->permintaan->sumber_denah === 'upload_sendiri')
                                 Dari Konsumen
-                            @elseif($kontrak->permintaan->sumber_denah === 'dibuatkan_tukang')
-                                Dibuatkan Tukang
+                            @elseif($kontrak->permintaan->sumber_denah === 'dibuatkan_konsultan')
+                                Dibuatkan Konsultan
                             @else
                                 -
                             @endif
@@ -55,8 +55,8 @@
                         <td>{{ $kontrak->konsumen->name }}</td>
                     </tr>
                     <tr>
-                        <th class="bg-light">PIHAK KEDUA (Tukang)</th>
-                        <td>{{ $kontrak->tukang->name }}</td>
+                        <th class="bg-light">PIHAK KEDUA (Konsultan)</th>
+                        <td>{{ $kontrak->konsultan->name }}</td>
                     </tr>
                 </table>
             </div>

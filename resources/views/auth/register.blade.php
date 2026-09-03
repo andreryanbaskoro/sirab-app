@@ -252,9 +252,9 @@
                                 Konsumen
                             </option>
 
-                            <option value="kepala_tukang"
-                                {{ old('role') == 'kepala_tukang' ? 'selected' : '' }}>
-                                Kepala Tukang
+                            <option value="konsultan"
+                                {{ old('role') == 'konsultan' ? 'selected' : '' }}>
+                                Konsultan
                             </option>
                         </select>
                     </div>

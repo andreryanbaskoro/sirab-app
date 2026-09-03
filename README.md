@@ -1,6 +1,6 @@
 # 🏗️ SIRAB APP
 
-Sistem Informasi RAB (Rencana Anggaran Biaya) berbasis Laravel untuk pengelolaan proyek, tukang, konsumen, dan administrasi PU.
+Sistem Informasi RAB (Rencana Anggaran Biaya) berbasis Laravel untuk pengelolaan proyek, konsultan, konsumen, dan administrasi PU.
 
 ---
 
@@ -88,7 +88,7 @@ Project ini hanya menggunakan 2 seeder utama:
 Membuat role:
 
 * admin_pu
-* kepala_tukang
+* konsultan
 * konsumen
 
 ### 📌 UserSeeder
@@ -96,7 +96,7 @@ Membuat role:
 Membuat user default:
 
 * Admin PU
-* 1 Kepala Tukang
+* 1 Konsultan
 * 1 Konsumen
 
 ---
@@ -132,11 +132,11 @@ Email    : admin@pu.com
 Password : password
 ```
 
-### 👷 Kepala Tukang
+### 👷 Konsultan
 
 ```
-Email    : tukang@tukang.com
-Password : password
+Email    : konsultan@konsultan.com
+Password : konsultan
 ```
 
 ### 👤 Konsumen

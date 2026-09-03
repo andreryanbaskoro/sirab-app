@@ -6,7 +6,7 @@ use App\Models\Rab;
 use App\Models\RabDetail;
 use App\Models\HargaMaterial;
 use App\Models\HargaPekerjaan;
-use App\Models\HargaJasaTukang;
+use App\Models\HargaJasaKonsultan;
 use App\Enums\RabStatus;
 use App\Enums\PermintaanStatus;
 use Illuminate\Support\Facades\DB;
@@ -18,9 +18,9 @@ class RabCalculatorService
         return DB::transaction(function () use ($data) {
             $rab = Rab::create([
                 'permintaan_id' => $data['permintaan_id'],
-                'tukang_id' => $data['tukang_id'],
-                'jasa_tukang_id' => $data['jasa_tukang_id'] ?? null,
-                'biaya_jasa_tukang' => $data['biaya_jasa_tukang'] ?? 0,
+                'konsultan_id' => $data['konsultan_id'],
+                'jasa_konsultan_id' => $data['jasa_konsultan_id'] ?? null,
+                'biaya_jasa_konsultan' => $data['biaya_jasa_konsultan'] ?? 0,
                 'biaya_tambahan' => $data['biaya_tambahan'] ?? 0,
                 'profit_persen' => $data['profit_persen'] ?? 0,
                 'ppn_persen' => !empty($data['use_ppn']) ? 11 : 0,
@@ -86,18 +86,18 @@ class RabCalculatorService
                 }
             }
 
-            // Add jasa tukang as detail
-            if (!empty($data['biaya_jasa_tukang']) && $data['biaya_jasa_tukang'] > 0) {
+            // Add jasa konsultan as detail
+            if (!empty($data['biaya_jasa_konsultan']) && $data['biaya_jasa_konsultan'] > 0) {
                 RabDetail::create([
                     'rab_id' => $rab->id,
                     'parent_id' => null,
-                    'jenis_item' => 'jasa_tukang',
-                    'referensi_id' => $data['jasa_tukang_id'] ?? null,
-                    'nama_item' => 'Jasa Kepala Tukang',
+                    'jenis_item' => 'jasa_konsultan',
+                    'referensi_id' => $data['jasa_konsultan_id'] ?? null,
+                    'nama_item' => 'Jasa Konsultan',
                     'qty' => 1,
                     'satuan' => 'ls',
-                    'harga_satuan' => $data['biaya_jasa_tukang'],
-                    'subtotal' => $data['biaya_jasa_tukang'],
+                    'harga_satuan' => $data['biaya_jasa_konsultan'],
+                    'subtotal' => $data['biaya_jasa_konsultan'],
                 ]);
             }
 
@@ -118,7 +118,7 @@ class RabCalculatorService
 
             $this->recalculate($rab);
 
-            return $rab->fresh(['details', 'permintaan', 'tukang']);
+            return $rab->fresh(['details', 'permintaan', 'konsultan']);
         });
     }
 
@@ -126,7 +126,7 @@ class RabCalculatorService
     {
         $totalMaterial = $rab->details()->where('jenis_item', 'material')->sum('subtotal');
         $totalUpah = $rab->details()->where('jenis_item', 'pekerjaan')->sum('subtotal');
-        $biayaJasa = $rab->details()->where('jenis_item', 'jasa_tukang')->sum('subtotal');
+        $biayaJasa = $rab->details()->where('jenis_item', 'jasa_konsultan')->sum('subtotal');
         $biayaTambahan = $rab->details()->where('jenis_item', 'tambahan')->sum('subtotal');
 
         $subtotal = $totalMaterial + $totalUpah + $biayaJasa + $biayaTambahan;
@@ -144,7 +144,7 @@ class RabCalculatorService
         $rab->update([
             'total_material' => $totalMaterial,
             'total_upah' => $totalUpah,
-            'biaya_jasa_tukang' => $biayaJasa,
+            'biaya_jasa_konsultan' => $biayaJasa,
             'biaya_tambahan' => $biayaTambahan,
             'total_sebelum_pajak' => $totalSebelumPajak,
             'profit_nominal' => $profitNominal,

@@ -30,8 +30,8 @@
                                 <td>{{ $permintaan->konsumen->name }} <br><small class="text-muted">{{ $permintaan->konsumen->profile->no_hp ?? '' }}</small></td>
                             </tr>
                             <tr>
-                                <th class="bg-light">Kepala Tukang</th>
-                                <td>{{ $permintaan->tukang?->name ?? 'Belum Pilih Tukang' }} <br><small class="text-muted">{{ $permintaan->tukang?->profile?->no_hp ?? '' }}</small></td>
+                                <th class="bg-light">Konsultan</th>
+                                <td>{{ $permintaan->konsultan?->name ?? 'Belum Pilih Konsultan' }} <br><small class="text-muted">{{ $permintaan->konsultan?->profile?->no_hp ?? '' }}</small></td>
                             </tr>
                         </table>
                         </div>
@@ -56,8 +56,8 @@
                                 <td>
                                     @if($permintaan->sumber_denah === 'upload_sendiri')
                                         <span class="badge badge-info">Dari Konsumen</span>
-                                    @elseif($permintaan->sumber_denah === 'dibuatkan_tukang')
-                                        <span class="badge badge-warning">Dibuatkan Tukang</span>
+                                    @elseif($permintaan->sumber_denah === 'dibuatkan_konsultan')
+                                        <span class="badge badge-warning">Dibuatkan Konsultan</span>
                                     @else
                                         <span class="badge badge-secondary">-</span>
                                     @endif
@@ -81,8 +81,8 @@
                                         @endif
                                         <a href="{{ asset('storage/' . $permintaan->dokumen_path) }}" target="_blank" class="btn btn-outline-info btn-sm"><i class="fa fa-eye"></i> Lihat Dokumen Penuh</a>
                                     @else
-                                        @if($permintaan->sumber_denah === 'dibuatkan_tukang')
-                                            <span class="text-warning"><i class="fa fa-clock-o"></i> Menunggu Tukang Mengunggah Sketsa (RAB belum disubmit)</span>
+                                        @if($permintaan->sumber_denah === 'dibuatkan_konsultan')
+                                            <span class="text-warning"><i class="fa fa-clock-o"></i> Menunggu Konsultan Mengunggah Sketsa (RAB belum disubmit)</span>
                                         @else
                                             <span class="text-muted">Tidak ada dokumen</span>
                                         @endif

@@ -17,7 +17,7 @@
                                 <th>No</th>
                                 <th>Nomor RAB</th>
                                 <th>Permintaan</th>
-                                <th>Kepala Tukang</th>
+                                <th>Konsultan</th>
                                 <th>Grand Total</th>
                                 <th>Status</th>
                                 <th>Tanggal</th>
@@ -30,7 +30,7 @@
                                 <td>{{ $data->firstItem() + $key }}</td>
                                 <td>{{ $item->nomor_rab }}</td>
                                 <td><a href="{{ route('konsumen.permintaan.show', $item->permintaan_id) }}">{{ $item->permintaan->nomor_permintaan }}</a></td>
-                                <td>{{ $item->tukang->name }}</td>
+                                <td>{{ $item->konsultan->name }}</td>
                                 <td>Rp {{ number_format($item->total_final, 0, ',', '.') }}</td>
                                 <td><x-status-badge :status="$item->status" /></td>
                                 <td>{{ $item->created_at->format('d/m/Y') }}</td>

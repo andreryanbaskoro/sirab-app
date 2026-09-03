@@ -14,7 +14,7 @@
                     <tr>
                         <th>No. Kontrak</th>
                         <th>Konsumen</th>
-                        <th>Tukang</th>
+                        <th>Konsultan</th>
                         <th>Masa Kerja</th>
                         <th>Nilai Kontrak</th>
                         <th>Status</th>
@@ -26,7 +26,7 @@
                     <tr>
                         <td>{{ $item->nomor_kontrak }}</td>
                         <td>{{ $item->konsumen->name }}</td>
-                        <td>{{ $item->tukang->name }}</td>
+                        <td>{{ $item->konsultan->name }}</td>
                         <td>{{ \Carbon\Carbon::parse($item->tanggal_mulai)->format('d/m/Y') }} - {{ \Carbon\Carbon::parse($item->tanggal_selesai)->format('d/m/Y') }}</td>
                         <td>Rp {{ number_format($item->nilai_kontrak, 0, ',', '.') }}</td>
                         <td><x-status-badge :status="$item->status" /></td>

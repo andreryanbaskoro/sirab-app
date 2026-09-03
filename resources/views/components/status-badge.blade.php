@@ -18,7 +18,7 @@
             $color = 'secondary';
         } elseif (in_array($status, ['menunggu_persetujuan'])) {
             $color = 'warning';
-        } elseif (in_array($status, ['diterima_tukang', 'disusun_rab'])) {
+        } elseif (in_array($status, ['diterima_konsultan', 'disusun_rab'])) {
             $color = 'info';
         } elseif (str_contains($status, 'tolak') || str_contains($status, 'batal')) {
             $color = 'danger';

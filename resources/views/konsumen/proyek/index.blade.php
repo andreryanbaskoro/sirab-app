@@ -23,7 +23,7 @@
                         <tr>
                             <th width="5%">No</th>
                             <th>No Kontrak</th>
-                            <th>Tukang</th>
+                            <th>Konsultan</th>
                             <th>Tipe Rumah</th>
                             <th>Nilai Proyek</th>
                             <th>Target Selesai</th>
@@ -36,7 +36,7 @@
                         <tr>
                             <td>{{ $key + 1 }}</td>
                             <td><strong>{{ $item->nomor_kontrak }}</strong></td>
-                            <td>{{ $item->tukang->name }}</td>
+                            <td>{{ $item->konsultan->name }}</td>
                             <td>{{ $item->permintaan->tipeRumah->nama_tipe }}</td>
                             <td>Rp {{ number_format($item->nilai_kontrak, 0, ',', '.') }}</td>
                             <td>{{ $item->tanggal_selesai ? \Carbon\Carbon::parse($item->tanggal_selesai)->format('d M Y') : '-' }}</td>

@@ -5,8 +5,8 @@ namespace App\Enums;
 enum PermintaanStatus: string
 {
     case PENDING = 'pending';
-    case DITERIMA_TUKANG = 'diterima_tukang';
-    case DITOLAK_TUKANG = 'ditolak_tukang';
+    case DITERIMA_KONSULTAN = 'diterima_konsultan';
+    case DITOLAK_KONSULTAN = 'ditolak_konsultan';
     case DISUSUN_RAB = 'disusun_rab';
     case MENUNGGU_PERSETUJUAN = 'menunggu_persetujuan';
     case DISETUJUI = 'disetujui';
@@ -18,8 +18,8 @@ enum PermintaanStatus: string
     {
         return match($this) {
             self::PENDING => 'Pending',
-            self::DITERIMA_TUKANG => 'Diterima Tukang',
-            self::DITOLAK_TUKANG => 'Ditolak Tukang',
+            self::DITERIMA_KONSULTAN => 'Diterima Konsultan',
+            self::DITOLAK_KONSULTAN => 'Ditolak Konsultan',
             self::DISUSUN_RAB => 'Disusun RAB',
             self::MENUNGGU_PERSETUJUAN => 'Menunggu Persetujuan',
             self::DISETUJUI => 'Disetujui',
@@ -33,10 +33,10 @@ enum PermintaanStatus: string
     {
         return match($this) {
             self::PENDING => 'warning',
-            self::DITERIMA_TUKANG, self::DISUSUN_RAB => 'info',
+            self::DITERIMA_KONSULTAN, self::DISUSUN_RAB => 'info',
             self::MENUNGGU_PERSETUJUAN => 'primary',
             self::DISETUJUI, self::SELESAI, self::KONTRAK_AKTIF => 'success',
-            self::DITOLAK_TUKANG, self::DITOLAK_KONSUMEN => 'danger',
+            self::DITOLAK_KONSULTAN, self::DITOLAK_KONSUMEN => 'danger',
         };
     }
 }

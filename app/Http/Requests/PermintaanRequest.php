@@ -14,7 +14,7 @@ class PermintaanRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'tukang_id' => 'required|exists:users,id',
+            'konsultan_id' => 'required|exists:users,id',
             'tipe_rumah_id' => 'required|exists:tipe_rumahs,id',
             'lokasi_proyek' => 'required|string|max:500',
             'luas_bangunan' => 'required|numeric|min:1',
@@ -25,8 +25,8 @@ class PermintaanRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'tukang_id.required' => 'Kepala tukang wajib dipilih.',
-            'tukang_id.exists' => 'Kepala tukang tidak ditemukan.',
+            'konsultan_id.required' => 'Konsultan wajib dipilih.',
+            'konsultan_id.exists' => 'Konsultan tidak ditemukan.',
             'tipe_rumah_id.required' => 'Tipe rumah wajib dipilih.',
             'tipe_rumah_id.exists' => 'Tipe rumah tidak ditemukan.',
             'lokasi_proyek.required' => 'Lokasi proyek wajib diisi.',

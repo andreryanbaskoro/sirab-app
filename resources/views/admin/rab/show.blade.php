@@ -15,7 +15,7 @@
         <div class="row">
             <div class="col-md-4">
                 <strong>Konsumen:</strong> {{ $rab->permintaan->konsumen->name }}<br>
-                <strong>Tukang:</strong> {{ $rab->tukang->name }}<br>
+                <strong>Konsultan:</strong> {{ $rab->konsultan->name }}<br>
             </div>
             <div class="col-md-4 text-center">
                 <strong>Sketsa Denah:</strong><br>

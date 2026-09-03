@@ -15,8 +15,8 @@ class RabRequest extends FormRequest
     {
         return [
             'permintaan_id' => 'required|exists:permintaans,id',
-            'jasa_tukang_id' => 'nullable|exists:harga_jasa_tukangs,id',
-            'biaya_jasa_tukang' => 'nullable|numeric|min:0',
+            'jasa_konsultan_id' => 'nullable|exists:harga_jasa_konsultans,id',
+            'biaya_jasa_konsultan' => 'nullable|numeric|min:0',
             'biaya_tambahan' => 'nullable|numeric|min:0',
             'keterangan_tambahan' => 'nullable|string|max:255',
 

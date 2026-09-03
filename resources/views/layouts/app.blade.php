@@ -143,7 +143,7 @@
                             <span></span>{{ Auth::user()->name }}<i class="fa-solid fa-angle-down ml-2"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" href="{{ Auth::user()->hasRole('admin_pu') ? '#' : (Auth::user()->hasRole('kepala_tukang') ? route('tukang.profil') : route('konsumen.profil')) }}">
+                            <a class="dropdown-item" href="{{ Auth::user()->hasRole('admin_pu') ? '#' : (Auth::user()->hasRole('konsultan') ? route('konsultan.profil') : route('konsumen.profil')) }}">
                                 <i class="fa-solid fa-user dropdown-icon"></i>Profil Saya
                             </a>
                             <li class="dropdown-divider"></li>
@@ -188,9 +188,9 @@
                         </a>
                     </li>
                     <li>
-                        <a class="{{ request()->routeIs('admin.tukang.*') ? 'active' : '' }}" href="{{ url('/admin/tukang') }}">
+                        <a class="{{ request()->routeIs('admin.konsultan.*') ? 'active' : '' }}" href="{{ url('/admin/konsultan') }}">
                             <i class="sidebar-item-icon fa fa-user"></i>
-                            <span class="nav-label">Kepala Tukang</span>
+                            <span class="nav-label">Konsultan</span>
                         </a>
                     </li>
                     <li class="heading">MASTER DATA BANGUNAN</li>
@@ -215,8 +215,8 @@
                         </a>
                     </li>
                     <li>
-                        <a class="{{ request()->routeIs('admin.harga-jasa-tukang.*') ? 'active' : '' }}" href="{{ url('/admin/harga-jasa-tukang') }}">
-                            <i class="sidebar-item-icon fa-solid fa-hand-holding-dollar"></i><span class="nav-label">Harga Jasa Tukang</span>
+                        <a class="{{ request()->routeIs('admin.harga-jasa-konsultan.*') ? 'active' : '' }}" href="{{ url('/admin/harga-jasa-konsultan') }}">
+                            <i class="sidebar-item-icon fa-solid fa-hand-holding-dollar"></i><span class="nav-label">Harga Jasa Konsultan</span>
                         </a>
                     </li>
                     <li class="heading">TRANSAKSI & LAPORAN</li>
@@ -247,40 +247,40 @@
                     </li>
                     @endrole
 
-                    @role('kepala_tukang')
+                    @role('konsultan')
                     <li>
-                        <a class="{{ request()->routeIs('tukang.dashboard') ? 'active' : '' }}" href="{{ route('tukang.dashboard') }}">
+                        <a class="{{ request()->routeIs('konsultan.dashboard') ? 'active' : '' }}" href="{{ route('konsultan.dashboard') }}">
                             <i class="sidebar-item-icon fa-solid fa-gauge"></i><span class="nav-label">Dashboard</span>
                         </a>
                     </li>
                     <li>
-                        <a class="{{ request()->routeIs('tukang.profil.*') ? 'active' : '' }}" href="{{ route('tukang.profil') }}">
+                        <a class="{{ request()->routeIs('konsultan.profil.*') ? 'active' : '' }}" href="{{ route('konsultan.profil') }}">
                             <i class="sidebar-item-icon fa-solid fa-user"></i><span class="nav-label">Profil</span>
                         </a>
                     </li>
                     <li>
-                        <a class="{{ request()->routeIs('tukang.permintaan.*') ? 'active' : '' }}" href="{{ route('tukang.permintaan.index') }}">
+                        <a class="{{ request()->routeIs('konsultan.permintaan.*') ? 'active' : '' }}" href="{{ route('konsultan.permintaan.index') }}">
                             <i class="sidebar-item-icon fa-solid fa-file-circle-plus"></i><span class="nav-label">Permintaan Masuk</span>
                         </a>
                     </li>
                     <li>
-                        <a class="{{ request()->routeIs('tukang.anggaran.*') ? 'active' : '' }}" href="{{ route('tukang.anggaran.index') }}">
+                        <a class="{{ request()->routeIs('konsultan.anggaran.*') ? 'active' : '' }}" href="{{ route('konsultan.anggaran.index') }}">
                             <i class="sidebar-item-icon fa-solid fa-money-check-dollar"></i><span class="nav-label">Data Anggaran</span>
                         </a>
                     </li>
 
                     <li>
-                        <a class="{{ request()->routeIs('tukang.rab.index') ? 'active' : '' }}" href="{{ route('tukang.rab.index') }}">
+                        <a class="{{ request()->routeIs('konsultan.rab.index') ? 'active' : '' }}" href="{{ route('konsultan.rab.index') }}">
                             <i class="sidebar-item-icon fa-solid fa-file-invoice-dollar"></i><span class="nav-label">Hasil RAB</span>
                         </a>
                     </li>
                     <li>
-                        <a class="{{ request()->routeIs('tukang.proyek.*') ? 'active' : '' }}" href="{{ route('tukang.proyek.index') }}">
+                        <a class="{{ request()->routeIs('konsultan.proyek.*') ? 'active' : '' }}" href="{{ route('konsultan.proyek.index') }}">
                             <i class="sidebar-item-icon fa-solid fa-person-digging"></i><span class="nav-label">Proyek Berjalan</span>
                         </a>
                     </li>
                     <li>
-                        <a class="{{ request()->routeIs('tukang.riwayat.*') ? 'active' : '' }}" href="{{ url('/tukang/riwayat') }}">
+                        <a class="{{ request()->routeIs('konsultan.riwayat.*') ? 'active' : '' }}" href="{{ url('/konsultan/riwayat') }}">
                             <i class="sidebar-item-icon fa-solid fa-clock-rotate-left"></i><span class="nav-label">Riwayat</span>
                         </a>
                     </li>
@@ -303,8 +303,8 @@
                         </a>
                     </li>
                     <li>
-                        <a class="{{ request()->routeIs('konsumen.cari-tukang.*') ? 'active' : '' }}" href="{{ route('konsumen.cari-tukang') }}">
-                            <i class="sidebar-item-icon fa-solid fa-users-viewfinder"></i><span class="nav-label">Daftar Tukang</span>
+                        <a class="{{ request()->routeIs('konsumen.cari-konsultan.*') ? 'active' : '' }}" href="{{ route('konsumen.cari-konsultan') }}">
+                            <i class="sidebar-item-icon fa-solid fa-users-viewfinder"></i><span class="nav-label">Daftar Konsultan</span>
                         </a>
                     </li>
                     <li>

@@ -11,7 +11,7 @@ class RabController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Rab::with(['permintaan.konsumen', 'permintaan.tukang', 'permintaan.tipeRumah'])->latest();
+        $query = Rab::with(['permintaan.konsumen', 'permintaan.konsultan', 'permintaan.tipeRumah'])->latest();
 
         if ($request->status) {
             $query->where('status', $request->status);
@@ -29,7 +29,7 @@ class RabController extends Controller
 
     public function show(Rab $rab)
     {
-        $rab->load(['permintaan.konsumen.profile', 'permintaan.tukang.profile', 'permintaan.tipeRumah', 'details']);
+        $rab->load(['permintaan.konsumen.profile', 'permintaan.konsultan.profile', 'permintaan.tipeRumah', 'details']);
         return view('admin.rab.show', compact('rab'));
     }
 }

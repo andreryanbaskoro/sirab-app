@@ -15,8 +15,8 @@
     <div class="col-lg-3 col-md-6">
         <div class="ibox bg-info color-white widget-stat">
             <div class="ibox-body">
-                <h2 class="m-b-5 font-strong">{{ $totalTukang }}</h2>
-                <div class="m-b-5">Total Kepala Tukang</div><i class="ti-id-badge widget-stat-icon"></i>
+                <h2 class="m-b-5 font-strong">{{ $totalKonsultan }}</h2>
+                <div class="m-b-5">Total Konsultan</div><i class="ti-id-badge widget-stat-icon"></i>
             </div>
         </div>
     </div>
@@ -51,7 +51,7 @@
                             <tr>
                                 <th>Nomor</th>
                                 <th>Konsumen</th>
-                                <th>Kepala Tukang</th>
+                                <th>Konsultan</th>
                                 <th>Tanggal</th>
                                 <th>Status</th>
                             </tr>
@@ -61,7 +61,7 @@
                             <tr>
                                 <td><a href="{{ route('admin.permintaan.show', $item->id) }}">{{ $item->nomor_permintaan }}</a></td>
                                 <td>{{ $item->konsumen->name }}</td>
-                                <td>{{ $item->tukang->name }}</td>
+                                <td>{{ $item->konsultan->name }}</td>
                                 <td>{{ $item->tanggal_permohonan->format('d/m/Y') }}</td>
                                 <td><x-status-badge :status="$item->status" /></td>
                             </tr>

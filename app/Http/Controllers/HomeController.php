@@ -9,7 +9,7 @@ class HomeController extends Controller
         if (auth()->check()) {
             return match(auth()->user()->role) {
                 'admin_pu' => redirect()->route('admin.dashboard'),
-                'kepala_tukang' => redirect()->route('tukang.dashboard'),
+                'konsultan' => redirect()->route('konsultan.dashboard'),
                 'konsumen' => redirect()->route('konsumen.dashboard'),
                 default => redirect()->route('login'),
             };

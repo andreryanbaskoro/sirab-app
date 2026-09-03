@@ -25,7 +25,7 @@ class PermintaanController extends Controller
     public function index(Request $request)
     {
         $query = Permintaan::forKonsumen(Auth::id())
-            ->with(['tukang.profile', 'tipeRumah', 'rab', 'kontrak'])
+            ->with(['konsultan.profile', 'tipeRumah', 'rab', 'kontrak'])
             ->latest();
 
         if ($request->status) {
@@ -40,20 +40,20 @@ class PermintaanController extends Controller
 
     public function create()
     {
-        $tukangs = User::role('kepala_tukang')->with('profile')->aktif()->get();
+        $konsultans = User::role('konsultan')->with('profile')->aktif()->get();
         $tipeRumahs = TipeRumah::orderBy('nama_tipe')->get();
-        return view('konsumen.permintaan.create', compact('tukangs', 'tipeRumahs'));
+        return view('konsumen.permintaan.create', compact('konsultans', 'tipeRumahs'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'tukang_id' => 'required|exists:users,id',
+            'konsultan_id' => 'required|exists:users,id',
             'tipe_rumah_id' => 'required|exists:tipe_rumahs,id',
             'lokasi_proyek' => 'required|string|max:255',
             'luas_bangunan' => 'required|numeric|min:1',
             'jenis_jasa' => 'required|in:harian,borongan',
-            'sumber_denah' => 'required|in:upload_sendiri,dibuatkan_tukang',
+            'sumber_denah' => 'required|in:upload_sendiri,dibuatkan_konsultan',
             'catatan' => 'nullable|string',
             'dokumen' => 'nullable|file|mimes:pdf,jpg,jpeg,png,doc,docx|max:5120',
         ]);
@@ -69,7 +69,7 @@ class PermintaanController extends Controller
 
         $permintaan = Permintaan::create([
             'konsumen_id' => Auth::id(),
-            'tukang_id' => $request->tukang_id,
+            'konsultan_id' => $request->konsultan_id,
             'tipe_rumah_id' => $request->tipe_rumah_id,
             'lokasi_proyek' => $request->lokasi_proyek,
             'luas_bangunan' => $request->luas_bangunan,
@@ -92,19 +92,19 @@ class PermintaanController extends Controller
     public function show(Permintaan $permintaan)
     {
         if ($permintaan->konsumen_id !== Auth::id()) abort(403);
-        $permintaan->load(['tukang.profile', 'tipeRumah', 'rab.details', 'kontrak', 'validasis']);
+        $permintaan->load(['konsultan.profile', 'tipeRumah', 'rab.details', 'kontrak', 'validasis']);
         return view('konsumen.permintaan.show', compact('permintaan'));
     }
 
     // Moved to PembiayaanController: setujui, tolak, downloadRab, downloadKontrak
 
-    public function cariTukang()
+    public function cariKonsultan()
     {
-        $tukangs = User::role('kepala_tukang')
-            ->with(['profile', 'hargaJasaTukangs'])
+        $konsultans = User::role('konsultan')
+            ->with(['profile', 'hargaJasaKonsultans'])
             ->aktif()
             ->get();
 
-        return view('konsumen.cari-tukang.index', compact('tukangs'));
+        return view('konsumen.cari-konsultan.index', compact('konsultans'));
     }
 }

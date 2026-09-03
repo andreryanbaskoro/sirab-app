@@ -5,7 +5,7 @@
     
     $pekerjaans = $rab->details->where('jenis_item', 'pekerjaan');
     $orphanMaterials = $rab->details->where('jenis_item', 'material')->whereNull('parent_id');
-    $jasas = $rab->details->where('jenis_item', 'jasa_tukang');
+    $jasas = $rab->details->where('jenis_item', 'jasa_konsultan');
     $tambahans = $rab->details->where('jenis_item', 'tambahan');
 
     $groupedPekerjaan = $pekerjaans->groupBy(function($item) {
@@ -68,7 +68,7 @@
                 @endphp
                 <tr>
                     <td class="text-center">{{ $romanNumerals[$rekapNo++] }}</td>
-                    <td class="font-weight-bold">Jasa Kepala Tukang</td>
+                    <td class="font-weight-bold">Jasa Konsultan</td>
                     <td class="text-right">{{ number_format($subTotalGroup, 0, ',', '.') }}</td>
                     <td class="text-center">{{ number_format($bobot, 2) }}%</td>
                 </tr>
@@ -90,7 +90,7 @@
         <tfoot class="bg-light font-weight-bold">
             <tr style="border-top: 2px solid #ccc;">
                 <td colspan="2" class="text-right text-muted">TOTAL (UPAH + MATERIAL + TAMBAHAN)</td>
-                <td class="text-right text-muted">Rp {{ number_format($rab->total_sebelum_pajak ?? ($rab->total_upah + $rab->total_material + $rab->biaya_jasa_tukang + $rab->biaya_tambahan), 0, ',', '.') }}</td>
+                <td class="text-right text-muted">Rp {{ number_format($rab->total_sebelum_pajak ?? ($rab->total_upah + $rab->total_material + $rab->biaya_jasa_konsultan + $rab->biaya_tambahan), 0, ',', '.') }}</td>
                 <td class="text-center">-</td>
             </tr>
             <tr>
@@ -182,7 +182,7 @@
             @if($jasas->count() > 0)
                 <tr class="bg-light">
                     <td class="font-weight-bold text-center" style="font-size: 14px;">{{ $romanNumerals[$mainIndex++] }}</td>
-                    <td colspan="5" class="font-weight-bold text-warning" style="font-size: 14px;">JASA KEPALA TUKANG</td>
+                    <td colspan="5" class="font-weight-bold text-warning" style="font-size: 14px;">JASA KONSULTAN</td>
                 </tr>
                 @php $no = 1; @endphp
                 @foreach($jasas as $detail)

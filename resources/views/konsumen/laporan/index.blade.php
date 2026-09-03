@@ -60,7 +60,7 @@
                         <th>No</th>
                         <th>Nomor RAB</th>
                         <th>Permintaan</th>
-                        <th>Kepala Tukang</th>
+                        <th>Konsultan</th>
                         <th>Nilai RAB (Rp)</th>
                         <th>Status Persetujuan</th>
                         <th>Kontrak Kerja</th>
@@ -74,7 +74,7 @@
                         <td>{{ $data->firstItem() + $key }}</td>
                         <td>{{ $item->nomor_rab }}</td>
                         <td>{{ $item->permintaan->nomor_permintaan ?? '-' }}</td>
-                        <td>{{ $item->tukang->name }}</td>
+                        <td>{{ $item->konsultan->name }}</td>
                         <td>{{ number_format($item->total_final, 0, ',', '.') }}</td>
                         <td><x-status-badge :status="$item->status" /></td>
                         <td>{{ $item->kontrak->nomor_kontrak ?? '-' }}</td>

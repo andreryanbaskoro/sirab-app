@@ -17,17 +17,17 @@
         <div class="col-md-4">
             <div class="ibox">
                 <div class="ibox-head">
-                    <div class="ibox-title">Info Kontrak & Tukang</div>
+                    <div class="ibox-title">Info Kontrak & Konsultan</div>
                 </div>
                 <div class="ibox-body">
                     <div class="text-center mb-3">
                         @php
-                            $fotoPath = $proyek->tukang->profile->foto ?? null;
+                            $fotoPath = $proyek->konsultan->profile->foto ?? null;
                             $fotoUrl = $fotoPath && file_exists(public_path('storage/' . $fotoPath)) ? asset('storage/' . $fotoPath) : asset('themes/assets/img/admin-avatar.png');
                         @endphp
                         <img src="{{ $fotoUrl }}" class="img-circle" width="100px" style="aspect-ratio:1/1; object-fit:cover;" />
-                        <h5 class="font-strong mt-2 mb-0">{{ $proyek->tukang->name }}</h5>
-                        <div class="text-muted">Kepala Tukang</div>
+                        <h5 class="font-strong mt-2 mb-0">{{ $proyek->konsultan->name }}</h5>
+                        <div class="text-muted">Konsultan</div>
                     </div>
 
                     <ul class="list-group list-group-divider list-group-full">
@@ -47,8 +47,8 @@
                             <span>
                                 @if($proyek->permintaan->sumber_denah === 'upload_sendiri')
                                     Dari Konsumen
-                                @elseif($proyek->permintaan->sumber_denah === 'dibuatkan_tukang')
-                                    Minta Dibuatkan Tukang
+                                @elseif($proyek->permintaan->sumber_denah === 'dibuatkan_konsultan')
+                                    Minta Dibuatkan Konsultan
                                 @else
                                     -
                                 @endif
@@ -78,9 +78,9 @@
                         </li>
                     </ul>
 
-                    @if(str_contains($proyek->keterangan, '[TUKANG_MENGAJUKAN_SELESAI]'))
+                    @if(str_contains($proyek->keterangan, '[KONSULTAN_MENGAJUKAN_SELESAI]'))
                     <div class="mt-4 alert alert-warning text-center">
-                        <i class="fa fa-exclamation-triangle"></i> Tukang telah mengajukan bahwa proyek fisik sudah selesai. Mohon periksa fisik bangunan Anda.
+                        <i class="fa fa-exclamation-triangle"></i> Konsultan telah mengajukan bahwa proyek fisik sudah selesai. Mohon periksa fisik bangunan Anda.
                     </div>
                     <form action="{{ route('konsumen.proyek.selesai', $proyek->id) }}" method="POST">
                         @csrf
@@ -122,7 +122,7 @@
                         </div>
                         <div class="form-group">
                             <label>Catatan Opsional</label>
-                            <textarea class="form-control" name="keterangan" rows="2" placeholder="Catatan untuk Tukang (opsional)"></textarea>
+                            <textarea class="form-control" name="keterangan" rows="2" placeholder="Catatan untuk Konsultan (opsional)"></textarea>
                         </div>
                         <button class="btn btn-success" type="submit">Kirim Pembayaran</button>
                     </form>

@@ -39,7 +39,7 @@
                     <tr>
                         <th>No</th>
                         <th>Nomor Permintaan</th>
-                        <th>Kepala Tukang</th>
+                        <th>Konsultan</th>
                         <th>Tipe Rumah</th>
                         <th>Tgl Permohonan</th>
                         <th>Status</th>
@@ -51,7 +51,7 @@
                     <tr>
                         <td>{{ $data->firstItem() + $index }}</td>
                         <td>{{ $item->nomor_permintaan }}</td>
-                        <td>{{ $item->tukang->name }}</td>
+                        <td>{{ $item->konsultan->name }}</td>
                         <td>{{ $item->tipeRumah->nama_tipe }}</td>
                         <td>{{ $item->tanggal_permohonan->format('d/m/Y') }}</td>
                         <td><x-status-badge :status="$item->status" /></td>

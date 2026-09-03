@@ -8,9 +8,9 @@ return new class extends Migration {
         Schema::create('rabs', function (Blueprint $table) {
             $table->id();
             $table->foreignId('permintaan_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('tukang_id')->constrained('users')->cascadeOnDelete();
-            $table->foreignId('jasa_tukang_id')->nullable()->constrained('harga_jasa_tukangs')->nullOnDelete();
-            $table->decimal('biaya_jasa_tukang', 15, 2)->default(0);
+            $table->foreignId('konsultan_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('jasa_konsultan_id')->nullable()->constrained('harga_jasa_konsultans')->nullOnDelete();
+            $table->decimal('biaya_jasa_konsultan', 15, 2)->default(0);
             $table->decimal('biaya_tambahan', 15, 2)->default(0);
             $table->decimal('total_material', 15, 2)->default(0);
             $table->decimal('total_upah', 15, 2)->default(0);

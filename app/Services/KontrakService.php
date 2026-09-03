@@ -21,7 +21,7 @@ class KontrakService
                 'permintaan_id' => $permintaan->id,
                 'rab_id' => $rab->id,
                 'konsumen_id' => $permintaan->konsumen_id,
-                'tukang_id' => $permintaan->tukang_id,
+                'konsultan_id' => $permintaan->konsultan_id,
                 'nilai_kontrak' => $rab->total_final,
                 'status' => KontrakStatus::DRAFT,
             ]);

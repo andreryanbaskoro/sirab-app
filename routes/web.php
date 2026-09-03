@@ -5,7 +5,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin;
-use App\Http\Controllers\Tukang;
+use App\Http\Controllers\Konsultan;
 use App\Http\Controllers\Konsumen;
 
 // Auth Routes
@@ -45,12 +45,12 @@ Route::middleware(['auth'])->group(function () {
         
         // Data Master
         Route::resource('konsumen', Admin\KonsumenController::class);
-        Route::resource('tukang', Admin\TukangController::class);
+        Route::resource('konsultan', Admin\KonsultanController::class);
         Route::resource('tipe-rumah', Admin\TipeRumahController::class);
         Route::resource('material', Admin\MaterialController::class);
         Route::resource('kategori-pekerjaan', Admin\KategoriPekerjaanController::class)->except(['create', 'show', 'edit']);
         Route::resource('pekerjaan', Admin\PekerjaanController::class);
-        Route::resource('harga-jasa-tukang', Admin\HargaJasaTukangController::class)->only(['index']);
+        Route::resource('harga-jasa-konsultan', Admin\HargaJasaKonsultanController::class)->only(['index']);
         
         // Transaksi & Laporan
         Route::get('permintaan', [Admin\PermintaanController::class, 'index'])->name('permintaan.index');
@@ -67,53 +67,53 @@ Route::middleware(['auth'])->group(function () {
         Route::get('laporan/export-pdf', [Admin\LaporanController::class, 'exportPdf'])->name('laporan.export-pdf');
     });
 
-    // KEPALA TUKANG ROUTES
-    Route::middleware(['role:kepala_tukang'])->prefix('tukang')->name('tukang.')->group(function () {
-        Route::get('/dashboard', [Tukang\DashboardController::class, 'index'])->name('dashboard');
+    // KONSULTAN ROUTES
+    Route::middleware(['role:konsultan'])->prefix('konsultan')->name('konsultan.')->group(function () {
+        Route::get('/dashboard', [Konsultan\DashboardController::class, 'index'])->name('dashboard');
         
-        Route::get('/profil', [Tukang\ProfileController::class, 'index'])->name('profil');
-        Route::get('/profil/edit', [Tukang\ProfileController::class, 'edit'])->name('profil.edit');
-        Route::post('/profil', [Tukang\ProfileController::class, 'update'])->name('profil.update');
+        Route::get('/profil', [Konsultan\ProfileController::class, 'index'])->name('profil');
+        Route::get('/profil/edit', [Konsultan\ProfileController::class, 'edit'])->name('profil.edit');
+        Route::post('/profil', [Konsultan\ProfileController::class, 'update'])->name('profil.update');
         
-        Route::get('/permintaan', [Tukang\PermintaanController::class, 'index'])->name('permintaan.index');
-        Route::get('/permintaan/{permintaan}', [Tukang\PermintaanController::class, 'show'])->name('permintaan.show');
-        Route::post('/permintaan/{permintaan}/terima', [Tukang\PermintaanController::class, 'terima'])->name('permintaan.terima');
-        Route::post('/permintaan/{permintaan}/tolak', [Tukang\PermintaanController::class, 'tolak'])->name('permintaan.tolak');
+        Route::get('/permintaan', [Konsultan\PermintaanController::class, 'index'])->name('permintaan.index');
+        Route::get('/permintaan/{permintaan}', [Konsultan\PermintaanController::class, 'show'])->name('permintaan.show');
+        Route::post('/permintaan/{permintaan}/terima', [Konsultan\PermintaanController::class, 'terima'])->name('permintaan.terima');
+        Route::post('/permintaan/{permintaan}/tolak', [Konsultan\PermintaanController::class, 'tolak'])->name('permintaan.tolak');
         
-        Route::get('/rab', [Tukang\RabController::class, 'index'])->name('rab.index');
-        Route::get('/rab/create/{permintaan}', [Tukang\RabController::class, 'create'])->name('rab.create');
-        Route::post('/rab', [Tukang\RabController::class, 'store'])->name('rab.store');
-        Route::get('/rab/{rab}', [Tukang\RabController::class, 'show'])->name('rab.show');
-        Route::post('/rab/{rab}/submit', [Tukang\RabController::class, 'submit'])->name('rab.submit');
-        Route::get('/rab/{rab}/pdf', [Tukang\RabController::class, 'cetakPdf'])->name('rab.pdf');
-        Route::get('/rab/{rab}/download-kontrak', [Tukang\RabController::class, 'downloadKontrak'])->name('rab.download-kontrak');
+        Route::get('/rab', [Konsultan\RabController::class, 'index'])->name('rab.index');
+        Route::get('/rab/create/{permintaan}', [Konsultan\RabController::class, 'create'])->name('rab.create');
+        Route::post('/rab', [Konsultan\RabController::class, 'store'])->name('rab.store');
+        Route::get('/rab/{rab}', [Konsultan\RabController::class, 'show'])->name('rab.show');
+        Route::post('/rab/{rab}/submit', [Konsultan\RabController::class, 'submit'])->name('rab.submit');
+        Route::get('/rab/{rab}/pdf', [Konsultan\RabController::class, 'cetakPdf'])->name('rab.pdf');
+        Route::get('/rab/{rab}/download-kontrak', [Konsultan\RabController::class, 'downloadKontrak'])->name('rab.download-kontrak');
 
         // Data Anggaran
-        Route::get('/anggaran', [Tukang\AnggaranController::class, 'index'])->name('anggaran.index');
+        Route::get('/anggaran', [Konsultan\AnggaranController::class, 'index'])->name('anggaran.index');
 
-        // CRUD Harga Material (oleh kepala tukang) - Diubah menjadi Read-Only (Hanya Admin PU yang bisa CRUD)
-        // Route::post('/anggaran/material', [Tukang\AnggaranController::class, 'storeMaterial'])->name('anggaran.material.store');
-        // Route::put('/anggaran/material/{hargaMaterial}', [Tukang\AnggaranController::class, 'updateMaterial'])->name('anggaran.material.update');
-        // Route::delete('/anggaran/material/{hargaMaterial}', [Tukang\AnggaranController::class, 'destroyMaterial'])->name('anggaran.material.destroy');
+        // CRUD Harga Material (oleh konsultan) - Diubah menjadi Read-Only (Hanya Admin PU yang bisa CRUD)
+        // Route::post('/anggaran/material', [Konsultan\AnggaranController::class, 'storeMaterial'])->name('anggaran.material.store');
+        // Route::put('/anggaran/material/{hargaMaterial}', [Konsultan\AnggaranController::class, 'updateMaterial'])->name('anggaran.material.update');
+        // Route::delete('/anggaran/material/{hargaMaterial}', [Konsultan\AnggaranController::class, 'destroyMaterial'])->name('anggaran.material.destroy');
 
-        // CRUD Harga Pekerjaan (oleh kepala tukang)
-        Route::post('anggaran/pekerjaan', [Tukang\AnggaranController::class, 'storePekerjaan'])->name('anggaran.pekerjaan.store');
-        Route::put('anggaran/pekerjaan/{pekerjaan}', [Tukang\AnggaranController::class, 'updatePekerjaan'])->name('anggaran.pekerjaan.update');
-        Route::delete('anggaran/pekerjaan/{pekerjaan}', [Tukang\AnggaranController::class, 'destroyPekerjaan'])->name('anggaran.pekerjaan.destroy');
+        // CRUD Harga Pekerjaan (oleh konsultan)
+        Route::post('anggaran/pekerjaan', [Konsultan\AnggaranController::class, 'storePekerjaan'])->name('anggaran.pekerjaan.store');
+        Route::put('anggaran/pekerjaan/{pekerjaan}', [Konsultan\AnggaranController::class, 'updatePekerjaan'])->name('anggaran.pekerjaan.update');
+        Route::delete('anggaran/pekerjaan/{pekerjaan}', [Konsultan\AnggaranController::class, 'destroyPekerjaan'])->name('anggaran.pekerjaan.destroy');
 
-        // CRUD Harga Jasa Tukang (milik sendiri)
-        Route::post('/anggaran/jasa', [Tukang\AnggaranController::class, 'storeJasa'])->name('anggaran.jasa.store');
-        Route::put('/anggaran/jasa/{hargaJasaTukang}', [Tukang\AnggaranController::class, 'updateJasa'])->name('anggaran.jasa.update');
-        Route::delete('/anggaran/jasa/{hargaJasaTukang}', [Tukang\AnggaranController::class, 'destroyJasa'])->name('anggaran.jasa.destroy');
+        // CRUD Harga Jasa Konsultan (milik sendiri)
+        Route::post('/anggaran/jasa', [Konsultan\AnggaranController::class, 'storeJasa'])->name('anggaran.jasa.store');
+        Route::put('/anggaran/jasa/{hargaJasaKonsultan}', [Konsultan\AnggaranController::class, 'updateJasa'])->name('anggaran.jasa.update');
+        Route::delete('/anggaran/jasa/{hargaJasaKonsultan}', [Konsultan\AnggaranController::class, 'destroyJasa'])->name('anggaran.jasa.destroy');
 
         // Proyek Aktif / Penyelesaian
-        Route::get('/proyek', [Tukang\ProyekController::class, 'index'])->name('proyek.index');
-        Route::get('/proyek/{proyek}', [Tukang\ProyekController::class, 'show'])->name('proyek.show');
-        Route::post('/proyek/{proyek}/ajukan-selesai', [Tukang\ProyekController::class, 'ajukanSelesai'])->name('proyek.ajukan-selesai');
-        Route::post('/pembayaran/{pembayaran}/verifikasi', [Tukang\ProyekController::class, 'verifikasiPembayaran'])->name('pembayaran.verifikasi');
+        Route::get('/proyek', [Konsultan\ProyekController::class, 'index'])->name('proyek.index');
+        Route::get('/proyek/{proyek}', [Konsultan\ProyekController::class, 'show'])->name('proyek.show');
+        Route::post('/proyek/{proyek}/ajukan-selesai', [Konsultan\ProyekController::class, 'ajukanSelesai'])->name('proyek.ajukan-selesai');
+        Route::post('/pembayaran/{pembayaran}/verifikasi', [Konsultan\ProyekController::class, 'verifikasiPembayaran'])->name('pembayaran.verifikasi');
 
         // Riwayat
-        Route::get('/riwayat', [Tukang\RiwayatController::class, 'index'])->name('riwayat.index');
+        Route::get('/riwayat', [Konsultan\RiwayatController::class, 'index'])->name('riwayat.index');
     });
 
     // KONSUMEN ROUTES
@@ -124,7 +124,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/profil/edit', [Konsumen\ProfileController::class, 'edit'])->name('profil.edit');
         Route::post('/profil', [Konsumen\ProfileController::class, 'update'])->name('profil.update');
         
-        Route::get('/cari-tukang', [Konsumen\PermintaanController::class, 'cariTukang'])->name('cari-tukang');
+        Route::get('/cari-konsultan', [Konsumen\PermintaanController::class, 'cariKonsultan'])->name('cari-konsultan');
         
         Route::get('/permintaan', [Konsumen\PermintaanController::class, 'index'])->name('permintaan.index');
         Route::get('/permintaan/create', [Konsumen\PermintaanController::class, 'create'])->name('permintaan.create');

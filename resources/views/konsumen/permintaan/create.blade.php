@@ -17,20 +17,20 @@
                     @csrf
                     
                     <div class="form-group row">
-                        <label class="col-sm-3 col-form-label">Pilih Kepala Tukang <span class="text-danger">*</span></label>
+                        <label class="col-sm-3 col-form-label">Pilih Konsultan <span class="text-danger">*</span></label>
                         <div class="col-sm-9">
-                            <select name="tukang_id" class="form-control select2" required>
-                                <option value="">-- Pilih Tukang --</option>
-                                @foreach($tukangs as $tukang)
-                                    <option value="{{ $tukang->id }}" {{ request('tukang_id') == $tukang->id ? 'selected' : '' }}>
-                                        {{ $tukang->name }} 
-                                        @if($tukang->profile && $tukang->profile->alamat)
-                                            - ({{ \Str::limit($tukang->profile->alamat, 30) }})
+                            <select name="konsultan_id" class="form-control select2" required>
+                                <option value="">-- Pilih Konsultan --</option>
+                                @foreach($konsultans as $konsultan)
+                                    <option value="{{ $konsultan->id }}" {{ request('konsultan_id') == $konsultan->id ? 'selected' : '' }}>
+                                        {{ $konsultan->name }} 
+                                        @if($konsultan->profile && $konsultan->profile->alamat)
+                                            - ({{ \Str::limit($konsultan->profile->alamat, 30) }})
                                         @endif
                                     </option>
                                 @endforeach
                             </select>
-                            <small class="form-text text-muted">Kepala tukang yang akan menyusun RAB Anda.</small>
+                            <small class="form-text text-muted">Konsultan yang akan menyusun RAB Anda.</small>
                         </div>
                     </div>
 
@@ -85,11 +85,11 @@
                                     <span class="input-span"></span>Upload Denah Sendiri
                                 </label>
                                 <label class="ui-radio ui-radio-primary ui-radio-inline">
-                                    <input type="radio" name="sumber_denah" value="dibuatkan_tukang" id="radioDibuatkanTukang" required {{ old('sumber_denah') == 'dibuatkan_tukang' ? 'checked' : '' }}>
-                                    <span class="input-span"></span>Minta Tukang Buatkan Sketsa/Denah
+                                    <input type="radio" name="sumber_denah" value="dibuatkan_konsultan" id="radioDibuatkanKonsultan" required {{ old('sumber_denah') == 'dibuatkan_konsultan' ? 'checked' : '' }}>
+                                    <span class="input-span"></span>Minta Konsultan Buatkan Sketsa/Denah
                                 </label>
                             </div>
-                            <small class="form-text text-muted" id="infoDibuatkanTukang" style="display:none;"><i class="fa fa-info-circle text-info"></i> Kepala Tukang akan merancang denah kasar berdasarkan catatan dan luas bangunan Anda.</small>
+                            <small class="form-text text-muted" id="infoDibuatkanKonsultan" style="display:none;"><i class="fa fa-info-circle text-info"></i> Konsultan akan merancang denah kasar berdasarkan catatan dan luas bangunan Anda.</small>
                         </div>
                     </div>
 
@@ -136,13 +136,13 @@
             var val = $('input[name="sumber_denah"]:checked').val();
             if (val === 'upload_sendiri') {
                 $('#formUploadDenah').show();
-                $('#infoDibuatkanTukang').hide();
-            } else if (val === 'dibuatkan_tukang') {
+                $('#infoDibuatkanKonsultan').hide();
+            } else if (val === 'dibuatkan_konsultan') {
                 $('#formUploadDenah').hide();
-                $('#infoDibuatkanTukang').show();
+                $('#infoDibuatkanKonsultan').show();
             } else {
                 $('#formUploadDenah').hide();
-                $('#infoDibuatkanTukang').hide();
+                $('#infoDibuatkanKonsultan').hide();
             }
         }
 

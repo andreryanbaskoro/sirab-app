@@ -20,16 +20,16 @@ class UserSeeder extends Seeder
         ]);
         $admin->assignRole('admin_pu');
 
-        // 1 Kepala Tukang
-        $tukang = User::create([
-            'name' => 'Tukang',
-            'email' => 'tukang@tukang.com',
-            'password' => Hash::make('password'),
-            'role' => 'kepala_tukang',
+        // 1 Konsultan
+        $konsultan = User::create([
+            'name' => 'Konsultan',
+            'email' => 'konsultan@konsultan.com',
+            'password' => Hash::make('konsultan'),
+            'role' => 'konsultan',
             'status_aktif' => true,
         ]);
-        $tukang->assignRole('kepala_tukang');
-        $tukang->profile()->create([
+        $konsultan->assignRole('konsultan');
+        $konsultan->profile()->create([
             'alamat' => 'Jl. Merdeka No 1',
             'no_hp' => '081234567890'
         ]);

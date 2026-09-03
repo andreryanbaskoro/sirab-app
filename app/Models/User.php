@@ -42,9 +42,9 @@ class User extends Authenticatable
         return $this->hasOne(Profile::class);
     }
 
-    public function hargaJasaTukangs(): HasMany
+    public function hargaJasaKonsultans(): HasMany
     {
-        return $this->hasMany(HargaJasaTukang::class);
+        return $this->hasMany(HargaJasaKonsultan::class);
     }
 
     public function permintaanSebagaiKonsumen(): HasMany
@@ -52,9 +52,9 @@ class User extends Authenticatable
         return $this->hasMany(Permintaan::class, 'konsumen_id');
     }
 
-    public function permintaanSebagaiTukang(): HasMany
+    public function permintaanSebagaiKonsultan(): HasMany
     {
-        return $this->hasMany(Permintaan::class, 'tukang_id');
+        return $this->hasMany(Permintaan::class, 'konsultan_id');
     }
 
     public function kontrakSebagaiKonsumen(): HasMany
@@ -62,9 +62,9 @@ class User extends Authenticatable
         return $this->hasMany(Kontrak::class, 'konsumen_id');
     }
 
-    public function kontrakSebagaiTukang(): HasMany
+    public function kontrakSebagaiKonsultan(): HasMany
     {
-        return $this->hasMany(Kontrak::class, 'tukang_id');
+        return $this->hasMany(Kontrak::class, 'konsultan_id');
     }
 
     // ─── Accessors ──────────────────────────────────────────────
@@ -82,7 +82,7 @@ class User extends Authenticatable
     {
         return match($this->role) {
             'admin_pu' => 'Admin PU',
-            'kepala_tukang' => 'Kepala Tukang',
+            'konsultan' => 'Konsultan',
             'konsumen' => 'Konsumen',
             default => ucfirst($this->role ?? '-'),
         };
@@ -95,9 +95,9 @@ class User extends Authenticatable
         return $this->hasRole('admin_pu');
     }
 
-    public function isTukang(): bool
+    public function isKonsultan(): bool
     {
-        return $this->hasRole('kepala_tukang');
+        return $this->hasRole('konsultan');
     }
 
     public function isKonsumen(): bool

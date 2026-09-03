@@ -31,7 +31,7 @@ class LoginController extends Controller
 
             return match($user->role) {
                 'admin_pu' => redirect()->route('admin.dashboard'),
-                'kepala_tukang' => redirect()->route('tukang.dashboard'),
+                'konsultan' => redirect()->route('konsultan.dashboard'),
                 'konsumen' => redirect()->route('konsumen.dashboard'),
                 default => redirect('/'),
             };

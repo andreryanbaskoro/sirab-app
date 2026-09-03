@@ -25,7 +25,7 @@ class PembiayaanController extends Controller
         $data = Rab::whereHas('permintaan', function($q) {
             $q->where('konsumen_id', Auth::id());
         })
-        ->with(['permintaan.tipeRumah', 'tukang.profile'])
+        ->with(['permintaan.tipeRumah', 'konsultan.profile'])
         ->latest()
         ->paginate(10);
 
@@ -35,7 +35,7 @@ class PembiayaanController extends Controller
     public function show(Rab $rab)
     {
         if ($rab->permintaan->konsumen_id !== Auth::id()) abort(403);
-        $rab->load(['permintaan.tipeRumah', 'tukang.profile', 'details', 'kontrak']);
+        $rab->load(['permintaan.tipeRumah', 'konsultan.profile', 'details', 'kontrak']);
         return view('konsumen.pembiayaan.show', compact('rab'));
     }
 
@@ -90,7 +90,7 @@ class PembiayaanController extends Controller
     {
         if ($rab->permintaan->konsumen_id !== Auth::id()) abort(403);
 
-        $rab->load(['permintaan.konsumen.profile', 'permintaan.tukang.profile', 'permintaan.tipeRumah', 'details']);
+        $rab->load(['permintaan.konsumen.profile', 'permintaan.konsultan.profile', 'permintaan.tipeRumah', 'details']);
 
         $pdf = Pdf::loadView('pdf.rab', compact('rab'))->setPaper('a4', 'portrait');
         return $pdf->download('RAB-' . $rab->nomor_rab . '.pdf');
@@ -103,7 +103,7 @@ class PembiayaanController extends Controller
         $kontrak = $rab->kontrak;
         if (!$kontrak) return back()->with('error', 'Kontrak belum tersedia.');
 
-        $kontrak->load(['permintaan.tipeRumah', 'konsumen.profile', 'tukang.profile', 'rab']);
+        $kontrak->load(['permintaan.tipeRumah', 'konsumen.profile', 'konsultan.profile', 'rab']);
 
         $pdf = Pdf::loadView('pdf.kontrak', compact('kontrak'))->setPaper('a4', 'portrait');
         return $pdf->download('Kontrak-' . $kontrak->nomor_kontrak . '.pdf');

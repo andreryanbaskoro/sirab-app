@@ -30,7 +30,7 @@
                 <th width="12%">No Kontrak</th>
                 <th width="12%">No RAB</th>
                 <th width="15%">Konsumen</th>
-                <th width="15%">Kepala Tukang</th>
+                <th width="15%">Konsultan</th>
                 <th width="15%">Nilai Kontrak (Rp)</th>
                 <th width="8%">Tgl Mulai</th>
                 <th width="8%">Tgl Selesai</th>
@@ -44,7 +44,7 @@
                 <td class="text-center">{{ $item->nomor_kontrak }}</td>
                 <td class="text-center">{{ $item->rab->nomor_rab ?? '-' }}</td>
                 <td>{{ $item->konsumen->profile->nama_lengkap ?? $item->konsumen->name }}</td>
-                <td>{{ $item->tukang->profile->nama_lengkap ?? $item->tukang->name }}</td>
+                <td>{{ $item->konsultan->profile->nama_lengkap ?? $item->konsultan->name }}</td>
                 <td class="text-right">{{ number_format($item->nilai_kontrak, 0, ',', '.') }}</td>
                 <td class="text-center">{{ $item->tanggal_mulai->format('d/m/Y') }}</td>
                 <td class="text-center">{{ $item->tanggal_selesai->format('d/m/Y') }}</td>

@@ -14,25 +14,25 @@ class DashboardController extends Controller
     public function index()
     {
         $totalKonsumen = User::role('konsumen')->count();
-        $totalTukang = User::role('kepala_tukang')->count();
+        $totalKonsultan = User::role('konsultan')->count();
         $totalPermintaan = Permintaan::count();
         $totalKontrakAktif = Kontrak::where('status', 'aktif')->count();
         
         $nilaiTotalKontrak = Kontrak::whereIn('status', ['aktif', 'selesai'])->sum('nilai_kontrak');
 
-        $permintaanTerbaru = Permintaan::with(['konsumen', 'tukang'])
+        $permintaanTerbaru = Permintaan::with(['konsumen', 'konsultan'])
             ->latest()
             ->take(5)
             ->get();
 
-        $kontrakTerbaru = Kontrak::with(['konsumen', 'tukang'])
+        $kontrakTerbaru = Kontrak::with(['konsumen', 'konsultan'])
             ->latest()
             ->take(5)
             ->get();
 
         return view('admin.dashboard', compact(
             'totalKonsumen',
-            'totalTukang',
+            'totalKonsultan',
             'totalPermintaan',
             'totalKontrakAktif',
             'nilaiTotalKontrak',

@@ -20,7 +20,7 @@ class LaporanController extends Controller
         $tanggal_dari = $request->tanggal_dari;
         $tanggal_sampai = $request->tanggal_sampai;
 
-        $query = Rab::with(['permintaan.konsumen.profile', 'tukang.profile', 'kontrak'])
+        $query = Rab::with(['permintaan.konsumen.profile', 'konsultan.profile', 'kontrak'])
             ->whereHas('permintaan', function ($q) {
                 $q->where('konsumen_id', Auth::id());
             })

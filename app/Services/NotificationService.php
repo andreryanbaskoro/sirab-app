@@ -12,9 +12,9 @@ class NotificationService
 {
     public function notifikasiPermintaanBaru(Permintaan $permintaan): void
     {
-        $tukang = $permintaan->tukang;
-        $url = route('tukang.permintaan.show', $permintaan->id);
-        $tukang->notify(new SystemNotification(
+        $konsultan = $permintaan->konsultan;
+        $url = route('konsultan.permintaan.show', $permintaan->id);
+        $konsultan->notify(new SystemNotification(
             'Permintaan RAB Baru',
             $permintaan->konsumen->name . ' mengirimkan permintaan pembuatan RAB baru.',
             $url
@@ -27,18 +27,18 @@ class NotificationService
         $url = route('konsumen.permintaan.show', $permintaan->id);
         $konsumen->notify(new SystemNotification(
             'Permintaan Diterima',
-            'Permintaan Anda telah diterima oleh Kepala Tukang (' . $permintaan->tukang->name . ').',
+            'Permintaan Anda telah diterima oleh Konsultan (' . $permintaan->konsultan->name . ').',
             $url
         ));
     }
 
-    public function notifikasiPermintaanDitolakTukang(Permintaan $permintaan): void
+    public function notifikasiPermintaanDitolakKonsultan(Permintaan $permintaan): void
     {
         $konsumen = $permintaan->konsumen;
         $url = route('konsumen.permintaan.show', $permintaan->id);
         $konsumen->notify(new SystemNotification(
             'Permintaan Ditolak',
-            'Mohon maaf, permintaan Anda ditolak oleh Kepala Tukang.',
+            'Mohon maaf, permintaan Anda ditolak oleh Konsultan.',
             $url
         ));
     }
@@ -49,16 +49,16 @@ class NotificationService
         $url = route('konsumen.permintaan.show', $rab->permintaan->id);
         $konsumen->notify(new SystemNotification(
             'RAB Menunggu Persetujuan',
-            'Kepala Tukang telah menyelesaikan draft RAB. Silakan review dan berikan persetujuan Anda.',
+            'Konsultan telah menyelesaikan draft RAB. Silakan review dan berikan persetujuan Anda.',
             $url
         ));
     }
 
     public function notifikasiRabDisetujui(Rab $rab): void
     {
-        $tukang = $rab->permintaan->tukang;
-        $url = route('tukang.rab.show', $rab->id);
-        $tukang->notify(new SystemNotification(
+        $konsultan = $rab->permintaan->konsultan;
+        $url = route('konsultan.rab.show', $rab->id);
+        $konsultan->notify(new SystemNotification(
             'RAB Disetujui',
             'Selamat! RAB Anda telah disetujui oleh Konsumen dan Kontrak Kerja otomatis dibuat.',
             $url
@@ -77,9 +77,9 @@ class NotificationService
 
     public function notifikasiRabDitolak(Rab $rab): void
     {
-        $tukang = $rab->permintaan->tukang;
-        $url = route('tukang.rab.show', $rab->id);
-        $tukang->notify(new SystemNotification(
+        $konsultan = $rab->permintaan->konsultan;
+        $url = route('konsultan.rab.show', $rab->id);
+        $konsultan->notify(new SystemNotification(
             'RAB Ditolak Revisi',
             'RAB Anda ditolak oleh Konsumen dengan catatan. Silakan lakukan revisi.',
             $url

@@ -48,9 +48,9 @@
             <td>{{ number_format($rab->permintaan->luas_bangunan, 2, ',', '.') }} m²</td>
         </tr>
         <tr>
-            <td class="info-label">Kepala Tukang</td>
+            <td class="info-label">Konsultan</td>
             <td class="info-colon">:</td>
-            <td>{{ $rab->permintaan->tukang->name }}</td>
+            <td>{{ $rab->permintaan->konsultan->name }}</td>
             <td class="info-label">Status RAB</td>
             <td class="info-colon">:</td>
             <td><strong>{{ strtoupper(str_replace('_', ' ', $rab->status->value)) }}</strong></td>
@@ -61,7 +61,7 @@
         $rab->load(['details.pekerjaan.kategori', 'details.children']);
         $pekerjaans = $rab->details->where('jenis_item', 'pekerjaan');
         $orphanMaterials = $rab->details->where('jenis_item', 'material')->whereNull('parent_id');
-        $jasas = $rab->details->where('jenis_item', 'jasa_tukang');
+        $jasas = $rab->details->where('jenis_item', 'jasa_konsultan');
         $tambahans = $rab->details->where('jenis_item', 'tambahan');
 
         $groupedPekerjaan = $pekerjaans->groupBy(function($item) {
@@ -122,7 +122,7 @@
                 @endphp
                 <tr>
                     <td class="text-center">{{ $romanNumerals[$rekapNo++] }}</td>
-                    <td class="font-weight-bold">Jasa Kepala Tukang</td>
+                    <td class="font-weight-bold">Jasa Konsultan</td>
                     <td class="text-right">{{ number_format($subTotalGroup, 0, ',', '.') }}</td>
                     <td class="text-center">{{ number_format($bobot, 2) }}%</td>
                 </tr>
@@ -144,7 +144,7 @@
         <tfoot class="bg-light font-weight-bold">
             <tr>
                 <td colspan="2" class="text-right">TOTAL SEBELUM PAJAK & PROFIT</td>
-                <td class="text-right">Rp {{ number_format($rab->total_sebelum_pajak ?? ($rab->total_upah + $rab->total_material + $rab->biaya_jasa_tukang + $rab->biaya_tambahan), 0, ',', '.') }}</td>
+                <td class="text-right">Rp {{ number_format($rab->total_sebelum_pajak ?? ($rab->total_upah + $rab->total_material + $rab->biaya_jasa_konsultan + $rab->biaya_tambahan), 0, ',', '.') }}</td>
                 <td class="text-center">-</td>
             </tr>
             <tr>
@@ -231,7 +231,7 @@
             @if($jasas->count() > 0)
                 <tr class="bg-light text-warning">
                     <td class="text-center font-weight-bold">{{ $romanNumerals[$mainIndex++] }}</td>
-                    <td colspan="5" class="font-weight-bold">JASA KEPALA TUKANG</td>
+                    <td colspan="5" class="font-weight-bold">JASA KONSULTAN</td>
                 </tr>
                 @php $no = 1; @endphp
                 @foreach($jasas as $detail)
@@ -266,10 +266,10 @@
         </tbody>
     </table>
 
-    @if($rab->catatan_tukang)
+    @if($rab->catatan_konsultan)
     <div style="margin-top: 20px;">
         <strong>Catatan/Keterangan Khusus:</strong>
-        <p style="margin-top: 5px; font-style: italic;">{{ $rab->catatan_tukang }}</p>
+        <p style="margin-top: 5px; font-style: italic;">{{ $rab->catatan_konsultan }}</p>
     </div>
     @endif
 
@@ -281,9 +281,9 @@
                 <p><u>{{ $rab->permintaan->konsumen->name }}</u></p>
             </td>
             <td width="50%">
-                <p>Dibuat Oleh,<br><strong>Kepala Tukang</strong></p>
+                <p>Dibuat Oleh,<br><strong>Konsultan</strong></p>
                 <div class="signature-box"></div>
-                <p><u>{{ $rab->permintaan->tukang->name }}</u></p>
+                <p><u>{{ $rab->permintaan->konsultan->name }}</u></p>
             </td>
         </tr>
     </table>

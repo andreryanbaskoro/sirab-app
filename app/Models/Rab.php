@@ -17,9 +17,9 @@ class Rab extends Model
     protected $fillable = [
         'nomor_rab',
         'permintaan_id',
-        'tukang_id',
-        'jasa_tukang_id',
-        'biaya_jasa_tukang',
+        'konsultan_id',
+        'jasa_konsultan_id',
+        'biaya_jasa_konsultan',
         'biaya_tambahan',
         'total_sebelum_pajak',
         'profit_persen',
@@ -29,7 +29,7 @@ class Rab extends Model
         'total_material',
         'total_upah',
         'total_final',
-        'catatan_tukang',
+        'catatan_konsultan',
         'alasan_tolak',
         'status',
     ];
@@ -38,7 +38,7 @@ class Rab extends Model
     {
         return [
             'status' => RabStatus::class,
-            'biaya_jasa_tukang' => 'decimal:2',
+            'biaya_jasa_konsultan' => 'decimal:2',
             'biaya_tambahan' => 'decimal:2',
             'total_sebelum_pajak' => 'decimal:2',
             'profit_persen' => 'decimal:2',
@@ -77,14 +77,14 @@ class Rab extends Model
         return $this->belongsTo(Permintaan::class);
     }
 
-    public function tukang(): BelongsTo
+    public function konsultan(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'tukang_id');
+        return $this->belongsTo(User::class, 'konsultan_id');
     }
 
-    public function jasaTukang(): BelongsTo
+    public function jasaKonsultan(): BelongsTo
     {
-        return $this->belongsTo(HargaJasaTukang::class, 'jasa_tukang_id');
+        return $this->belongsTo(HargaJasaKonsultan::class, 'jasa_konsultan_id');
     }
 
     public function details(): HasMany

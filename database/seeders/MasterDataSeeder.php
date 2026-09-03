@@ -9,7 +9,7 @@ use App\Models\HargaMaterial;
 use App\Models\Pekerjaan;
 use App\Models\HargaPekerjaan;
 use App\Models\User;
-use App\Models\HargaJasaTukang;
+use App\Models\HargaJasaKonsultan;
 
 class MasterDataSeeder extends Seeder
 {
@@ -41,17 +41,17 @@ class MasterDataSeeder extends Seeder
         HargaPekerjaan::create(['pekerjaan_id' => $pondasi->id, 'harga' => 150000, 'tanggal_berlaku' => now()]);
         HargaPekerjaan::create(['pekerjaan_id' => $dinding->id, 'harga' => 60000, 'tanggal_berlaku' => now()]);
 
-        // Harga Jasa Tukang (Opsional, diinput oleh Tukang sendiri, tapi kita sediakan dummy)
-        $tukang1 = User::role('kepala_tukang')->first();
-        if ($tukang1) {
-            HargaJasaTukang::create([
-                'user_id' => $tukang1->id,
+        // Harga Jasa Konsultan (Opsional, diinput oleh Konsultan sendiri, tapi kita sediakan dummy)
+        $konsultan1 = User::role('konsultan')->first();
+        if ($konsultan1) {
+            HargaJasaKonsultan::create([
+                'user_id' => $konsultan1->id,
                 'nama_jasa' => 'Harian',
                 'harga' => 150000,
-                'deskripsi' => 'Harga jasa harian Kepala Tukang Budi'
+                'deskripsi' => 'Harga jasa harian Konsultan Budi'
             ]);
-            HargaJasaTukang::create([
-                'user_id' => $tukang1->id,
+            HargaJasaKonsultan::create([
+                'user_id' => $konsultan1->id,
                 'nama_jasa' => 'Borongan',
                 'harga' => 3000000,
                 'deskripsi' => 'Harga jasa borongan per m2 (estimasi)'

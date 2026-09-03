@@ -18,7 +18,7 @@ class ProyekController extends Controller
     {
         $kontraks = Kontrak::where('konsumen_id', Auth::id())
             ->whereIn('status', [KontrakStatus::AKTIF])
-            ->with(['tukang.profile', 'permintaan.tipeRumah', 'pembayarans'])
+            ->with(['konsultan.profile', 'permintaan.tipeRumah', 'pembayarans'])
             ->latest()
             ->paginate(10);
 
@@ -29,7 +29,7 @@ class ProyekController extends Controller
     {
         if ($proyek->konsumen_id !== Auth::id()) abort(403);
         
-        $proyek->load(['tukang.profile', 'permintaan.tipeRumah', 'pembayarans', 'rab.details']);
+        $proyek->load(['konsultan.profile', 'permintaan.tipeRumah', 'pembayarans', 'rab.details']);
         return view('konsumen.proyek.show', compact('proyek'));
     }
 

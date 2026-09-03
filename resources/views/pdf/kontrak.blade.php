@@ -56,21 +56,21 @@
             <tr>
                 <td class="td-label">Nama</td>
                 <td class="td-colon">:</td>
-                <td><strong>{{ $kontrak->tukang->name }}</strong></td>
+                <td><strong>{{ $kontrak->konsultan->name }}</strong></td>
             </tr>
             <tr>
                 <td class="td-label">Alamat</td>
                 <td class="td-colon">:</td>
-                <td>{{ $kontrak->tukang->profile->alamat ?? '-' }}</td>
+                <td>{{ $kontrak->konsultan->profile->alamat ?? '-' }}</td>
             </tr>
             <tr>
                 <td class="td-label">No. Telp/WA</td>
                 <td class="td-colon">:</td>
-                <td>{{ $kontrak->tukang->profile->no_hp ?? '-' }}</td>
+                <td>{{ $kontrak->konsultan->profile->no_hp ?? '-' }}</td>
             </tr>
         </table>
     </div>
-    <p>Dalam hal ini bertindak sebagai perencana dan pelaksana pembangunan, yang selanjutnya disebut sebagai <strong>PIHAK KEDUA (KEPALA TUKANG)</strong>.</p>
+    <p>Dalam hal ini bertindak sebagai perencana dan pelaksana pembangunan, yang selanjutnya disebut sebagai <strong>PIHAK KEDUA (KONSULTAN)</strong>.</p>
 
     <p>Kedua belah pihak telah sepakat untuk mengikatkan diri dalam Perjanjian Kontrak Kerja Pembangunan Rumah dengan syarat dan ketentuan sebagai berikut:</p>
 
@@ -104,9 +104,9 @@
                 <p><u><strong>{{ $kontrak->konsumen->name }}</strong></u></p>
             </td>
             <td width="50%" class="text-center">
-                <p><strong>PIHAK KEDUA</strong><br>Kepala Tukang</p>
+                <p><strong>PIHAK KEDUA</strong><br>Konsultan</p>
                 <div class="signature-box"></div>
-                <p><u><strong>{{ $kontrak->tukang->name }}</strong></u></p>
+                <p><u><strong>{{ $kontrak->konsultan->name }}</strong></u></p>
             </td>
         </tr>
     </table>

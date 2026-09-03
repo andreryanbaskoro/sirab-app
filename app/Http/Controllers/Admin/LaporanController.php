@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Exports\LaporanKonsumenExport;
-use App\Exports\LaporanTukangExport;
+use App\Exports\LaporanKonsultanExport;
 use App\Exports\LaporanPermintaanExport;
 use App\Exports\LaporanRabExport;
 use App\Exports\LaporanKontrakExport;
@@ -40,8 +40,8 @@ class LaporanController extends Controller
                       });
                 });
             }
-        } elseif ($type === 'kepala_tukang') {
-            $query = User::role('kepala_tukang')->with('profile')->latest();
+        } elseif ($type === 'konsultan') {
+            $query = User::role('konsultan')->with('profile')->latest();
             if ($search) {
                 $query->where(function($q) use ($search) {
                     $q->where('name', 'like', "%{$search}%")
@@ -52,7 +52,7 @@ class LaporanController extends Controller
                 });
             }
         } elseif ($type === 'permintaan') {
-            $query = Permintaan::with(['konsumen.profile', 'tukang.profile', 'tipeRumah'])->latest();
+            $query = Permintaan::with(['konsumen.profile', 'konsultan.profile', 'tipeRumah'])->latest();
             if ($search) {
                 $query->where('nomor_permintaan', 'like', "%{$search}%");
             }
@@ -60,7 +60,7 @@ class LaporanController extends Controller
                 $query->where('status', $status);
             }
         } elseif ($type === 'rab') {
-            $query = Rab::with(['permintaan.konsumen.profile', 'tukang.profile', 'kontrak'])->latest();
+            $query = Rab::with(['permintaan.konsumen.profile', 'konsultan.profile', 'kontrak'])->latest();
             if ($search) {
                 $query->where('nomor_rab', 'like', "%{$search}%");
             }
@@ -68,7 +68,7 @@ class LaporanController extends Controller
                 $query->where('status', $status);
             }
         } elseif ($type === 'kontrak') {
-            $query = Kontrak::with(['konsumen.profile', 'tukang.profile', 'rab'])->latest();
+            $query = Kontrak::with(['konsumen.profile', 'konsultan.profile', 'rab'])->latest();
             if ($search) {
                 $query->where('nomor_kontrak', 'like', "%{$search}%");
             }
@@ -123,8 +123,8 @@ class LaporanController extends Controller
         switch ($type) {
             case 'konsumen':
                 return Excel::download(new LaporanKonsumenExport($data), $filename);
-            case 'kepala_tukang':
-                return Excel::download(new LaporanTukangExport($data), $filename);
+            case 'konsultan':
+                return Excel::download(new LaporanKonsultanExport($data), $filename);
             case 'permintaan':
                 return Excel::download(new LaporanPermintaanExport($data), $filename);
             case 'rab':

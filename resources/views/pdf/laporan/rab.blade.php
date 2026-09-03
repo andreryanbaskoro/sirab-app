@@ -30,7 +30,7 @@
                 <th width="12%">Nomor RAB</th>
                 <th width="12%">Permintaan</th>
                 <th width="12%">Konsumen</th>
-                <th width="12%">Kepala Tukang</th>
+                <th width="12%">Konsultan</th>
                 <th width="12%">Nilai RAB (Rp)</th>
                 <th width="10%">Status Persetujuan</th>
                 <th width="12%">Kontrak Kerja</th>
@@ -45,7 +45,7 @@
                 <td class="text-center">{{ $item->nomor_rab }}</td>
                 <td class="text-center">{{ $item->permintaan->nomor_permintaan ?? '-' }}</td>
                 <td>{{ $item->permintaan->konsumen->name ?? '-' }}</td>
-                <td>{{ $item->tukang->name }}</td>
+                <td>{{ $item->konsultan->name }}</td>
                 <td class="text-right">{{ number_format($item->total_final, 0, ',', '.') }}</td>
                 <td class="text-center">{{ $item->status->label() }}</td>
                 <td class="text-center">{{ $item->kontrak->nomor_kontrak ?? '-' }}</td>

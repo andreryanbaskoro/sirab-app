@@ -14,13 +14,13 @@ class RiwayatController extends Controller
     {
         $statuses = [
             PermintaanStatus::SELESAI,
-            PermintaanStatus::DITOLAK_TUKANG,
+            PermintaanStatus::DITOLAK_KONSULTAN,
             PermintaanStatus::DITOLAK_KONSUMEN
         ];
 
         $data = Permintaan::forKonsumen(Auth::id())
             ->whereIn('status', $statuses)
-            ->with(['tukang.profile', 'tipeRumah'])
+            ->with(['konsultan.profile', 'tipeRumah'])
             ->latest()
             ->paginate(10);
 

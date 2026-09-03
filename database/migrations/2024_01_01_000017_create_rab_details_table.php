@@ -8,7 +8,7 @@ return new class extends Migration {
         Schema::create('rab_details', function (Blueprint $table) {
             $table->id();
             $table->foreignId('rab_id')->constrained()->cascadeOnDelete();
-            $table->enum('jenis_item', ['material', 'pekerjaan', 'upah', 'jasa_tukang', 'tambahan']);
+            $table->enum('jenis_item', ['material', 'pekerjaan', 'upah', 'jasa_konsultan', 'tambahan']);
             $table->unsignedBigInteger('referensi_id')->nullable();
             $table->string('nama_item');
             $table->decimal('qty', 10, 2)->default(0);

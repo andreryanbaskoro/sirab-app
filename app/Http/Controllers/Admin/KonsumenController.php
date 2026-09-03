@@ -52,7 +52,7 @@ class KonsumenController extends Controller
 
     public function show(User $konsumen)
     {
-        $konsumen->load(['profile', 'permintaanSebagaiKonsumen.tukang', 'permintaanSebagaiKonsumen.rab']);
+        $konsumen->load(['profile', 'permintaanSebagaiKonsumen.konsultan', 'permintaanSebagaiKonsumen.rab']);
         return view('admin.konsumen.show', compact('konsumen'));
     }
 

@@ -15,10 +15,10 @@
             <div class="ibox-body">
                 <x-rab-table :rab="$rab" />
 
-                @if($rab->catatan_tukang)
+                @if($rab->catatan_konsultan)
                 <div class="alert alert-info mt-3">
-                    <strong>Catatan Tukang:</strong><br>
-                    {{ $rab->catatan_tukang }}
+                    <strong>Catatan Konsultan:</strong><br>
+                    {{ $rab->catatan_konsultan }}
                 </div>
                 @endif
             </div>
@@ -37,8 +37,8 @@
                         <x-status-badge :status="$rab->status" />
                     </li>
                     <li class="list-group-item">
-                        <small class="text-muted">Kepala Tukang</small><br>
-                        <strong>{{ $rab->tukang->name }}</strong>
+                        <small class="text-muted">Konsultan</small><br>
+                        <strong>{{ $rab->konsultan->name }}</strong>
                     </li>
                     <li class="list-group-item">
                         <small class="text-muted">Nomor Permintaan</small><br>
@@ -99,7 +99,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label>Berikan alasan mengapa RAB ini ditolak agar Kepala Tukang dapat merevisinya:</label>
+                        <label>Berikan alasan mengapa RAB ini ditolak agar Konsultan dapat merevisinya:</label>
                         <textarea name="alasan_tolak" class="form-control" rows="4" required></textarea>
                     </div>
                 </div>

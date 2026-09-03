@@ -15,7 +15,7 @@
                     <x-status-badge :status="$permintaan->status" />
                 </div>
                 
-                @if($permintaan->status === \App\Enums\PermintaanStatus::DITOLAK_TUKANG || $permintaan->status === \App\Enums\PermintaanStatus::DITOLAK_KONSUMEN)
+                @if($permintaan->status === \App\Enums\PermintaanStatus::DITOLAK_KONSULTAN || $permintaan->status === \App\Enums\PermintaanStatus::DITOLAK_KONSUMEN)
                     <div class="alert alert-danger">
                         <strong>Alasan Penolakan:</strong><br>
                         {{ $permintaan->alasan_tolak ?? ($permintaan->rab->alasan_tolak ?? 'Tidak ada alasan yang diberikan.') }}
@@ -32,12 +32,12 @@
                         </div>
                     </li>
                     
-                    @if(in_array($permintaan->status->value, ['diterima_tukang', 'disusun_rab', 'menunggu_persetujuan', 'disetujui', 'kontrak_aktif', 'selesai']))
+                    @if(in_array($permintaan->status->value, ['diterima_konsultan', 'disusun_rab', 'menunggu_persetujuan', 'disetujui', 'kontrak_aktif', 'selesai']))
                     <li class="timeline-item">
                         <span class="timeline-point timeline-point-success"></span>
                         <div class="timeline-content">
-                            <strong>Diterima Tukang</strong><br>
-                            <small class="text-muted">Tukang sedang menyiapkan/menyusun RAB.</small>
+                            <strong>Diterima Konsultan</strong><br>
+                            <small class="text-muted">Konsultan sedang menyiapkan/menyusun RAB.</small>
                         </div>
                     </li>
                     @endif
@@ -76,12 +76,12 @@
         
         <div class="ibox">
             <div class="ibox-head">
-                <div class="ibox-title">Informasi Kepala Tukang</div>
+                <div class="ibox-title">Informasi Konsultan</div>
             </div>
             <div class="ibox-body text-center">
-                <img src="{{ $permintaan->tukang?->foto_profil ?? asset('themes/assets/img/admin-avatar.png') }}" class="rounded-circle mb-3" width="100" height="100" style="object-fit: cover;">
-                <h5 class="font-strong mb-1">{{ $permintaan->tukang?->name ?? 'Belum Pilih Tukang' }}</h5>
-                <p class="text-muted"><i class="fa fa-phone"></i> {{ $permintaan->tukang?->profile?->no_hp ?? '-' }}</p>
+                <img src="{{ $permintaan->konsultan?->foto_profil ?? asset('themes/assets/img/admin-avatar.png') }}" class="rounded-circle mb-3" width="100" height="100" style="object-fit: cover;">
+                <h5 class="font-strong mb-1">{{ $permintaan->konsultan?->name ?? 'Belum Pilih Konsultan' }}</h5>
+                <p class="text-muted"><i class="fa fa-phone"></i> {{ $permintaan->konsultan?->profile?->no_hp ?? '-' }}</p>
             </div>
         </div>
     </div>
@@ -111,8 +111,8 @@
                             <td>
                                 @if($permintaan->sumber_denah === 'upload_sendiri')
                                     <span class="badge badge-info">Dari Konsumen</span>
-                                @elseif($permintaan->sumber_denah === 'dibuatkan_tukang')
-                                    <span class="badge badge-warning">Minta Dibuatkan Tukang</span>
+                                @elseif($permintaan->sumber_denah === 'dibuatkan_konsultan')
+                                    <span class="badge badge-warning">Minta Dibuatkan Konsultan</span>
                                 @else
                                     <span class="badge badge-secondary">-</span>
                                 @endif
@@ -140,8 +140,8 @@
                                     @endif
                                     <a href="{{ asset('storage/' . $permintaan->dokumen_path) }}" target="_blank" class="btn btn-outline-info btn-sm"><i class="fa fa-eye"></i> Lihat / Unduh Lampiran Penuh</a>
                                 @else
-                                    @if($permintaan->sumber_denah === 'dibuatkan_tukang')
-                                        <span class="text-warning"><i class="fa fa-clock-o"></i> Menunggu Tukang Mengunggah Sketsa (RAB belum disubmit)</span>
+                                    @if($permintaan->sumber_denah === 'dibuatkan_konsultan')
+                                        <span class="text-warning"><i class="fa fa-clock-o"></i> Menunggu Konsultan Mengunggah Sketsa (RAB belum disubmit)</span>
                                     @else
                                         <span class="text-muted">Tidak ada dokumen</span>
                                     @endif
@@ -166,17 +166,17 @@
                 @if($permintaan->status === \App\Enums\PermintaanStatus::MENUNGGU_PERSETUJUAN)
                 <div class="alert alert-warning mb-4">
                     <h5><i class="fa fa-exclamation-triangle"></i> Menunggu Persetujuan Anda</h5>
-                    <p>Kepala Tukang telah menyelesaikan penyusunan RAB. Silakan kelola (Setujui/Tolak) melalui menu <strong>Pembiayaan / Hasil RAB</strong>.</p>
+                    <p>Konsultan telah menyelesaikan penyusunan RAB. Silakan kelola (Setujui/Tolak) melalui menu <strong>Pembiayaan / Hasil RAB</strong>.</p>
                     <a href="{{ route('konsumen.pembiayaan.show', $permintaan->rab->id) }}" class="btn btn-success mt-2">Buka Menu Pembiayaan</a>
                 </div>
                 @endif
             
                 <x-rab-table :rab="$permintaan->rab" />
                 
-                @if($permintaan->rab->catatan_tukang)
+                @if($permintaan->rab->catatan_konsultan)
                 <div class="mt-4">
-                    <h6>Catatan dari Tukang:</h6>
-                    <p class="text-muted font-italic">{{ $permintaan->rab->catatan_tukang }}</p>
+                    <h6>Catatan dari Konsultan:</h6>
+                    <p class="text-muted font-italic">{{ $permintaan->rab->catatan_konsultan }}</p>
                 </div>
                 @endif
                 

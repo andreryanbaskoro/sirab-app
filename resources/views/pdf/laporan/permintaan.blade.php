@@ -29,7 +29,7 @@
                 <th width="3%">No</th>
                 <th width="12%">Nomor</th>
                 <th width="15%">Konsumen</th>
-                <th width="15%">Kepala Tukang</th>
+                <th width="15%">Konsultan</th>
                 <th width="10%">Tipe Rumah</th>
                 <th width="8%">Luas (m2)</th>
                 <th width="15%">Lokasi Proyek</th>
@@ -43,7 +43,7 @@
                 <td class="text-center">{{ $key + 1 }}</td>
                 <td class="text-center">{{ $item->nomor_permintaan }}</td>
                 <td>{{ $item->konsumen->profile->nama_lengkap ?? $item->konsumen->name }}</td>
-                <td>{{ $item->tukang->profile->nama_lengkap ?? $item->tukang->name }}</td>
+                <td>{{ $item->konsultan->profile->nama_lengkap ?? $item->konsultan->name }}</td>
                 <td class="text-center">{{ $item->tipeRumah->nama_tipe ?? '-' }}</td>
                 <td class="text-center">{{ $item->luas_bangunan }}</td>
                 <td>{{ $item->lokasi_proyek }}</td>

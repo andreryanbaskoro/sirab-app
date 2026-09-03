@@ -17,7 +17,7 @@ class DashboardController extends Controller
 
         $totalPermintaan = Permintaan::forKonsumen($user->id)->count();
         $permintaanAktif = Permintaan::forKonsumen($user->id)
-            ->whereNotIn('status', ['selesai', 'ditolak_tukang', 'ditolak_konsumen'])
+            ->whereNotIn('status', ['selesai', 'ditolak_konsultan', 'ditolak_konsumen'])
             ->count();
 
         $totalRab = Rab::whereHas('permintaan', fn($q) => $q->where('konsumen_id', $user->id))->count();
@@ -25,7 +25,7 @@ class DashboardController extends Controller
         $totalKontrak = Kontrak::where('konsumen_id', $user->id)->count();
 
         $permintaanTerbaru = Permintaan::forKonsumen($user->id)
-            ->with(['tukang.profile', 'tipeRumah', 'rab'])
+            ->with(['konsultan.profile', 'tipeRumah', 'rab'])
             ->latest()
             ->take(5)
             ->get();

@@ -55,7 +55,7 @@
                         <thead>
                             <tr>
                                 <th>Nomor</th>
-                                <th>Kepala Tukang</th>
+                                <th>Konsultan</th>
                                 <th>Tipe Rumah</th>
                                 <th>Tanggal</th>
                                 <th>Status</th>
@@ -67,12 +67,12 @@
                             <tr>
                                 <td>{{ $item->nomor_permintaan }}</td>
                                 <td>
-                                    @if($item->tukang?->profile?->foto)
-                                        <img class="img-circle mr-2" src="{{ asset('storage/' . $item->tukang->profile->foto) }}" width="30">
+                                    @if($item->konsultan?->profile?->foto)
+                                        <img class="img-circle mr-2" src="{{ asset('storage/' . $item->konsultan->profile->foto) }}" width="30">
                                     @else
                                         <img class="img-circle mr-2" src="{{ asset('themes/assets/img/admin-avatar.png') }}" width="30">
                                     @endif
-                                    {{ $item->tukang?->name ?? 'Belum Pilih Tukang' }}
+                                    {{ $item->konsultan?->name ?? 'Belum Pilih Konsultan' }}
                                 </td>
                                 <td>{{ $item->tipeRumah->nama_tipe }}</td>
                                 <td>{{ $item->tanggal_permohonan->format('d M Y') }}</td>

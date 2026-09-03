@@ -16,7 +16,7 @@
                 <a class="nav-link {{ $type === 'rab' ? 'active' : '' }}" href="{{ route('admin.laporan.index', ['type' => 'rab']) }}">Laporan Hasil RAB</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ $type === 'kepala_tukang' ? 'active' : '' }}" href="{{ route('admin.laporan.index', ['type' => 'kepala_tukang']) }}">Laporan Kepala Tukang</a>
+                <a class="nav-link {{ $type === 'konsultan' ? 'active' : '' }}" href="{{ route('admin.laporan.index', ['type' => 'konsultan']) }}">Laporan Konsultan</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link {{ $type === 'konsumen' ? 'active' : '' }}" href="{{ route('admin.laporan.index', ['type' => 'konsumen']) }}">Laporan Konsumen</a>
@@ -76,7 +76,7 @@
                 <thead>
                     <tr>
                         <th>No</th>
-                        @if($type === 'konsumen' || $type === 'kepala_tukang')
+                        @if($type === 'konsumen' || $type === 'konsultan')
                             <th>Nama Lengkap</th>
                             <th>Email</th>
                             <th>No. Telepon</th>
@@ -84,7 +84,7 @@
                         @elseif($type === 'permintaan')
                             <th>Nomor</th>
                             <th>Konsumen</th>
-                            <th>Kepala Tukang</th>
+                            <th>Konsultan</th>
                             <th>Tipe Rumah</th>
                             <th>Luas (m2)</th>
                             <th>Status</th>
@@ -93,7 +93,7 @@
                             <th>Nomor RAB</th>
                             <th>Permintaan</th>
                             <th>Konsumen</th>
-                            <th>Tukang</th>
+                            <th>Konsultan</th>
                             <th>Nilai RAB (Rp)</th>
                             <th>Status Persetujuan</th>
                             <th>Kontrak Kerja</th>
@@ -103,7 +103,7 @@
                             <th>Nomor Kontrak</th>
                             <th>RAB</th>
                             <th>Konsumen</th>
-                            <th>Tukang</th>
+                            <th>Konsultan</th>
                             <th>Nilai Kontrak</th>
                             <th>Tgl Mulai</th>
                             <th>Tgl Selesai</th>
@@ -115,7 +115,7 @@
                     @forelse($data as $key => $item)
                     <tr>
                         <td>{{ $data->firstItem() + $key }}</td>
-                        @if($type === 'konsumen' || $type === 'kepala_tukang')
+                        @if($type === 'konsumen' || $type === 'konsultan')
                             <td>{{ $item->name }}</td>
                             <td>{{ $item->email }}</td>
                             <td>{{ $item->profile->no_hp ?? '-' }}</td>
@@ -123,7 +123,7 @@
                         @elseif($type === 'permintaan')
                             <td>{{ $item->nomor_permintaan }}</td>
                             <td>{{ $item->konsumen->name }}</td>
-                            <td>{{ $item->tukang->name }}</td>
+                            <td>{{ $item->konsultan->name }}</td>
                             <td>{{ $item->tipeRumah->nama_tipe ?? '-' }}</td>
                             <td>{{ $item->luas_bangunan }}</td>
                             <td><x-status-badge :status="$item->status" /></td>
@@ -132,7 +132,7 @@
                             <td>{{ $item->nomor_rab }}</td>
                             <td>{{ $item->permintaan->nomor_permintaan ?? '-' }}</td>
                             <td>{{ $item->permintaan->konsumen->name ?? '-' }}</td>
-                            <td>{{ $item->tukang->name }}</td>
+                            <td>{{ $item->konsultan->name }}</td>
                             <td>{{ number_format($item->total_final, 0, ',', '.') }}</td>
                             <td><x-status-badge :status="$item->status" /></td>
                             <td>{{ $item->kontrak->nomor_kontrak ?? '-' }}</td>
@@ -148,7 +148,7 @@
                             <td>{{ $item->nomor_kontrak }}</td>
                             <td>{{ $item->rab->nomor_rab ?? '-' }}</td>
                             <td>{{ $item->konsumen->name }}</td>
-                            <td>{{ $item->tukang->name }}</td>
+                            <td>{{ $item->konsultan->name }}</td>
                             <td>Rp {{ number_format($item->nilai_kontrak, 0, ',', '.') }}</td>
                             <td>{{ $item->tanggal_mulai->format('d/m/Y') }}</td>
                             <td>{{ $item->tanggal_selesai->format('d/m/Y') }}</td>

@@ -14,7 +14,7 @@
                     <tr>
                         <th>No. RAB</th>
                         <th>Konsumen</th>
-                        <th>Tukang</th>
+                        <th>Konsultan</th>
                         <th>Total Final</th>
                         <th>Status</th>
                         <th>Aksi</th>
@@ -25,7 +25,7 @@
                     <tr>
                         <td>{{ $item->nomor_rab }}</td>
                         <td>{{ $item->permintaan->konsumen->name }}</td>
-                        <td>{{ $item->tukang->name }}</td>
+                        <td>{{ $item->konsultan->name }}</td>
                         <td>Rp {{ number_format($item->total_final, 0, ',', '.') }}</td>
                         <td><x-status-badge :status="$item->status" /></td>
                         <td>

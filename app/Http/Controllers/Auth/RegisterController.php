@@ -23,7 +23,7 @@ class RegisterController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => ['required', 'confirmed', Password::min(8)],
-            'role' => 'required|in:kepala_tukang,konsumen',
+            'role' => 'required|in:konsultan,konsumen',
         ]);
 
         $user = User::create([
@@ -41,7 +41,7 @@ class RegisterController extends Controller
         Auth::login($user);
 
         return match($user->role) {
-            'kepala_tukang' => redirect()->route('tukang.dashboard'),
+            'konsultan' => redirect()->route('konsultan.dashboard'),
             'konsumen' => redirect()->route('konsumen.dashboard'),
             default => redirect('/'),
         };

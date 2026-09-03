@@ -11,7 +11,7 @@ class PermintaanController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Permintaan::with(['konsumen', 'tukang', 'tipeRumah'])->latest();
+        $query = Permintaan::with(['konsumen', 'konsultan', 'tipeRumah'])->latest();
 
         if ($request->status) {
             $query->where('status', $request->status);
@@ -40,7 +40,7 @@ class PermintaanController extends Controller
 
     public function show(Permintaan $permintaan)
     {
-        $permintaan->load(['konsumen.profile', 'tukang.profile', 'tipeRumah', 'rab.details', 'kontrak', 'validasis']);
+        $permintaan->load(['konsumen.profile', 'konsultan.profile', 'tipeRumah', 'rab.details', 'kontrak', 'validasis']);
         return view('admin.permintaan.show', compact('permintaan'));
     }
 }

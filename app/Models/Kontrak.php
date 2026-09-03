@@ -17,7 +17,7 @@ class Kontrak extends Model
         'permintaan_id',
         'rab_id',
         'konsumen_id',
-        'tukang_id',
+        'konsultan_id',
         'nilai_kontrak',
         'tanggal_mulai',
         'tanggal_selesai',
@@ -53,9 +53,9 @@ class Kontrak extends Model
         return $this->belongsTo(User::class, 'konsumen_id');
     }
 
-    public function tukang(): BelongsTo
+    public function konsultan(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'tukang_id');
+        return $this->belongsTo(User::class, 'konsultan_id');
     }
 
     public function pembayarans()
